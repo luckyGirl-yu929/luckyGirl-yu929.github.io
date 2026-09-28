@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>【你的名字】 · AI 产品经理</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #1f2933;
+      --muted: #647084;
+      --accent: #2563eb;
+      --accent-soft: #eef4ff;
+      --card: #f8fafc;
+      --border: #e5e9f0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.7;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+    /* Hero */
+    header {
+      padding: 80px 0 56px;
+      background: linear-gradient(180deg, var(--accent-soft), #ffffff);
+    }
+    .hero-tag {
+      display: inline-block;
+      font-size: 13px;
+      letter-spacing: 1px;
+      color: var(--accent);
+      background: #fff;
+      border: 1px solid var(--border);
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 18px;
+    }
+    h1 { font-size: 40px; line-height: 1.2; margin-bottom: 12px; }
+    .hero-sub { font-size: 18px; color: var(--muted); max-width: 600px; }
+    .hero-links { margin-top: 26px; display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: #1d4fd8; text-decoration: none; }
+    .btn-ghost { border: 1px solid var(--border); color: var(--text); }
+    .btn-ghost:hover { background: var(--card); text-decoration: none; }
+
+    /* Sections */
+    section { padding: 52px 0; border-top: 1px solid var(--border); }
+    h2 { font-size: 24px; margin-bottom: 22px; }
+    h2 .num { color: var(--accent); margin-right: 8px; }
+
+    .lead { color: var(--muted); max-width: 680px; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    .chip {
+      background: var(--accent-soft);
+      color: var(--accent);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 8px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+    }
+    .card h3 { font-size: 17px; margin-bottom: 8px; }
+    .card p { font-size: 14px; color: var(--muted); }
+    .card .meta { font-size: 12px; color: var(--accent); margin-top: 12px; }
+
+    .timeline { margin-top: 8px; }
+    .item { padding: 14px 0; border-bottom: 1px dashed var(--border); }
+    .item:last-child { border-bottom: none; }
+    .item .role { font-weight: 600; }
+    .item .when { font-size: 13px; color: var(--muted); float: right; }
+
+    footer { padding: 40px 0 60px; color: var(--muted); font-size: 14px; text-align: center; }
+
+    @media (max-width: 640px) {
+      h1 { font-size: 32px; }
+      .cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <span class="hero-tag">正在转型 AI 产品经理</span>
+      <h1>你好，我是【你的名字】</h1>
+      <p class="hero-sub">
+        【一句话写清你是谁 + 想做什么】。比如：有 X 年【当前行业/岗位】经验，
+        正在转向 AI 产品经理，擅长把用户需求翻译成可落地的 AI 产品方案。
+      </p>
+      <div class="hero-links">
+        <a class="btn btn-primary" href="mailto:你的邮箱@example.com">联系我</a>
+        <a class="btn btn-ghost" href="https://github.com/你的用户名" target="_blank" rel="noopener">GitHub 主页</a>
+        <a class="btn btn-ghost" href="#resume">查看简历亮点</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="about">
+    <div class="wrap">
+      <h2><span class="num">01</span>关于我</h2>
+      <p class="lead">
+        【这里写 3–4 句话：你的背景、为什么想做 AI 产品经理、你相信什么。
+        不用写满，真诚、具体最重要。例如：我在【行业】做了 X 年，
+        越来越发现"用 AI 解决真实问题"比"堆功能"更有价值，于是开始系统学习
+        大模型产品方法论，并做了下面这些练习项目。】
+      </p>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <h2><span class="num">02</span>能力标签</h2>
+      <p class="lead">把"你会什么"做成一眼能扫完的标签（按你实际情况改）。</p>
+      <div class="chips">
+        <span class="chip">AI 产品理解</span>
+        <span class="chip">需求分析</span>
+        <span class="chip">数据分析</span>
+        <span class="chip">PRD 撰写</span>
+        <span class="chip">原型设计</span>
+        <span class="chip">跨团队协同</span>
+        <span class="chip">大模型应用</span>
+        <span class="chip">竞品拆解</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="wrap">
+      <h2><span class="num">03</span>项目 / 作品集</h2>
+      <p class="lead">
+        这是你最该花时间的地方。每个项目写清"背景 → 你的动作 → 结果"。
+        链接可指向 GitHub 仓库、文档或在线 Demo。
+      </p>
+      <div class="cards">
+        <div class="card">
+          <h3>【项目一名称】</h3>
+          <p>【用一句话说这个项目解决了什么问题。比如：用 AI 重构某类工作流的产品方案。】</p>
+          <div class="meta"><a href="#">查看详情 →</a></div>
+        </div>
+        <div class="card">
+          <h3>【项目二名称】</h3>
+          <p>【比如：某 AI 产品的竞品分析报告 / 用户访谈纪要。】</p>
+          <div class="meta"><a href="#">查看详情 →</a></div>
+        </div>
+        <div class="card">
+          <h3>【项目三名称】</h3>
+          <p>【比如：一个 Prompt / 小工具 Demo，放 GitHub 仓库。】</p>
+          <div class="meta"><a href="https://github.com/你的用户名" target="_blank" rel="noopener">GitHub 仓库 →</a></div>
+        </div>
+        <div class="card">
+          <h3>【项目四名称】</h3>
+          <p>【比如：一篇你写的 AI 产品思考文章（可放博客或 README）。】</p>
+          <div class="meta"><a href="#">查看详情 →</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="resume">
+    <div class="wrap">
+      <h2><span class="num">04</span>简历亮点</h2>
+      <p class="lead">简版经历时间线，完整简历可附 PDF 链接。</p>
+      <div class="timeline">
+        <div class="item">
+          <span class="when">202X – 至今</span>
+          <span class="role">【当前职位】· 【公司】</span>
+          <p class="lead">【一句话写你做了什么、带来了什么可量化的结果。】</p>
+        </div>
+        <div class="item">
+          <span class="when">202X – 202X</span>
+          <span class="role">【上一份职位】· 【公司】</span>
+          <p class="lead">【同上，突出和"产品/用户/数据"相关的部分。】</p>
+        </div>
+        <div class="item">
+          <span class="when">学习 / 认证</span>
+          <span class="role">AI 产品相关</span>
+          <p class="lead">【比如：大模型产品课程、数据分析认证、你读过的书/写过的分析。】</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <p>© 2026 【你的名字】 · 用 GitHub Pages 搭建 · <a href="https://github.com/你的用户名" target="_blank" rel="noopener">GitHub</a></p>
+    </div>
+  </footer>
+</body>
+</html>
