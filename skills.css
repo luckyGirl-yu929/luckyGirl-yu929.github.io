@@ -1,0 +1,412 @@
+/* ============================================================
+   BYME · 04 技能特长 / SKILLS  ——  章节页样式（浅色主题）
+   本文件只服务于 skills.html，独立于 styles.css（暗色首页主题）。
+   请勿在本文件中引入 styles.css，也不要改动 styles.css。
+
+   ── 右半屏三个人物的实现方式（重要）─────────────────────────
+   素材是「白底人物视频」。早期做法是 mix-blend-mode:multiply 把白底乘掉，
+   但 multiply 是**乘法**：墙面上的涂鸦/紫斑会原样透到人物身上
+   ——「人物被图案遮挡」在数学上无法避免。
+
+   现在改成**真 alpha 合成**：assets/skills-0X.webm 是 VP9 + yuva420p
+   （带透明通道），浏览器直接把人物画在墙面之上，人物完全不透明，
+   身后的图案一丝都透不过来。
+
+   代价：Safari / iOS 不支持 VP9 的 alpha 层。命中它们时 JS 会给
+   <html> 加 .is-keyed，改用同名的纯白底 .mp4 + multiply 回退。
+   回退路径要求 <video> 到 body 之间不存在层叠上下文，因此：
+   ⚠️ 视频祖先链（html > body > main.skills > div.skills__stage > video）
+   上禁止出现 z-index / transform / filter / opacity / isolation / contain /
+   will-change / container-type，否则 multiply 只能乘到透明底，白方块会残留。
+   本文件里所有定位都用 position + left/top + svh，不用 transform，
+   正是为了同时满足两条路径。
+   ============================================================ */
+
+/* ---------- 0. 设计令牌（色值取自 04 底图取样） ---------- */
+:root {
+  --plum-900: #4A1F87;   /* 最深，标签文字强调色 */
+  --plum-700: #6B36B8;   /* 主色，与底图 logo / 贴纸同色 */
+  --plum-500: #8B5BC8;   /* 次级 */
+  --plum-200: #C9AEE8;   /* 描边 / 分隔 */
+  --wall: #F2ECFA;       /* 墙面亮部参考 */
+
+  /* 字体：沿用 index.html 的 Google Fonts，附本地中文字体回退栈 */
+  --font-body: "Space Grotesk", "Noto Sans SC", "PingFang SC",
+               "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+
+  /* 左栏安全区（避开底图已烘焙元素） */
+  --panel-pad-top: 26svh;      /* 避开顶部 BYME logo（0–20%） */
+  --panel-pad-bottom: 22svh;   /* 避开底部「04 技能特长」贴纸（80–100%） */
+  --panel-pad-start: 7vw;      /* 左起 7% */
+  --panel-pad-end: 4vw;        /* 45% - 4% = 41%，右侧留到 41% 处 */
+}
+
+/* ---------- 1. 基础重置 ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  /* 关键：给 html 一个不透明底色，打断「根元素背景传播」。
+     否则 html 背景透明时，body 的背景会被提升到 canvas 背景、
+     脱离根层叠上下文；一旦如此，回退路径的 mix-blend-mode:multiply
+     就可能乘不到这面墙，退化成白方块。
+     有了这行，body 的背景就是 body 自己的背景，稳稳落在同一个
+     层叠上下文里，multiply 一定乘得到它。 */
+  background-color: var(--wall);
+}
+
+/* 底图直接挂在 body 自己的 background 上：
+   不另起 z-index 隔离层，保证回退路径的 multiply 能乘到它。
+
+   ★ 锚点必须是 left center，不能是 center center：
+   底图把 BYME logo 与左下「04 技能特长」贴纸都烤在画面左侧，
+   而 cover 在 16:10 / 1280×800 这类非 1.79 比例的屏幕上会横向裁切。
+   居中对齐会同时切掉左右两侧 —— logo 的「B」和贴纸的「04」都会被切掉，
+   实测截图里肉眼可见品牌元素残缺。锚左边则完整保住左侧品牌列，
+   只裁掉右侧无关的墙面与涂鸦。 */
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100svh;
+  font-family: var(--font-body);
+  color: var(--plum-700);
+  background-color: var(--wall);
+  background-image: url("assets/section-04-skills.png");
+  background-position: left center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* 桌面端刻意不写 background-attachment: fixed：
+     本页在桌面是单屏（min-height:100svh，实测各尺寸下均无纵向溢出），
+     既没有可滚动的距离，fixed 在这里是纯 Zero-Benefit 的装饰；
+     而 fixed 会把背景提升为独立合成层，是 multiply 融合失效的
+     已知风险面之一。不写 = 默认 scroll，桌面效果完全一致，风险归零。
+     真正会滚动的窄屏在下方 media query 里单独处理。 */
+}
+
+/* 无障碍隐藏（仅用于 <h1>，不属于视频祖先链） */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- 2. 整页分栏：左 45% / 右 55% ---------- */
+.skills {
+  display: grid;
+  grid-template-columns: minmax(0, 45%) minmax(0, 55%);
+  grid-template-rows: minmax(0, 1fr);
+  min-height: 100vh;
+  min-height: 100svh;
+  /* 注意：此处只放了 display:grid —— grid 容器本身不产生层叠上下文 */
+}
+
+/* ---------- 3. 左 45%：技能标签文字区 ---------- */
+.skills__panel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+
+  padding-top: 26vh;          /* fallback */
+  padding-top: var(--panel-pad-top);
+  padding-bottom: 22vh;       /* fallback */
+  padding-bottom: var(--panel-pad-bottom);
+  padding-inline-start: var(--panel-pad-start);
+  padding-inline-end: var(--panel-pad-end);
+  /* 内容落在：垂直 26%–78%，水平 7%–41% */
+}
+
+.skills__tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  gap: 0.7em 0.9em;
+
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+
+  /* 本次内容留空，给足高度保证版面不塌陷 */
+  min-height: 40vh;
+  min-height: 40svh;
+}
+
+.skills__tags li {
+  font-family: var(--font-body);
+  font-size: clamp(1.05rem, 1.5vw, 1.75rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+
+  color: var(--plum-900);                 /* 对比度 ≈ 6.4:1（对 --wall） */
+  padding: 0.45em 1.05em;
+  border: 2px solid var(--plum-200);
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.55);
+}
+
+/* ---------- 4. 右 55%：三个人物，上中下错落 ---------- */
+.skills__stage {
+  position: relative;      /* 只做定位参照：没有 z-index，不产生层叠上下文 */
+  min-width: 0;
+  /* 单个人物高度：小屏用 svh 跟视口走，大屏封顶，避免超宽屏上人物巨大化 */
+  --fig-h: min(38svh, 400px);
+  --fig-h-sm: min(34svh, 360px);
+}
+
+/* 每个人物自带透明通道，宽高比由素材决定：
+   01 滑板 460×676（0.68 竖版）  02 街舞 460×676  03 插画 396×648
+   ★ 只写 height、不写 width：<video> 是替换元素，width:auto 会自动
+     按素材固有比例推宽度，省掉三套 aspect-ratio 的硬编码。
+   ★ 位置一律用 left / top，禁止用 transform:translate —— 见文件头层叠上下文说明。 */
+.fig {
+  position: absolute;
+  display: block;
+  height: var(--fig-h);
+  width: auto;
+}
+
+/* 01 滑板：左上 */
+.fig--skate {
+  left: 4%;
+  top: 5svh;
+}
+
+/* 02 街舞：右中 */
+.fig--dance {
+  left: 58%;
+  top: 29svh;
+}
+
+/* 03 插画（女孩坐在苔藓石上）：中下，略小一点，让三者的高低错开 */
+.fig--draw {
+  left: 22%;
+  top: 58svh;
+  height: var(--fig-h-sm);
+}
+
+/* ---------- 5. Safari / iOS 回退：白底 MP4 + multiply ----------
+   仅在 .is-keyed（由 skills.html 的脚本探测后加到 <html>）下生效。
+   人物会被墙面染上一点紫调、并把身后图案透出来 —— 这是无奈但可见的
+   降级，好过 VP9 alpha 不被支持时整块白方块糊在墙上。 */
+.is-keyed .fig {
+  mix-blend-mode: multiply;
+}
+
+/* ---------- 6. 响应式：< 900px 上下堆叠 ---------- */
+@media (max-width: 899px) {
+  .skills {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    row-gap: 0;
+  }
+
+  /* 视频在上、文字在下（DOM 顺序仍保持「先文字后视频」以便读屏） */
+  .skills__stage {
+    order: 1;
+    min-height: 84svh;
+    --fig-h: min(19svh, 200px);
+    --fig-h-sm: min(16svh, 165px);
+  }
+
+  /* 窄屏真正的问题是底图：body 被拉高后 cover 会把墙放得很大，
+     烤在图里的 BYME logo 会涨到屏宽的四分之三。这里让三个人物整体
+     从 25svh 起步、往下排，避开 logo 所在的上四分之一，
+     横向仍然一左一右错开。 */
+  .fig--skate { left: 44%; top: 25svh; }
+  .fig--dance { left: 4%;  top: 45svh; }
+  .fig--draw  { left: 38%; top: 64svh; }
+
+  .skills__panel {
+    order: 2;
+    justify-content: flex-start;
+    padding-top: 4svh;
+    padding-bottom: 16svh;              /* 给底图左下角贴纸留白 */
+    padding-inline-start: 9vw;
+    padding-inline-end: 9vw;
+  }
+
+  .skills__tags {
+    min-height: 26svh;
+  }
+
+  .skills__tags li {
+    font-size: clamp(0.95rem, 3.6vw, 1.35rem);
+  }
+
+  /* 窄屏允许纵向滚动，此时 body 盒子会随内容变高，cover 会按「更高的
+     盒子」去缩放，墙面被放得很大。锚到左上至少保住 BYME logo 与左侧
+     品牌列；不满的部分由 --wall 底色兜住。 */
+  body {
+    background-attachment: scroll;
+    background-position: left top;
+  }
+}
+
+/* ---------- 6b. 手机（< 600px）：改用手机版墙面底图 ----------
+   桌面底图是 1920×1072（宽高比 1.79），手机竖屏约 0.46 —— 无论怎么 cover
+   都要横向砍掉四分之三，烤在图里的标语「WELCOME TO BYME'S WORLD.」
+   会被切掉半个词（实测 430px 下差 10px）。
+   所以窄屏换成 assets/section-04-skills-m.jpg：把品牌块与
+   「04 技能特长」贴纸所在的那条竖向窗口（原图 x22..668）单独取出，
+   重排成 860×1454 的手机构图，下沿已羽化到墙面底色。
+   尺寸用 viewport 单位写死：background-size: auto 78svh ——
+   只跟视口走，不会因为 body 被内容撑高而重新缩放（那是 cover 的老坑）。
+
+   ⚠️ 曾经用一个 z-index:-1 的 .wall 图层承载这张图，结果整层不显示。
+   最小对照实验定位到：**只要页面里出现 position:fixed 元素（这里是吸底导航），
+   Chromium 就会把负 z-index 的那一层丢在根背景之下** —— 去掉导航，底图立刻恢复。
+   现在换回 body 背景：少一个图层、少一个坑，也和桌面走同一套机制。 */
+@media (max-width: 599px) {
+  html {
+    background-color: #DECBEE;          /* 文档下方的画布底色 */
+  }
+
+  body {
+    background-color: #DECBEE;
+    background-image: url("assets/section-04-skills-m.jpg");
+    background-repeat: no-repeat;
+    background-position: left top;
+    background-size: auto 78svh;
+    background-attachment: scroll;
+  }
+
+  .skills__stage {
+    min-height: 78svh;                  /* 与 body 上的底图等高，人物正好落在墙上 */
+    --fig-h: min(16svh, 165px);
+    --fig-h-sm: min(13svh, 135px);
+  }
+
+  /* 品牌块占到 25svh，贴纸从 61svh 起 —— 三个人物排在中间，
+     左右交替、逐级下移，全部让开贴纸。 */
+  .fig--skate { left: 52%; top: 26svh; }
+  .fig--dance { left: 5%;  top: 38svh; }
+  .fig--draw  { left: 55%; top: 46svh; }
+
+  .skills__panel {
+    padding-top: 4svh;
+    /* 底部给吸底导航条（约 8svh）让位，否则最后一个标签会被压住 */
+    padding-bottom: 16svh;
+  }
+
+  /* 顶部被品牌块占满，导航改为吸底横条 */
+  .chapnav {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 16px;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    background-color: rgba(244, 238, 252, 0.94);
+    border-top: 2px solid var(--plum-200);
+  }
+
+  .chapnav__home-text { display: inline; }
+}
+
+/* ---------- 6c. 章节导航 ----------
+   桌面：绝对定位右上角（底图左上角的 BYME logo、以及三个人物都让开了这块）。
+   手机：吸底横条（见 6b 下方的 media query）。
+   ★ 它只是 <video> 的兄弟节点，不是祖先 —— 用 z-index / 背景都不会
+     打断回退路径的 mix-blend-mode: multiply。 */
+.chapnav {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.3vw, 22px);
+  padding: clamp(14px, 1.5vw, 24px) clamp(16px, 1.8vw, 32px);
+}
+
+.chapnav__home {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.5em 1.05em;
+  font-weight: 700;
+  font-size: clamp(13px, 1vw, 16px);
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  white-space: nowrap;
+  color: var(--plum-900);
+  background-color: rgba(255, 255, 255, 0.72);
+  border: 2px solid var(--plum-200);
+  border-radius: 999px;
+}
+
+.chapnav__home:hover,
+.chapnav__home:focus-visible {
+  background-color: #fff;
+  border-color: var(--plum-700);
+}
+
+.chapnav__arrow { font-size: 1.15em; line-height: 1; }
+.chapnav__dot { font-style: normal; color: var(--plum-500); }
+
+/* 「回首页」三个字在窄屏上收掉，只留 ← BYME. */
+.chapnav__home-text { display: none; }
+
+.chapnav__rail {
+  display: flex;
+  align-items: center;
+  gap: 0.45em;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.chapnav__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.3em;
+  height: 2.3em;
+  padding: 0 0.5em;
+  font-size: clamp(11px, 0.82vw, 14px);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  border-radius: 999px;
+  border: 2px solid var(--plum-200);
+  color: var(--plum-500);
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* 其余三章的页面还没做 —— 用 <span> 而不是 <a>：不可聚焦、不可点，
+   不会有「点了没反应」的假链接。 */
+.chapnav__num.is-todo { opacity: 0.6; cursor: default; }
+
+.chapnav__num.is-current {
+  color: #fff;
+  background-color: var(--plum-700);
+  border-color: var(--plum-700);
+}
+
+/* ---------- 7. 减弱动态效果 ----------
+   不整块隐藏视频：那会让右半屏突然空掉、版面看起来是坏的。
+   <video> 的动画由 skills.html 里的脚本真正 pause() 停在第一帧 ——
+   静止画面本身不含动态，既尊重偏好又保住了版面。 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BYME · 04 技能特长 SKILLS | AI 产品经理</title>
+  <meta name="description" content="BYME / YU —— 转型中的 AI 产品经理「04 技能特长 SKILLS」章节页：需求分析、PRD、用户研究、数据与模型协作、软硬结合产品落地。" />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="skills.css" />
+</head>
+<body>
+
+  <!-- ============ 章节导航 ============
+       桌面：绝对定位在右上角 —— 那是整屏唯一的空白带
+       （左上 0–34% × 0–16% 是底图烘焙的 BYME logo，
+        三个人物最靠上的 01 滑板也从 47% 处才起步，实测各尺寸下均不重叠）。
+       手机（< 600px）：改为吸底横条 —— 窄屏顶部被品牌块占满，没有可插针的空白。
+       ⚠️ 本元素不是 <video> 的祖先，加 z-index / 背景都不影响回退路径的 multiply。 -->
+  <nav class="chapnav" aria-label="章节导航">
+    <a class="chapnav__home" href="index.html">
+      <span class="chapnav__arrow" aria-hidden="true">←</span>
+      <span class="chapnav__brand">BYME<i class="chapnav__dot">.</i></span>
+      <span class="chapnav__home-text">回首页</span>
+    </a>
+
+    <ol class="chapnav__rail">
+      <li><span class="chapnav__num is-todo" title="01 认识我（章节页制作中）">01</span></li>
+      <li><span class="chapnav__num is-todo" title="02 工作经历（章节页制作中）">02</span></li>
+      <li><span class="chapnav__num is-todo" title="03 项目经历（章节页制作中）">03</span></li>
+      <li><span class="chapnav__num is-current" aria-current="page" title="04 技能特长（当前页）">04</span></li>
+    </ol>
+  </nav>
+
+  <!-- 底图说明：桌面用 assets/section-04-skills.png（1920×1072），
+       窄屏（< 600px）在 skills.css 里换成 assets/section-04-skills-m.jpg
+       —— 那张是按手机构图重排过的 860×1454，品牌块与「04 技能特长」
+       贴纸都在，因为超宽幅底图在手机竖屏上无论怎么 cover 都会被砍掉大半。
+       两者都挂在 body 的 background 上，不额外加图层。 -->
+
+  <main class="skills" id="top">
+
+    <!-- ============ 左 45%：技能标签文字区 ============ -->
+    <!-- 注意：底图已烘焙 BYME logo（顶部 0–20%）与「04 技能特长」贴纸
+         （底部 80–100%），故本区实际可用排版带为垂直 26%–78%、
+         水平 7%–41%，由 skills.css 的 padding 实现。 -->
+    <section class="skills__panel" aria-labelledby="skills-title">
+      <h1 class="visually-hidden" id="skills-title">技能特长 SKILLS</h1>
+
+      <!-- 技能标签：草稿版，内容取自首页已有的文案（hero 标签 / 作品集 / 经历），
+           没有凭空加词。增删改直接动这里的 <li> 就行，样式会自动跟着走。 -->
+      <ul class="skills__tags" aria-label="技能标签">
+        <li>需求分析</li>
+        <li>PRD 撰写</li>
+        <li>用户访谈</li>
+        <li>竞品拆解</li>
+        <li>原型设计</li>
+        <li>RAG 知识库</li>
+        <li>Agent 设计</li>
+        <li>Prompt 工程</li>
+        <li>数据分析</li>
+        <li>模型评测</li>
+        <li>传感器测试</li>
+        <li>跨职能协作</li>
+      </ul>
+    </section>
+
+    <!-- ============ 右 55%：三个人物，上中下错落 ============ -->
+    <!-- 素材是真 alpha 的 VP9 WebM（人物画在墙面之上，不被图案穿透）。
+         Safari / iOS 不支持 VP9 alpha，脚本会给 <html> 加 .is-keyed
+         并切到同名 .mp4（纯白底 + multiply 回退），详见 skills.css 文件头。
+         ⚠️ 不要把这三段视频塞进任何带 transform / z-index / filter /
+         opacity / isolation / overflow+radius 组合的包装层里。 -->
+    <div class="skills__stage">
+
+      <video class="fig fig--skate"
+             autoplay loop muted playsinline preload="auto"
+             aria-hidden="true" disablepictureinpicture>
+        <source src="assets/skills-01-skate.webm" type="video/webm" />
+        <source src="assets/skills-01-skate.mp4" type="video/mp4" />
+      </video>
+
+      <video class="fig fig--dance"
+             autoplay loop muted playsinline preload="auto"
+             aria-hidden="true" disablepictureinpicture>
+        <source src="assets/skills-02-dance.webm" type="video/webm" />
+        <source src="assets/skills-02-dance.mp4" type="video/mp4" />
+      </video>
+
+      <video class="fig fig--draw"
+             autoplay loop muted playsinline preload="auto"
+             aria-hidden="true" disablepictureinpicture>
+        <source src="assets/skills-03-draw.webm" type="video/webm" />
+        <source src="assets/skills-03-draw.mp4" type="video/mp4" />
+      </video>
+
+    </div>
+
+  </main>
+
+  <script>
+    (function () {
+      var stage = document.querySelector('.skills__stage');
+      if (!stage) return;
+
+      var ua = navigator.userAgent;
+      var videos = Array.prototype.slice.call(stage.querySelectorAll('.fig'));
+      var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      var keyed = false;
+
+      // WebKit 系（Safari、以及 iOS 上的所有浏览器）不支持 VP9 的 alpha 层。
+      // 我们用的是 yuva420p 真透明，落到它们身上只会得到黑底或白底，
+      // 必须切到 MP4 并给元素加 multiply（.is-keyed 规则在 CSS 里）。
+      function isWebKitOnly() {
+        if (/iP(hone|ad|od)/.test(ua)) return true;          // iOS 上 Chrome/FF 也是 WebKit
+        if (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) return true; // iPadOS
+        return /Safari/.test(ua) && !/Chrome|Chromium|CriOS|Edg|OPR|Firefox|FxiOS/.test(ua);
+      }
+
+      function toFallback() {
+        if (keyed) return;
+        keyed = true;
+        document.documentElement.classList.add('is-keyed');
+        videos.forEach(function (v) {
+          var mp4 = '';
+          Array.prototype.forEach.call(v.querySelectorAll('source'), function (s) {
+            var u = s.getAttribute('src') || '';
+            if (/\.mp4(\?|#|$)/.test(u)) mp4 = u;
+            s.remove();
+          });
+          if (mp4 && v.getAttribute('src') !== mp4) {
+            v.setAttribute('src', mp4);
+            v.load();
+          }
+        });
+        playAll();
+      }
+
+      if (isWebKitOnly()) toFallback();
+
+      // 无障碍：系统开启「减弱动态效果」时真正 pause() 视频，让它停在第一帧。
+      // 只把元素藏起来是假尊重偏好 —— 解码还在跑、CPU 还在烧、风扇还在响。
+      function playAll() {
+        videos.forEach(function (v) {
+          if (mq.matches) {
+            v.pause();
+          } else if (v.paused) {
+            // 某些浏览器 / 省电模式下首帧 autoplay 会被拦，这里兜底重试一次
+            var p = v.play();
+            if (p && typeof p.catch === 'function') { p.catch(function () {}); }
+          }
+        });
+      }
+
+      playAll();
+      if (mq.addEventListener) { mq.addEventListener('change', playAll); }
+      else if (mq.addListener) { mq.addListener(playAll); }
+
+      // 最后一道保险：万一撞上「能播 VP9 但不认 alpha」的浏览器（画面会是白底），
+      // 把已就绪的视频画进 canvas，看素材四角是不是透明的，不是就切回退路径。
+      // file:// 打开时 canvas 会被判为污染、getImageData 抛错 —— 那就放弃探测，
+      // 沿用 UA 的判断（本地预览本来也不是发布环境）。
+      if (!keyed && videos[0]) {
+        videos[0].addEventListener('loadeddata', function () {
+          if (keyed) return;
+          var v = videos[0];
+          try {
+            var w = v.videoWidth || 8, h = v.videoHeight || 8;
+            var c = document.createElement('canvas');
+            c.width = w; c.height = h;
+            var g = c.getContext('2d');
+            g.drawImage(v, 0, 0, w, h);
+            var d = g.getImageData(0, 0, w, h).data;
+            var pts = [[1, 1], [w - 2, 1], [1, h - 2], [w - 2, h - 2]];
+            var sum = 0;
+            pts.forEach(function (p) { sum += d[(p[1] * w + p[0]) * 4 + 3]; });
+            if (sum / pts.length > 12) { toFallback(); }   // 四角不透明 → alpha 没生效
+          } catch (e) { /* 画布被污染，跳过探测 */ }
+        });
+      }
+    })();
+  </script>
+
+</body>
+</html>
