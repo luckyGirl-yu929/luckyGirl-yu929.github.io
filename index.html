@@ -2,220 +2,213 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BYME · Be Yourself | 转型中的 AI 产品经理</title>
-  <meta name="description" content="YU —— 前车载硬件工程师，转型中的 AI 产品经理。懂硬件，正在学懂产品。Be Yourself." />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>BYME · Be Yourself ｜ YU 的个人作品集</title>
+  <meta name="description" content="YU —— 前车载硬件工程师，转型中的 AI 产品经理。BYME · Be Yourself 单页作品集：认识我 / 工作经历 / 项目经历 / 技能特长。" />
   <link rel="icon" type="image/png" href="assets/favicon.png" />
+
+  <link rel="preload" as="image" href="assets/cover.jpg" fetchpriority="high" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="style.css" />
+
+  <noscript><style>
+    .page__badge, .hint, .skills, .outro { opacity: 1 !important; transform: none !important; }
+    .screen--intro .hotspots { pointer-events: auto; }
+  </style></noscript>
 </head>
 <body>
 
-  <!-- ============ 开场封面（点一下进入主站） ============ -->
-  <div class="cover" id="cover" role="dialog" aria-modal="true" aria-label="开场封面：JUST BE YOURSELF，点击任意处进入">
-    <div class="cover__frame">
-      <img src="assets/ip-cover.jpg" alt="BYME 开场封面：3D 化 IP 形象与 JUST BE YOURSELF 主视觉" />
-      <!-- 四个可点热区：坐标为封面图上的百分比位置 -->
-      <a class="cover__hotspot" href="#about"  style="left:6.5%;  top:51%; width:20.5%; height:15%;" aria-label="认识我"></a>
-      <a class="cover__hotspot" href="#works"  style="left:13.5%; top:70.5%; width:20%; height:13.5%;" aria-label="项目经历"></a>
-      <a class="cover__hotspot" href="#story"  style="left:69.5%; top:51.5%; width:22%; height:15%;" aria-label="工作经历"></a>
-      <a class="cover__hotspot" href="#about"  style="left:69%;   top:71%; width:23%; height:14%;" aria-label="技能特长"></a>
-    </div>
-    <p class="cover__hint">—— 点击任意处进入 ——</p>
-  </div>
+  <!-- ===== 顶部滚动进度条 ===== -->
+  <div class="progress" aria-hidden="true"><span class="progress__bar" id="progressBar"></span></div>
 
-  <!-- ============ 顶部导航 ============ -->
-  <header class="nav">
-    <a class="nav__logo" href="#top">
-      BYME<span class="nav__logo-dot">.</span>
-    </a>
-    <nav class="nav__links">
-      <a href="#about">关于我</a>
-      <a href="#works">作品集</a>
-      <a href="#story">经历</a>
-      <a href="#contact">联系我</a>
-    </nav>
-    <a class="btn btn--ghost nav__resume" href="#" aria-label="下载简历（简历 PDF 就位后链接到这里）">
-      简历 PDF ↗
-    </a>
-  </header>
+  <!-- ===== 右侧区块导航（桌面 / 平板） ===== -->
+  <nav class="rail" id="rail" aria-label="区块导航">
+    <button class="rail__dot" type="button" data-target="screen-01">
+      <span class="rail__label">认识我</span>
+      <b class="rail__num">01</b>
+      <i class="rail__line"></i>
+    </button>
+    <button class="rail__dot" type="button" data-target="screen-02">
+      <span class="rail__label">工作经历</span>
+      <b class="rail__num">02</b>
+      <i class="rail__line"></i>
+    </button>
+    <button class="rail__dot" type="button" data-target="screen-03">
+      <span class="rail__label">项目经历</span>
+      <b class="rail__num">03</b>
+      <i class="rail__line"></i>
+    </button>
+    <button class="rail__dot" type="button" data-target="screen-04">
+      <span class="rail__label">技能特长</span>
+      <b class="rail__num">04</b>
+      <i class="rail__line"></i>
+    </button>
+  </nav>
 
-  <!-- ============ 首屏 Hero ============ -->
-  <section class="hero" id="top">
-    <div class="hero__inner">
+  <!-- ============================================================
+       通用结构说明（5 屏一致）
+       .page           = 铺满整屏的底衬（模糊放大的同图，让留边不突兀）
+       .page__frame    = 按素材原始比例锁死的「整页」，宽高自动取最大且不被裁切
+       .page__media    = 页面本体（视频 / 图片），100% 完整显示
+       .page__badge    = 左下角铭牌：四页共用同一套尺寸与坐标（见 style.css 的 --badge-*）
+       ============================================================ -->
 
-      <div class="hero__text">
-        <p class="hero__kicker reveal">
-          <span class="chip">AI 产品经理（转型中）</span>
-          <span class="chip chip--red">智能硬件 × AI</span>
-        </p>
-        <h1 class="hero__title reveal">
-          BE<br/>YOUR<span class="hero__title-accent">SELF</span><span class="hero__title-dot">*</span>
-        </h1>
-        <p class="hero__sub reveal">
-          这里没有模板人设。前车载摄像头 &amp; 雷达测试工程师，
-          正在把「懂硬件」翻译成「懂产品」，一路奔向 AI 产品经理。
-        </p>
-        <div class="hero__actions reveal">
-          <a class="btn btn--primary" href="#works">看我的作品 ↓</a>
-          <a class="btn btn--ghost" href="#about">我是谁？</a>
+  <!-- ============ 屏 1 · 首屏：intro.mp4 → cover.png ============ -->
+  <section class="screen screen--intro" id="screen-intro" data-index="0">
+    <div class="page" style="--page-ratio: 1920/1088">
+      <img class="page__fill" src="assets/cover.jpg" alt="" aria-hidden="true" />
+
+      <div class="page__frame">
+        <!-- 静态封面：垫在视频下面，视频播完淡出后露出它 -->
+        <img class="page__media page__cover" id="coverImg"
+             src="assets/cover.png"
+             alt="BYME 静态封面：JUST BE YOURSELF，IP 形象与 01-04 四个章节入口" />
+
+        <!-- 开场动画：播放一次，不循环，静音 -->
+        <video class="page__media page__video" id="introVideo"
+               src="assets/intro.mp4"
+               autoplay muted playsinline preload="auto"
+               disablepictureinpicture></video>
+
+        <!-- 原图里的 4 个按钮：透明热区，百分比相对封面原图 1920×1088
+             按 2×2 排布：01 左上 / 02 右上 / 03 左下 / 04 右下
+             若位置有偏差：在页面上按 D 键可显示热区边框进行校准 -->
+        <div class="hotspots" id="hotspots">
+          <a class="hotspot" href="#screen-01" data-key="01"
+             style="left:6.5%;top:51%;width:20.5%;height:15%" aria-label="01 认识我"></a>
+          <a class="hotspot" href="#screen-02" data-key="02"
+             style="left:69.5%;top:51.5%;width:22%;height:15%" aria-label="02 工作经历"></a>
+          <a class="hotspot" href="#screen-03" data-key="03"
+             style="left:13.5%;top:70.5%;width:20%;height:13.5%" aria-label="03 项目经历"></a>
+          <a class="hotspot" href="#screen-04" data-key="04"
+             style="left:69%;top:71%;width:23%;height:14%" aria-label="04 技能特长"></a>
         </div>
-        <ul class="hero__tags reveal" aria-label="技能标签">
-          <li>需求分析</li><li>PRD</li><li>RAG / Agent</li>
-          <li>数据分析</li><li>传感器测试</li><li>跨职能协作</li>
-        </ul>
       </div>
+    </div>
 
-      <div class="hero__ip reveal">
-        <!-- 傲娇气泡：内容由 script.js 轮换 -->
-        <div class="bubble" id="bubble" role="status">……哦，是你啊。<br/>那，随便看看吧。</div>
+    <button class="intro-skip" id="introSkip" type="button">跳过开场 ▸</button>
 
-        <img class="hero__ip-img" id="ip-hero" src="assets/ip-front.png"
-             alt="BYME IP 形象：戴黑帽的银紫发女孩，抱着一脸不情愿的表情"
-             title="别戳我……好吧，戳一下也不是不行" />
+    <!-- 窄屏 / 竖屏：图上热区太小，改用真实按钮 -->
+    <ul class="cover-nav" id="coverNav">
+      <li><a href="#screen-01"><b>01</b> 认识我 <span>ABOUT ME</span></a></li>
+      <li><a href="#screen-02"><b>02</b> 工作经历 <span>EXPERIENCE</span></a></li>
+      <li><a href="#screen-03"><b>03</b> 项目经历 <span>PROJECTS</span></a></li>
+      <li><a href="#screen-04"><b>04</b> 技能特长 <span>SKILLS</span></a></li>
+    </ul>
 
-        <span class="deco deco--x1">✕</span>
-        <span class="deco deco--star1">★</span>
-        <span class="deco deco--x2">✕</span>
+    <div class="hint">SCROLL<i class="hint__arrow">▾</i></div>
+  </section>
 
+  <!-- ============ 屏 2 · 01 认识我 ============ -->
+  <section class="screen vsection" id="screen-01" data-index="1">
+    <div class="page" style="--page-ratio: 1344/768">
+      <img class="page__fill" src="assets/01-about.jpg" alt="" aria-hidden="true" />
+      <div class="page__frame">
+        <video class="page__media" src="assets/01-about.mp4"
+               poster="assets/01-about.jpg"
+               loop muted playsinline preload="metadata" disablepictureinpicture></video>
         <!--
-          📹 预留位：等你用海螺生成好"蹦跳挥手打招呼"的 mp4，
-          把文件放进 assets/ip-hero.mp4，然后把上面的 <img> 换成：
-          <video autoplay loop muted playsinline src="assets/ip-hero.mp4"></video>
+          统一的 DOM 铭牌已按你的要求移除，改用素材里原本自带的那枚贴纸。
+          想恢复「四页同尺寸/同位置/同颜色」的统一铭牌，把下面这段放回本位置即可
+          （01/02/03/04 分别改成对应编号与标题，样式见 style.css 的 --badge-*）：
+          <div class="page__badge">
+            <b class="page__num">01</b>
+            <span class="page__txt"><span class="page__cn">认识我</span><span class="page__en">ABOUT ME</span></span>
+          </div>
         -->
       </div>
-
     </div>
-    <a class="hero__scroll" href="#about" aria-label="向下滚动">▾</a>
+    <div class="hint">SCROLL<i class="hint__arrow">▾</i></div>
   </section>
 
-  <!-- ============ 街头跑马灯 ============ -->
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee__track">
-      <span>BE YOURSELF ✕ BYME ✕ 硬件转产品 ✕ 智能硬件 × AI ✕ 持续交付 ✕&nbsp;</span>
-      <span>BE YOURSELF ✕ BYME ✕ 硬件转产品 ✕ 智能硬件 × AI ✕ 持续交付 ✕&nbsp;</span>
-    </div>
-  </div>
-
-  <!-- ============ 关于我 ============ -->
-  <section class="section" id="about">
-    <h2 class="section__title reveal"><em>01</em> 关于我</h2>
-    <div class="about">
-      <div class="about__text reveal">
-        <p>
-          Hi，我是 <strong>YU</strong>（<a href="https://github.com/luckyGirl-yu929" target="_blank" rel="noopener">@luckyGirl-yu929</a>）。
-          24 年双非本科毕业，之前在 Tier 1 汽车零部件公司做车载摄像头与雷达的测试工程师——
-          两年里我学会了怎么把一个模糊的问题拆成可验证的方案，也见惯了硬件从图纸到量产的每一步。
-        </p>
-        <p>
-          现在我把自己当成一个「新产品」来迭代：
-          <strong>硬件验证逻辑 + AI 产品方法论</strong>。
-          我在系统学习 RAG、Agent、Prompt 工程与数据分析，
-          并把每个作业都落在真实的智能硬件场景里，做成下面这些作品。
-        </p>
-        <p class="about__motto">
-          「Be Yourself」不是 slogan，是我的工作方式：
-          不装，不糊弄，用作品说话。
-        </p>
-      </div>
-      <ul class="about__stats reveal" aria-label="关键数字">
-        <li><strong>2 年</strong><span>车载传感器测试经验</span></li>
-        <li><strong>4+</strong><span>进行中的 AI 作品</span></li>
-        <li><strong>10 天</strong><span>从 0 到 1 建立本站</span></li>
-        <li><strong>∞</strong><span>想做的智能硬件产品</span></li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- ============ 作品集 ============ -->
-  <section class="section" id="works">
-    <h2 class="section__title reveal"><em>02</em> 作品集 <small>（持续更新，做完一个挂一个）</small></h2>
-    <div class="works">
-
-      <a class="card reveal" href="#" aria-label="作品一：竞品拆解报告">
-        <span class="card__num">01</span>
-        <span class="card__status">制作中</span>
-        <h3>AI 对话产品竞品拆解</h3>
-        <p>拆解 3 款主流 AI 助手产品的功能边界、Prompt 体系与收费模型，输出可复用的竞争分析框架。</p>
-        <ul class="card__tags"><li>竞品分析</li><li>AI 体验评测</li></ul>
-      </a>
-
-      <a class="card reveal" href="#" aria-label="作品二：硬件说明书问答 Agent">
-        <span class="card__num">02</span>
-        <span class="card__status">制作中</span>
-        <h3>硬件说明书问答 Agent</h3>
-        <p>基于 RAG 知识库，把某智能硬件的产品手册变成一个能准确回答用户问题的客服 Agent（零代码搭建）。</p>
-        <ul class="card__tags"><li>RAG</li><li>Agent</li><li>Coze</li></ul>
-      </a>
-
-      <a class="card reveal" href="#" aria-label="作品三：测试数据看板">
-        <span class="card__num">03</span>
-        <span class="card__status">规划中</span>
-        <h3>传感器测试数据看板</h3>
-        <p>把测试原始数据变成自动出图表的报告工具——测试工程师背景的直接延伸，vibe coding 实战。</p>
-        <ul class="card__tags"><li>Data Viz</li><li>Vibe Coding</li></ul>
-      </a>
-
-      <a class="card reveal" href="#" aria-label="作品四：本站建站手记">
-        <span class="card__num">04</span>
-        <span class="card__status">你正在看 ✦</span>
-        <h3>本站 = 第 0 号作品</h3>
-        <p>手绘 IP + 暗紫街头风 + 交互彩蛋。从 UTF-8 到 Git 部署的完整建站手记，真实卡点全部记录。</p>
-        <ul class="card__tags"><li>品牌设计</li><li>HTML/CSS</li><li>GitHub Pages</li></ul>
-      </a>
-
-    </div>
-  </section>
-
-  <!-- ============ 经历 ============ -->
-  <section class="section" id="story">
-    <h2 class="section__title reveal"><em>03</em> 我的版本迭代史</h2>
-    <ol class="timeline">
-      <li class="timeline__item reveal">
-        <span class="timeline__year">2024</span>
-        <div>
-          <h3>车载硬件测试工程师</h3>
-          <p>负责车载摄像头与雷达的测试方案设计与执行，跨硬件 / 算法 / 工厂协作，把问题定位到闭环。</p>
-        </div>
-      </li>
-      <li class="timeline__item reveal">
-        <span class="timeline__year">2025</span>
-        <div>
-          <h3>决定转型 → 系统学习 AI 产品</h3>
-          <p>报名 AI 产品经理实战课程：需求分析、PRD、RAG / Agent 方案设计、模型测评，全部以真实项目交付。</p>
-        </div>
-      </li>
-      <li class="timeline__item reveal">
-        <span class="timeline__year">NOW</span>
-        <div>
-          <h3>作品集 + 求职进行时</h3>
-          <p>把「懂硬件的验证逻辑」和「AI 产品方法论」焊在一起，目标是智能硬件方向的 AI 产品经理。</p>
-        </div>
-      </li>
-    </ol>
-  </section>
-
-  <!-- ============ 联系 ============ -->
-  <section class="section section--contact" id="contact">
-    <div class="contact">
-      <img class="contact__ip reveal" src="assets/ip-back.png" alt="IP 背影视角：她背过身去，意思是该你先开口了" />
-      <div class="contact__text reveal">
-        <h2 class="section__title"><em>04</em> 她背过身去了，<br/>该你开口了。</h2>
-        <p>找聊 AI 产品、智能硬件、或者单纯想围观建站过程：</p>
-        <div class="contact__links">
-          <a class="btn btn--primary" href="https://github.com/luckyGirl-yu929" target="_blank" rel="noopener">GitHub ↗</a>
-          <a class="btn btn--ghost" href="mailto:2474110961@qq.com">✉ 2474110961@qq.com</a>
-        </div>
+  <!-- ============ 屏 3 · 02 工作经历 ============ -->
+  <section class="screen vsection" id="screen-02" data-index="2">
+    <div class="page" style="--page-ratio: 1344/768">
+      <img class="page__fill" src="assets/02-experience.jpg" alt="" aria-hidden="true" />
+      <div class="page__frame">
+        <video class="page__media" src="assets/02-experience.mp4"
+               poster="assets/02-experience.jpg"
+               loop muted playsinline preload="metadata" disablepictureinpicture></video>
       </div>
     </div>
+    <div class="hint">SCROLL<i class="hint__arrow">▾</i></div>
   </section>
 
-  <footer class="footer">
-    <span>BYME © 2026 · Made with 傲娇 &amp; HTML</span>
-    <span class="footer__slogan">Be Yourself.</span>
-  </footer>
+  <!-- ============ 屏 4 · 03 项目经历 ============ -->
+  <section class="screen vsection" id="screen-03" data-index="3">
+    <div class="page" style="--page-ratio: 1344/768">
+      <img class="page__fill" src="assets/03-projects.jpg" alt="" aria-hidden="true" />
+      <div class="page__frame">
+        <video class="page__media" src="assets/03-projects.mp4"
+               poster="assets/03-projects.jpg"
+               loop muted playsinline preload="metadata" disablepictureinpicture></video>
+      </div>
+    </div>
+    <div class="hint">SCROLL<i class="hint__arrow">▾</i></div>
+  </section>
+
+  <!-- ============ 屏 5 · 04 技能特长（整页浅色章节图 + 右侧三张错落场景卡） ============ -->
+  <section class="screen vsection screen--skills is-light-screen" id="screen-04" data-index="4">
+    <div class="page page--light" style="--page-ratio: 1920/1072">
+      <img class="page__fill" src="assets/section-04-skills.png" alt="" aria-hidden="true" />
+      <div class="page__frame">
+        <img class="page__media" src="assets/section-04-skills.png" alt="" aria-hidden="true" />
+      </div>
+    </div>
+
+    <!--
+      ⬇ 左栏留白（约 45%）—— 待写文字直接放这里。
+      已备好样式类 .skills__text：垂直居中、max-width 36vw、深紫字。
+      示例：
+      <div class="skills__text">
+        <h3>会的东西</h3>
+        <ul><li>需求分析</li><li>PRD</li></ul>
+      </div>
+    -->
+
+    <!-- 右侧：三张场景卡（4:3 横版，右缘锁在视口 90% 以内）卡下只放中文 + 英文两行 -->
+    <div class="skills">
+      <figure class="skill">
+        <video class="skill__video" src="assets/skills-01-skate-scene.mp4"
+               poster="assets/skills-01-skate-scene.jpg"
+               loop muted playsinline preload="none" disablepictureinpicture
+               aria-label="滑板：傍晚的城市路边"></video>
+        <figcaption class="skill__cap">
+          <b class="skill__cn">路边滑板</b>
+          <span class="skill__en">SKATEBOARDING</span>
+        </figcaption>
+      </figure>
+      <figure class="skill">
+        <video class="skill__video" src="assets/skills-02-dance-scene.mp4"
+               poster="assets/skills-02-dance-scene.jpg"
+               loop muted playsinline preload="none" disablepictureinpicture
+               aria-label="街舞：涂鸦墙前"></video>
+        <figcaption class="skill__cap">
+          <b class="skill__cn">街头街舞</b>
+          <span class="skill__en">STREET DANCE</span>
+        </figcaption>
+      </figure>
+      <figure class="skill">
+        <video class="skill__video" src="assets/skills-03-draw-scene.mp4"
+               poster="assets/skills-03-draw-scene.jpg"
+               loop muted playsinline preload="none" disablepictureinpicture
+               aria-label="插画：户外草地"></video>
+        <figcaption class="skill__cap">
+          <b class="skill__cn">户外写生</b>
+          <span class="skill__en">SKETCHING</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="outro">
+      <a class="btn" href="https://github.com/luckyGirl-yu929" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="btn btn--ghost" href="mailto:2474110961@qq.com">✉ 2474110961@qq.com</a>
+      <p class="outro__note">BYME © 2026 · Be Yourself.</p>
+    </div>
+  </section>
 
   <script src="script.js"></script>
 </body>
