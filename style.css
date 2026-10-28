@@ -531,6 +531,161 @@ body.is-light .rail__dot.is-active .rail__label { color: var(--accent-deep); }
 }
 
 /* ---------- Keyframes ---------- */
+/* 03 项目经历：坐标跟随原插画 frame，而非浏览器窗口。 */
+#screen-03 .project-stickers { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+#screen-03 .project-sticker {
+  --sticker-angle: -1.5deg;
+  position: absolute; left: 5%; top: 25%; width: 19.5%;
+  display: flex; flex-direction: column; align-items: stretch; gap: .35cqw;
+  padding: 1cqw 1.15cqw .85cqw;
+  border: 1.5px solid #8955B8; border-radius: 20px;
+  background: linear-gradient(135deg, rgb(255 252 255 / .91), rgb(239 227 250 / .88));
+  box-shadow: 3px 4px 0 rgb(197 164 234 / .46), 0 5px 15px rgb(73 50 101 / .08);
+  color: #493265; font: inherit; line-height: 1.35; text-align: left;
+  transform: rotate(var(--sticker-angle));
+  transition: transform 250ms ease, border-color 250ms ease, box-shadow 250ms ease;
+  cursor: pointer; pointer-events: auto; isolation: isolate;
+}
+#screen-03 .project-sticker::before {
+  content: ''; position: absolute; inset: 5px -6px -6px 5px; z-index: -1;
+  background: rgb(219 199 240 / .4); transform: rotate(.7deg);
+  border: 1px dashed #C5A4EA; border-radius: 20px; pointer-events: none;
+}
+#screen-03 .project-sticker::after {
+  content: ''; position: absolute; width: 3.5cqw; height: .65cqw; top: -.45cqw; left: 12%;
+  background: rgb(232 201 142 / .78); transform: rotate(-5deg); border-radius: 2px;
+}
+#screen-03 .project-sticker--skill { left: 72.5%; top: 22%; width: 19.5%; --sticker-angle: 1.6deg; }
+#screen-03 .project-sticker--skill::after { background: rgb(219 133 186 / .55); left: 70%; }
+#screen-03 .project-sticker--video { left: 12%; top: 59.5%; width: 22%; --sticker-angle: -.8deg; }
+#screen-03 .project-sticker__label {
+  display: flex; align-items: center; justify-content: space-between;
+  color: #8955B8; font: 700 max(9px, .77cqw)/1.2 var(--font-en); letter-spacing: .1em;
+}
+#screen-03 .project-sticker__doodle { color: #DB85BA; font-size: max(17px, 1.6cqw); line-height: .8; }
+#screen-03 .project-sticker__name { font: 700 max(18px, 1.88cqw)/1.15 var(--font-en); letter-spacing: -.045em; }
+#screen-03 .project-sticker__subtitle { font-size: max(12px, 1.03cqw); font-weight: 700; }
+#screen-03 .project-sticker__description { font-size: max(12px, .94cqw); line-height: 1.55; color: #493265; }
+#screen-03 .project-sticker__cta {
+  display: flex; align-items: center; gap: 5px; padding-top: .5cqw; margin-top: .15cqw;
+  border-top: 1px dashed #C5A4EA; color: #8955B8; font-size: max(10px, .84cqw); font-weight: 700;
+}
+#screen-03 .project-sticker__open {
+  display: inline-flex; align-items: center; gap: 5px; padding: 4px 8px;
+  background: #F7EDFF; border: 1px solid #C5A4EA; border-radius: 7px;
+  box-shadow: 1px 2px 0 rgb(197 164 234 / .45); white-space: nowrap;
+}
+#screen-03 .project-sticker__open > span { display: inline-block; transition: transform 250ms ease; }
+#screen-03 .project-sticker__cta small { margin-left: auto; color: #735687; font-size: max(9px, .7cqw); font-weight: 400; }
+#screen-03 .project-sticker:hover,
+#screen-03 .project-sticker:focus-visible {
+  transform: translateY(-6px) rotate(0deg); border-color: #B785DF;
+  box-shadow: 3px 4px 0 rgb(197 164 234 / .4), 0 12px 26px rgb(137 85 184 / .23), 0 0 12px rgb(197 164 234 / .35);
+}
+#screen-03 .project-sticker:focus-visible { outline: 3px solid #8955B8; outline-offset: 6px; }
+#screen-03 .project-sticker:is(:hover, :focus-visible) .project-sticker__open > span { transform: translate(3px, -3px); }
+#screen-03.projects-ready:not(.projects-entered) .project-sticker { opacity: 0; translate: 0 12px; }
+#screen-03.projects-entered .project-sticker { animation: project-sticker-enter 500ms ease both; }
+#screen-03.projects-entered .project-sticker--skill { animation-delay: 120ms; }
+#screen-03.projects-entered .project-sticker--video { animation-delay: 240ms; }
+@keyframes project-sticker-enter { from { opacity: 0; translate: 0 12px; } to { opacity: 1; translate: 0 0; } }
+
+/* 原生 dialog 的 top layer 不受 frame 裁切，也不会被其他屏幕盖住。 */
+html.project-modal-open, html.project-modal-open body { overflow: hidden; }
+#project-file {
+  margin: auto; padding: 0; width: min(580px, calc(100% - 36px));
+  max-height: calc(100vh - 36px); max-height: calc(100dvh - 36px);
+  border: 2px solid #8955B8; border-radius: 23px; overflow: auto;
+  overscroll-behavior: contain; color: #493265;
+  background: linear-gradient(130deg, #FFFDFE, #F4EAFB 80%);
+  box-shadow: 7px 8px 0 rgb(197 164 234 / .45), 0 24px 70px rgb(45 23 66 / .28);
+  font-family: var(--font-cn); line-height: 1.7;
+}
+#project-file[open] { animation: project-file-enter 250ms ease both; }
+#project-file::backdrop { background: rgb(42 25 57 / .35); backdrop-filter: blur(3px); animation: project-backdrop-enter 250ms ease both; }
+#project-file.is-closing { animation: project-file-exit 250ms ease both; }
+#project-file.is-closing::backdrop { animation: project-backdrop-exit 250ms ease both; }
+#project-file .project-file__paper { position: relative; margin: 7px; padding: 20px 25px 25px; border: 1px dashed #C5A4EA; border-radius: 16px; }
+#project-file .project-file__paper::before {
+  content: ''; position: absolute; width: 66px; height: 13px; background: rgb(232 201 142 / .65);
+  left: 42%; top: -3px; transform: rotate(-4deg); border-radius: 2px; pointer-events: none;
+}
+#project-file .project-file__topline { display: flex; justify-content: space-between; gap: 10px; align-items: center; color: #8955B8; font: 700 10px/1.4 var(--font-en); letter-spacing: .13em; }
+#project-file .project-file__close {
+  flex: 0 0 38px; height: 38px; border: 1px solid #C5A4EA; border-radius: 12px; background: #F0E2FA;
+  color: #493265; cursor: pointer; font: 26px/1 system-ui; transition: background 250ms ease;
+}
+#project-file .project-file__close:hover { background: #E4D0F4; }
+#project-file :focus-visible { outline: 3px solid #8955B8; outline-offset: 3px; }
+#project-file .project-file__stamp { position: absolute; right: 32px; top: 79px; color: #DB85BA; font-size: 34px; transform: rotate(12deg); pointer-events: none; }
+#project-file h2 { margin: 13px 38px 3px 0; font: 700 clamp(25px, 4vw, 35px)/1.2 var(--font-en); letter-spacing: -.04em; }
+#project-file .project-file__subtitle { margin-bottom: 23px; font-size: 15px; font-weight: 700; color: #8955B8; }
+#project-file .project-file__section { margin: 19px 0; }
+#project-file h3 { font-size: 12px; color: #8955B8; letter-spacing: .12em; margin-bottom: 9px; }
+#project-file .project-file__section p { font-size: 14px; }
+#project-file ul { display: grid; gap: 8px; padding: 0; list-style: none; font-size: 14px; }
+#project-file li { display: flex; gap: 10px; align-items: baseline; }
+#project-file li::before { content: '✧'; color: #B77CA9; }
+#project-file .project-file__footer { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; padding-top: 20px; margin-top: 24px; border-top: 1px dashed #C5A4EA; }
+#project-file .project-file__link {
+  display: inline-flex; gap: 12px; align-items: center; padding: 10px 17px; border: 1px solid #8955B8;
+  background: #E8DAF5; border-radius: 10px; box-shadow: 2px 3px 0 #D0B4E5; font-size: 13px; font-weight: 700;
+}
+#project-file .project-file__link:hover { background: #DCC4ED; }
+#project-file .project-file__pending { padding: 8px 14px; border: 1px dashed #C5A4EA; background: #F4EAF9; border-radius: 9px; font-size: 13px; }
+#project-file .project-file__note { color: #816691; font: 10px/1.5 var(--font-en); letter-spacing: .04em; }
+#project-file [hidden] { display: none; }
+@keyframes project-file-enter { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: scale(1); } }
+@keyframes project-file-exit { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(.97); } }
+@keyframes project-backdrop-enter { from { opacity: 0; } to { opacity: 1; } }
+@keyframes project-backdrop-exit { from { opacity: 1; } to { opacity: 0; } }
+@media (max-width: 480px) {
+  #project-file .project-file__paper { padding: 15px 17px 21px; }
+  #project-file .project-file__topline { font-size: 9px; }
+  #project-file .project-file__stamp { right: 20px; top: 75px; }
+  #project-file .project-file__close { flex-basis: 44px; height: 44px; }
+}
+@media (min-width: 721px) and (max-width: 1100px) and (min-aspect-ratio: 1 / 1) {
+  #screen-03 .project-sticker { padding: 8px 11px; gap: 2px; }
+  #screen-03 .project-sticker--skill { top: 21%; }
+  #screen-03 .project-sticker__description { font-size: 12px; line-height: 1.4; }
+  #screen-03 .project-sticker__cta { padding-top: 4px; margin-top: 2px; }
+}
+@media (max-width: 720px), (max-aspect-ratio: 1 / 1) {
+  #screen-03 { height: auto; min-height: 100svh; background: #EDE3F5; }
+  #screen-03 .page { position: relative; overflow: hidden; background: #EDE3F5; }
+  #screen-03 .page__frame {
+    position: relative; left: auto; top: auto; translate: none; width: 100%;
+    aspect-ratio: auto; container-type: inline-size; overflow: visible; background: transparent; box-shadow: none;
+  }
+  #screen-03 .page__media { position: relative; inset: auto; height: auto; aspect-ratio: 1344 / 768; object-fit: contain; }
+  #screen-03 .project-stickers {
+    position: relative; inset: auto; display: grid; gap: 20px; padding: 30px 25px 46px;
+    background: linear-gradient(180deg, rgb(237 227 245 / .8), #EDE3F5);
+  }
+  #screen-03 .project-sticker {
+    position: relative; left: auto; top: auto; width: 100%; padding: 17px 19px 15px; gap: 6px;
+    border-radius: 20px; --sticker-angle: -1deg;
+  }
+  #screen-03 .project-sticker--skill { --sticker-angle: .8deg; }
+  #screen-03 .project-sticker--video { --sticker-angle: -.5deg; }
+  #screen-03 .project-sticker::after { width: 48px; height: 9px; top: -5px; }
+  #screen-03 .project-sticker__label { font-size: 10px; }
+  #screen-03 .project-sticker__doodle { font-size: 23px; }
+  #screen-03 .project-sticker__name { font-size: 27px; }
+  #screen-03 .project-sticker__subtitle { font-size: 15px; }
+  #screen-03 .project-sticker__description { font-size: 13px; }
+  #screen-03 .project-sticker__cta { font-size: 12px; padding-top: 9px; margin-top: 4px; }
+  #screen-03 .project-sticker__cta small { font-size: 10px; }
+  #screen-03 .hint { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #screen-03 .project-sticker,
+  #screen-03 .project-sticker__open > span { transition: none; }
+  #screen-03.projects-ready .project-sticker { animation: none; opacity: 1; translate: none; }
+  #project-file[open], #project-file::backdrop { animation: none; }
+}
+
 @keyframes bob {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(6px); }
