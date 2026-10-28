@@ -200,3 +200,95 @@
   activate(introSec);
   onScroll();
 })();
+
+/* ============================================================
+   7. 01 屏 · BYME 人物故事册
+   桌面贴纸卡 / 移动端章节入口 → 故事册弹窗：
+   上一章 / 下一章 / ← → 方向键 / Esc / 点遮罩 / ✕ 关闭，
+   打开时锁背景滚动并做简单焦点圈定。
+   ============================================================ */
+(function () {
+  "use strict";
+
+  var modal = document.getElementById("storyModal");
+  if (!modal) return;
+
+  var panel    = modal.querySelector(".story-modal__panel");
+  var pages    = Array.prototype.slice.call(modal.querySelectorAll(".story-page"));
+  var eyebrow  = document.getElementById("storyEyebrow");
+  var titleEl  = document.getElementById("storyTitle");
+  var curEl    = document.getElementById("storyCur");
+  var prevBtn  = document.getElementById("storyPrev");
+  var nextBtn  = document.getElementById("storyNext");
+  var closeBtn = modal.querySelector(".story-modal__close");
+  var htmlEl   = document.documentElement;
+  var cur = 0, lastFocus = null, closeTimer = null;
+
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+
+  function show(i, dir) {
+    cur = Math.max(0, Math.min(pages.length - 1, i));
+    pages.forEach(function (p, idx) {
+      p.classList.remove("flip-next", "flip-prev");
+      p.classList.toggle("is-current", idx === cur);
+      if (idx === cur && dir) p.classList.add(dir > 0 ? "flip-next" : "flip-prev");
+    });
+    eyebrow.textContent = pages[cur].getAttribute("data-eyebrow") || "";
+    titleEl.textContent = pages[cur].getAttribute("data-title") || "";
+    curEl.textContent = pad(cur + 1);
+    prevBtn.disabled = cur === 0;
+    nextBtn.disabled = cur === pages.length - 1;
+    panel.scrollTop = 0;
+  }
+
+  function open(i) {
+    if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
+    lastFocus = document.activeElement;
+    modal.classList.remove("is-closing");
+    modal.hidden = false;
+    modal.classList.add("is-open");
+    htmlEl.classList.add("story-lock");
+    show(i || 0, 0);
+    closeBtn.focus();
+  }
+
+  function close() {
+    modal.classList.add("is-closing");
+    modal.classList.remove("is-open");
+    htmlEl.classList.remove("story-lock");
+    closeTimer = setTimeout(function () {
+      modal.hidden = true;
+      modal.classList.remove("is-closing");
+      closeTimer = null;
+    }, 260);
+    if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
+  }
+
+  /* 触发器：桌面贴纸卡 + 移动端章节入口 */
+  document.querySelectorAll("[data-chapter]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      open(parseInt(btn.getAttribute("data-chapter"), 10) || 0);
+    });
+  });
+
+  prevBtn.addEventListener("click", function () { show(cur - 1, -1); });
+  nextBtn.addEventListener("click", function () { show(cur + 1, 1); });
+  modal.querySelectorAll("[data-close]").forEach(function (el) {
+    el.addEventListener("click", close);
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (!modal.classList.contains("is-open")) return;
+    if (e.key === "Escape") { close(); }
+    else if (e.key === "ArrowRight") { show(cur + 1, 1); }
+    else if (e.key === "ArrowLeft") { show(cur - 1, -1); }
+    else if (e.key === "Tab") {
+      /* 焦点圈定在弹窗内 */
+      var f = panel.querySelectorAll("button:not([disabled])");
+      if (!f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+      else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
+    }
+  });
+})();

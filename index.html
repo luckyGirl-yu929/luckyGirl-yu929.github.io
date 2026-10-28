@@ -11,12 +11,13 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Zhi+Mang+Xing&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 
   <noscript><style>
     .page__badge, .hint, .skills, .outro { opacity: 1 !important; transform: none !important; }
     .screen--intro .hotspots { pointer-events: auto; }
+    .story-card, .story-manifesto, .story-dock { opacity: 1 !important; translate: none !important; }
   </style></noscript>
 </head>
 <body>
@@ -102,25 +103,93 @@
     <div class="hint">SCROLL<i class="hint__arrow">▾</i></div>
   </section>
 
-  <!-- ============ 屏 2 · 01 认识我 ============ -->
-  <section class="screen vsection" id="screen-01" data-index="1">
+  <!-- ============ 屏 2 · 01 认识我（BYME 人物故事海报） ============ -->
+  <section class="screen vsection screen--story" id="screen-01" data-index="1">
     <div class="page" style="--page-ratio: 1344/768">
       <img class="page__fill" src="assets/01-about.jpg" alt="" aria-hidden="true" />
       <div class="page__frame">
         <video class="page__media" src="assets/01-about.mp4"
                poster="assets/01-about.jpg"
                loop muted playsinline preload="metadata" disablepictureinpicture></video>
-        <!--
-          统一的 DOM 铭牌已按你的要求移除，改用素材里原本自带的那枚贴纸。
-          想恢复「四页同尺寸/同位置/同颜色」的统一铭牌，把下面这段放回本位置即可
-          （01/02/03/04 分别改成对应编号与标题，样式见 style.css 的 --badge-*）：
-          <div class="page__badge">
-            <b class="page__num">01</b>
-            <span class="page__txt"><span class="page__cn">认识我</span><span class="page__en">ABOUT ME</span></span>
+
+        <!-- ============================================================
+             故事海报层（桌面端）：中央人物与背景原样保留。
+             四张贴纸卡只用左右两条留白带（左 2.5%–28.5% / 右 71%–96.5%），
+             中间 28.5%–71% 完全透明 → 不遮挡人物脸部 / 帽子 / 服装 / 鞋子。
+             宣言横幅在顶部中央空白带，避开左下「认识我」贴纸与底部提示。
+             点击任意卡片 → 打开故事册弹窗（完整文案，见页面底部）。
+             ============================================================ -->
+        <div class="story-layer">
+          <p class="story-manifesto">
+            <span class="story-manifesto__deco" aria-hidden="true">✦</span>人生不是流水线，我也不想只做标准件。<span class="story-manifesto__deco" aria-hidden="true">✦</span>
+          </p>
+
+          <div class="story-col story-col--l">
+            <!-- 01 · 人物介绍 -->
+            <button class="story-card sc-profile" type="button" data-chapter="0" style="--tilt:-1.4deg">
+              <i class="sc-tape" aria-hidden="true"></i>
+              <span class="sc-eyebrow">PLAYER PROFILE <i>/</i> 001</span>
+              <b class="sc-title">嗨，我是曾雨！</b>
+              <span class="sc-lead">一枚正在探索人生新地图的普通女孩。</span>
+              <span class="sc-tags">
+                <span class="sc-tag sc-tag--lav">有点倔强 🐱</span>
+                <span class="sc-tag sc-tag--butter">好奇心过剩 ✨</span>
+                <span class="sc-tag sc-tag--cherry">喜欢折腾 🛠️</span>
+                <span class="sc-tag sc-tag--butter">不爱被定义</span>
+                <span class="sc-tag sc-tag--cherry">行动派（偶尔拖延）</span>
+                <span class="sc-tag sc-tag--lav">正在探索 AI 🤖</span>
+              </span>
+              <span class="sc-cta">展开故事册 <em aria-hidden="true">▸</em></span>
+            </button>
+
+            <!-- 02 · 人生前传 -->
+            <button class="story-card sc-prelude" type="button" data-chapter="1" style="--tilt:1.1deg">
+              <i class="sc-tape sc-tape--r" aria-hidden="true"></i>
+              <span class="sc-eyebrow">CHAPTER 01 <i>/</i> 人生前传</span>
+              <b class="sc-title">人生前传</b>
+              <span class="sc-text">我学了四年电气工程，毕业后顺理成章地成为了一名电子工程师。每天和电路板、示波器、测试报告打交道……</span>
+              <span class="sc-cta">展开故事册 <em aria-hidden="true">▸</em></span>
+            </button>
           </div>
-        -->
+
+          <div class="story-col story-col--r">
+            <!-- 03 · 人生剧情反转 -->
+            <button class="story-card sc-twist" type="button" data-chapter="2" style="--tilt:1.5deg">
+              <i class="sc-tape sc-tape--r" aria-hidden="true"></i>
+              <span class="sc-eyebrow">PLOT TWIST! <i>/</i> 人生剧情反转</span>
+              <b class="sc-title">人生剧情反转</b>
+              <span class="sc-hl">一个不太安分的人，误入了循规蹈矩的世界。</span>
+              <span class="sc-text">可偏偏，我是一个不太喜欢按部就班的人。我总忍不住想：</span>
+              <span class="sc-ask sc-ask--cherry">「这件事一定要这么做吗？」</span>
+              <span class="sc-ask sc-ask--butter">「有没有更聪明、更有趣的办法？」</span>
+              <span class="sc-cta">展开故事册 <em aria-hidden="true">▸</em></span>
+            </button>
+
+            <!-- 04 · 新地图已解锁 -->
+            <button class="story-card sc-newmap" type="button" data-chapter="3" style="--tilt:-1.2deg">
+              <i class="sc-tape" aria-hidden="true"></i>
+              <span class="sc-eyebrow">CHAPTER 02 <i>/</i> 新地图已解锁</span>
+              <b class="sc-title">新地图已解锁</b>
+              <span class="sc-text">后来，我遇见了 AI。我开始尝试做 Agent、设计产品、研究各种 AI 工具……</span>
+              <span class="sc-deco" aria-hidden="true">✦</span>
+              <span class="sc-cta">展开故事册 <em aria-hidden="true">▸</em></span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- 窄屏 / 竖屏：保留人物画面，改为底部章节入口，点击同样打开故事册 -->
+    <div class="story-dock">
+      <div class="story-dock__grid">
+        <button class="story-dock__chip" type="button" data-chapter="0"><b>01</b><span>人物介绍</span></button>
+        <button class="story-dock__chip" type="button" data-chapter="1"><b>02</b><span>人生前传</span></button>
+        <button class="story-dock__chip" type="button" data-chapter="2"><b>03</b><span>人生剧情反转</span></button>
+        <button class="story-dock__chip" type="button" data-chapter="3"><b>04</b><span>新地图已解锁</span></button>
+      </div>
+      <p class="story-dock__manifesto">人生不是流水线，我也不想只做标准件。</p>
+    </div>
+
     <div class="hint">SCROLL<i class="hint__arrow">▾</i></div>
   </section>
 
@@ -209,6 +278,51 @@
       <p class="outro__note">BYME © 2026 · Be Yourself.</p>
     </div>
   </section>
+
+  <!-- ===== 01 屏 · BYME 人物故事册（完整文案弹窗：上一章 / 下一章 / Esc / 点遮罩关闭） ===== -->
+  <div class="story-modal" id="storyModal" role="dialog" aria-modal="true" aria-labelledby="storyTitle" hidden>
+    <div class="story-modal__backdrop" data-close></div>
+    <div class="story-modal__panel">
+      <button class="story-modal__close" type="button" data-close aria-label="关闭故事册">✕</button>
+      <span class="story-modal__eyebrow" id="storyEyebrow"></span>
+      <h3 class="story-modal__title" id="storyTitle"></h3>
+      <div class="story-modal__body">
+        <section class="story-page" data-eyebrow="PLAYER PROFILE / 001" data-title="嗨，我是曾雨！">
+          <p class="story-p">一枚正在探索人生新地图的普通女孩。</p>
+          <div class="story-tags story-tags--modal">
+            <span class="sc-tag sc-tag--lav">有点倔强 🐱</span>
+            <span class="sc-tag sc-tag--butter">好奇心过剩 ✨</span>
+            <span class="sc-tag sc-tag--cherry">喜欢折腾 🛠️</span>
+            <span class="sc-tag sc-tag--butter">不爱被定义</span>
+            <span class="sc-tag sc-tag--cherry">行动派（偶尔拖延）</span>
+            <span class="sc-tag sc-tag--lav">正在探索 AI 🤖</span>
+          </div>
+        </section>
+        <section class="story-page" data-eyebrow="CHAPTER 01 / 人生前传" data-title="人生前传">
+          <p class="story-p">我学了四年电气工程，毕业后顺理成章地成为了一名电子工程师。</p>
+          <p class="story-p">每天和电路板、示波器、测试报告打交道。工作需要严谨、规范、按流程来。</p>
+        </section>
+        <section class="story-page" data-eyebrow="PLOT TWIST! / 人生剧情反转" data-title="人生剧情反转">
+          <p class="story-hl">一个不太安分的人，误入了循规蹈矩的世界。</p>
+          <p class="story-p">可偏偏，我是一个不太喜欢按部就班的人。我总忍不住想：</p>
+          <p class="story-ask story-ask--cherry">「这件事一定要这么做吗？」</p>
+          <p class="story-ask story-ask--butter">「有没有更聪明、更有趣的办法？」</p>
+        </section>
+        <section class="story-page" data-eyebrow="CHAPTER 02 / 新地图已解锁" data-title="新地图已解锁">
+          <p class="story-p">后来，我遇见了 AI。</p>
+          <p class="story-p">我开始尝试做 Agent、设计产品、研究各种 AI 工具，发现原来那些脑袋里天马行空的想法，真的有机会被做出来。</p>
+          <p class="story-p">我还不知道下一站会是什么样子。</p>
+          <p class="story-p">但比起沿着别人画好的路线走，我更想自己探索一条路。</p>
+          <p class="story-manifesto story-manifesto--modal">人生不是流水线，我也不想只做标准件。</p>
+        </section>
+      </div>
+      <div class="story-modal__foot">
+        <button class="story-nav" id="storyPrev" type="button">‹ 上一章</button>
+        <span class="story-modal__count"><b id="storyCur">01</b> / 04</span>
+        <button class="story-nav story-nav--primary" id="storyNext" type="button">下一章 ›</button>
+      </div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
