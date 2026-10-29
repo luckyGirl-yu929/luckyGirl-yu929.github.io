@@ -220,8 +220,55 @@
         <video class="page__media" src="assets/03-projects.mp4"
                poster="assets/03-projects.jpg"
                loop muted playsinline preload="metadata" disablepictureinpicture></video>
+        <div class="project-stickers" aria-label="AI 作品项目入口">
+          <button class="project-sticker project-sticker--agent" type="button" data-project="agent" aria-haspopup="dialog" aria-controls="project-file" aria-label="打开 LabOps Agent 项目档案">
+            <span class="project-sticker__label">01 / AI AGENT <span class="project-sticker__doodle" aria-hidden="true">✧</span></span>
+            <strong class="project-sticker__name">LabOps Agent</strong>
+            <span class="project-sticker__subtitle">智能实验室预约</span>
+            <span class="project-sticker__description">一句话提需求，<br>自动匹配设备与预约时段。</span>
+            <span class="project-sticker__cta"><span class="project-sticker__open">打开项目档案 <span aria-hidden="true">↗</span></span></span>
+          </button>
+          <button class="project-sticker project-sticker--skill" type="button" data-project="skill" aria-haspopup="dialog" aria-controls="project-file" aria-label="打开 Knowledge Skill 项目档案">
+            <span class="project-sticker__label">02 / AI SKILL <span class="project-sticker__doodle" aria-hidden="true">✎</span></span>
+            <strong class="project-sticker__name">Knowledge Skill</strong>
+            <span class="project-sticker__subtitle">工程经验知识沉淀</span>
+            <span class="project-sticker__description">沉淀测试经验，让新人快速找到方法。</span>
+            <span class="project-sticker__cta"><span class="project-sticker__open">打开项目档案 <span aria-hidden="true">↗</span></span><small>项目整理中</small></span>
+          </button>
+          <button class="project-sticker project-sticker--video" type="button" data-project="video" aria-haspopup="dialog" aria-controls="project-file" aria-label="打开 AI Video Lab 项目档案">
+            <span class="project-sticker__label">03 / AI EVALUATION <span class="project-sticker__doodle" aria-hidden="true">☆</span></span>
+            <strong class="project-sticker__name">AI Video Lab</strong>
+            <span class="project-sticker__subtitle">AI 视频模型测评</span>
+            <span class="project-sticker__description">对比生成效果，发现模型能力与局限。</span>
+            <span class="project-sticker__cta"><span class="project-sticker__open">打开项目档案 <span aria-hidden="true">↗</span></span><small>研究资料待补充</small></span>
+          </button>
+        </div>
       </div>
     </div>
+    <dialog class="project-file" id="project-file" aria-labelledby="project-file-title" aria-describedby="project-file-subtitle">
+      <div class="project-file__paper">
+        <div class="project-file__topline">
+          <span id="project-file-index">01 / PROJECT FILE</span>
+          <button class="project-file__close" type="button" aria-label="关闭项目档案" autofocus>×</button>
+        </div>
+        <span class="project-file__stamp" aria-hidden="true">✧</span>
+        <h2 id="project-file-title">LabOps Agent</h2>
+        <p class="project-file__subtitle" id="project-file-subtitle">智能实验室预约 Agent</p>
+        <section class="project-file__section" aria-labelledby="project-file-origin-title">
+          <h3 id="project-file-origin-title">项目起点</h3>
+          <p id="project-file-origin"></p>
+        </section>
+        <section class="project-file__section" aria-labelledby="project-file-capabilities-title">
+          <h3 id="project-file-capabilities-title">核心能力</h3>
+          <ul id="project-file-capabilities"></ul>
+        </section>
+        <div class="project-file__footer">
+          <a class="project-file__link" href="/projects/LabOps_Agent.html">进入项目详情 <span aria-hidden="true">↗</span></a>
+          <span class="project-file__pending" hidden>项目整理中</span>
+          <span class="project-file__note">BYME · PROJECT ARCHIVE</span>
+        </div>
+      </div>
+    </dialog>
     <div class="hint">SCROLL<i class="hint__arrow">▾</i></div>
   </section>
 
