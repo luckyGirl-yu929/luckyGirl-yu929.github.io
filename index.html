@@ -120,8 +120,9 @@
              点击任意卡片 → 打开故事册弹窗（完整文案，见页面底部）。
              ============================================================ -->
         <div class="story-layer">
-          <p class="story-manifesto">
-            <span class="story-manifesto__deco" aria-hidden="true">✦</span>人生不是流水线，我也不想只做标准件。<span class="story-manifesto__deco" aria-hidden="true">✦</span>
+          <p class="story-manifesto" aria-label="人生不是流水线，我也不想只做标准件。">
+            <span class="story-manifesto__line story-manifesto__line--1">人生不是流水线，</span>
+            <span class="story-manifesto__line story-manifesto__line--2">我也<em class="mf-em">不想</em>只做标准件。</span>
           </p>
 
           <div class="story-col story-col--l">
@@ -165,12 +166,15 @@
               <span class="sc-cta">展开故事册 <em aria-hidden="true">▸</em></span>
             </button>
 
-            <!-- 04 · 新地图已解锁 -->
-            <button class="story-card sc-newmap" type="button" data-chapter="3" style="--tilt:-1.2deg">
+            <!-- 04 · 新地图已解锁（首屏直接展开完整故事） -->
+            <button class="story-card sc-newmap sc-newmap--full" type="button" data-chapter="3" style="--tilt:-1.2deg">
               <i class="sc-tape" aria-hidden="true"></i>
               <span class="sc-eyebrow">CHAPTER 02 <i>/</i> 新地图已解锁</span>
               <b class="sc-title">新地图已解锁</b>
-              <span class="sc-text">后来，我遇见了 AI。我开始尝试做 Agent、设计产品、研究各种 AI 工具……</span>
+              <span class="sc-text">后来，我遇见了 AI。</span>
+              <span class="sc-text">我开始尝试做 Agent、设计产品、研究各种 AI 工具，发现原来那些脑袋里天马行空的想法，真的有机会被做出来。</span>
+              <span class="sc-text">我还不知道下一站会是什么样子。</span>
+              <span class="sc-text">但比起沿着别人画好的路线走，我更想自己探索一条路。</span>
               <span class="sc-deco" aria-hidden="true">✦</span>
               <span class="sc-cta">展开故事册 <em aria-hidden="true">▸</em></span>
             </button>
@@ -187,7 +191,9 @@
         <button class="story-dock__chip" type="button" data-chapter="2"><b>03</b><span>人生剧情反转</span></button>
         <button class="story-dock__chip" type="button" data-chapter="3"><b>04</b><span>新地图已解锁</span></button>
       </div>
-      <p class="story-dock__manifesto">人生不是流水线，我也不想只做标准件。</p>
+      <p class="story-dock__manifesto" aria-label="人生不是流水线，我也不想只做标准件。">
+        <span class="dm-l1">人生不是流水线，</span><span class="dm-l2">我也<em class="mf-em">不想</em>只做标准件。</span>
+      </p>
     </div>
 
     <div class="hint">SCROLL<i class="hint__arrow">▾</i></div>

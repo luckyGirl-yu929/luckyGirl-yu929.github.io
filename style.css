@@ -580,7 +580,7 @@ body.is-light .rail__dot.is-active .rail__label { color: var(--accent-deep); }
   width: 26cqw;
 }
 .story-col--l { left: 2.5cqw;  top: 16.5cqh; bottom: 25cqh; }
-.story-col--r { left: 71cqw;   top: 12.5cqh; bottom: 21cqh; width: 25.5cqw; }
+.story-col--r { left: 71cqw;   top: 12.5cqh; bottom: 10cqh; width: 25.5cqw; }
 
 /* ---------- 贴纸故事卡 ---------- */
 .story-card {
@@ -619,8 +619,13 @@ body.is-light .rail__dot.is-active .rail__label { color: var(--accent-deep); }
 
 /* 卡片配色：奶油白 / 奶油黄 / 樱桃粉渐 / 淡紫，避免整页同一种紫 */
 .sc-prelude { background: linear-gradient(165deg, #FCEFCB 0%, var(--st-butter) 78%); }
-.sc-twist   { background: linear-gradient(170deg, #FFFDF8 0%, #FDECF4 100%); }
+.sc-twist   { background: linear-gradient(170deg, #FFFDF8 0%, #FDECF4 100%); gap: .62cqh; }   /* 两条问题后内容变多：收紧行距防挤压 */
 .sc-newmap  { background: linear-gradient(160deg, #F4EBFF 0%, var(--st-lav) 85%); }
+
+/* 04 卡直接展开四段正文：压缩内距与行距，避免把右列顶出框 */
+.sc-newmap--full { gap: .42cqh; padding: 1.5cqh 1.7cqw 1.4cqh; }
+.sc-newmap--full .sc-text { font-size: clamp(10px, 1.02cqw, 13.5px); line-height: 1.5; }
+.sc-newmap--full .sc-title { margin-bottom: .15cqh; }
 
 /* 顶部小胶带 */
 .sc-tape {
@@ -690,7 +695,7 @@ body.is-light .rail__dot.is-active .rail__label { color: var(--accent-deep); }
 .sc-tag--cherry { background: var(--st-cherry-soft); }
 .sc-tag:hover { transform: rotate(-4deg) scale(1.1); }
 
-/* 两句提问：轻微倾斜的涂鸦纸条 */
+/* 两条提问：轻微倾斜的涂鸦纸条（圆角/边框/字号/内距完全一致，只换底色与倾角方向） */
 .sc-ask {
   font-size: clamp(11px, 1.1cqw, 14.5px);
   font-weight: 900; line-height: 1.42;
@@ -699,7 +704,7 @@ body.is-light .rail__dot.is-active .rail__label { color: var(--accent-deep); }
   border: 1.5px solid rgb(81 52 110 / .26);
   border-radius: 12px 14px 10px 16px / 14px 10px 16px 12px;
 }
-.sc-ask--cherry { background: var(--st-cherry-soft); transform: rotate(-1.2deg); }
+.sc-ask--cherry { background: var(--st-cherry-soft); transform: rotate(-1deg); }
 .sc-ask--butter { background: var(--st-butter);      transform: rotate(1deg); }
 
 /* 卡片小装饰（星星） */
@@ -709,28 +714,68 @@ body.is-light .rail__dot.is-active .rail__label { color: var(--accent-deep); }
   color: var(--st-purple); opacity: .85;
 }
 
-/* ---------- 宣言横幅（顶部中央空白带，不碰人物） ---------- */
+/* ---------- 宣言：人物头顶上方偏右 · 无纸片直接落字 · 毛笔手写体两行 ----------
+   参考图二配色：深葡萄紫文字 +「不想」粉色强调；保留 Zhi Mang Xing 手写体。
+   整体右移避开人物头顶左上的皇冠涂鸦；字号适当放大但整块仍锁在
+   35cqw–71cqw 中心带内，不碰皇冠、不碰左右卡片。 */
 .story-manifesto {
   position: absolute;
-  left: 30.5cqw; top: 4.6cqh; width: 23.5cqw;
-  padding: 1.5cqh 1.5cqw;
-  text-align: center;
-  font-family: var(--st-hand);
-  font-size: clamp(15px, 1.85cqw, 30px);
-  line-height: 1.3;
-  color: var(--st-grape);
-  background: linear-gradient(180deg, #FCEFC9, var(--st-butter));
-  border: 2px solid var(--st-grape);
-  border-radius: 18px 22px 16px 24px / 20px 16px 24px 18px;
-  box-shadow: 0 1cqh 2.6cqh rgb(40 18 68 / .32);
-  transform: rotate(-1.6deg);
-  opacity: 0; translate: 0 -16px;
-  transition: opacity .6s var(--snap-ease), translate .6s var(--snap-ease);
+  left: 54cqw; top: 2cqh;
+  translate: -50% 0;              /* 居中点右移：避开左侧皇冠涂鸦 */
+  width: max-content;
+  text-align: left;
+  font-family: var(--st-hand);    /* 毛笔手写体：保留不变 */
+  line-height: 1.12;
+  letter-spacing: .04em;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .6s var(--snap-ease);
 }
-.screen.is-active .story-manifesto { opacity: 1; translate: 0 0; transition-delay: .42s; }
-.story-manifesto__deco { color: var(--st-purple); font-size: .68em; opacity: .85; vertical-align: .14em; }
-.story-manifesto__deco:first-child { margin-right: .45em; }
-.story-manifesto__deco:last-child  { margin-left: .45em; }
+.screen.is-active .story-manifesto { opacity: 1; transition-delay: .3s; }
+
+.story-manifesto__line {
+  display: block;
+  white-space: nowrap;
+  opacity: 0; translate: 0 9px;
+  transition: opacity .55s var(--snap-ease), translate .55s var(--snap-ease);
+}
+.screen.is-active .story-manifesto__line { opacity: 1; translate: 0 0; }
+.screen.is-active .story-manifesto__line--1 { transition-delay: .34s; }
+.screen.is-active .story-manifesto__line--2 { transition-delay: .56s; }
+
+/* 第一行：深葡萄紫，较第二行略小，靠左、轻微逆时针 -1.5° */
+.story-manifesto__line--1 {
+  font-size: 2.35cqw;             /* 约 44px@1890 宽：适当放大，仍小于第二行 */
+  color: #49316F;
+  text-shadow: 0 .14cqh .4cqh rgb(255 250 240 / .45);   /* 极轻奶白衬底：跨过深色泼溅时仍清晰 */
+  transform: rotate(-1.5deg);
+}
+/* 第二行：更大一号、更深，明显右移错位、轻微顺时针 +1°；
+   「不想」亮粉强调 + 手绘下划线 */
+.story-manifesto__line--2 {
+  margin-left: 3.2cqw;            /* 第二行相对第一行右移约 60px：错位明显 */
+  font-size: 2.85cqw;             /* 约 54px@1890 宽 */
+  color: #3A2459;
+  text-shadow: 0 .16cqh .45cqh rgb(255 250 240 / .5);
+  transform: rotate(1deg);
+}
+/* 局部强调：第二行的「不想」—— 珊瑚玫粉 + 手绘波浪下划线（SVG 描边，随字号缩放） */
+.mf-em {
+  font-style: normal;
+  color: #D2548E;
+  padding: 0 .05em .14em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10' preserveAspectRatio='none'%3E%3Cpath d='M2 7 C 18 2, 34 9, 50 5 S 84 3, 98 6' fill='none' stroke='%23E46FA6' stroke-width='3.6' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat left bottom / 100% .15em;
+}
+
+/* 减少动效偏好：直接显示，不做位移 / 淡入 */
+@media (prefers-reduced-motion: reduce) {
+  .story-manifesto,
+  .story-manifesto__line {
+    transition: none !important;
+    opacity: 1 !important;
+    translate: none !important;
+  }
+}
 
 /* 矮桌面窗：压缩卡片内距，防止两卡挤到左下贴纸 */
 @media (max-height: 700px) {
@@ -784,15 +829,15 @@ body.is-light .rail__dot.is-active .rail__label { color: var(--accent-deep); }
   .story-dock__chip:active { transform: scale(.97); }
 
   .story-dock__manifesto {
-    margin-top: 9px; padding: 7px 10px;
+    margin-top: 7px;
     text-align: center;
-    font-family: var(--st-hand);
-    font-size: clamp(16px, 4.4vw, 20px);
-    color: var(--st-grape);
-    background: linear-gradient(180deg, #FCEFC9, var(--st-butter));
-    border: 1.5px dashed rgb(81 52 110 / .45);
-    border-radius: 12px;
+    font-family: var(--st-hand);   /* 与顶部宣言同款毛笔手写体 */
+    line-height: 1.2;
+    letter-spacing: .04em;
   }
+  .story-dock__manifesto .dm-l1 { display: block; font-size: clamp(15px, 4vw, 20px); font-weight: 500; color: #74479B; }
+  .story-dock__manifesto .dm-l2 { display: block; font-size: clamp(17px, 4.7vw, 24px); font-weight: 900; color: #57317D; }
+  .story-dock__manifesto .mf-em { color: #C34F92; }
 }
 
 /* 横屏手机等高窄屏：章节入口收成一行，减少遮挡 */
@@ -920,13 +965,17 @@ body.is-light .rail__dot.is-active .rail__label { color: var(--accent-deep); }
   width: auto;
   margin-top: 22px;
   padding: 16px 18px;
+  font-family: var(--st-hand);
   font-size: clamp(20px, 3vw, 27px);
+  font-weight: 400;
   text-align: center;
   background: linear-gradient(180deg, #FCEFC9, var(--st-butter));
   border: 2px solid var(--st-grape);
   border-radius: 16px 20px 14px 22px / 18px 14px 22px 16px;
   box-shadow: 0 8px 22px rgb(40 18 68 / .22);
   transform: rotate(-.8deg);
+  text-shadow: none;
+  pointer-events: auto;
   opacity: 1;               /* 弹窗不在 .screen 内，必须显式复位入场态 */
   translate: none;
   transition: none;
