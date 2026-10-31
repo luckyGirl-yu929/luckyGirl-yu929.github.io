@@ -1,0 +1,61 @@
+/* Scoped to EXPERIENCE; original artwork, navigation and playback controller retained. */
+#screen-02 .experience-content{position:absolute;left:5%;top:19%;width:48%;display:grid;gap:1.1cqw;color:#30204b;line-height:1.55}
+#screen-02 .experience-company,#screen-02 .experience-card{background:rgba(253,249,255,.93);border:1px solid #fff;border-radius:1.4cqw;box-shadow:0 .25cqw .5cqw #63458420;padding:1cqw 1.5cqw}
+#screen-02 h2{font-size:1.65cqw;color:#502b98;line-height:1.4}
+#screen-02 .experience-company p{font-size:1.2cqw;color:#7848b4;margin-top:.35cqw}
+#screen-02 .experience-company span{background:#8751c5;color:white;border-radius:.5cqw;padding:.1cqw .9cqw;margin-right:.6cqw}
+#screen-02 .experience-card{position:relative;padding-left:5.5cqw}
+#screen-02 .experience-number{position:absolute;left:-.6cqw;top:.5cqw;background:#ac78df;color:white;font:bold 2.5cqw var(--font-en);padding:0 .9cqw;transform:rotate(-9deg)}
+#screen-02 h3{font-size:1.65cqw;line-height:1.4}
+#screen-02 .experience-tags{font-size:1.05cqw;color:#84659e;margin-bottom:.55cqw}
+#screen-02 ul{padding-left:1.1cqw;font-size:1.12cqw}
+#screen-02 li::marker{color:#a875d8}#screen-02 strong{color:#6940a4}
+#screen-02 .experience-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:.9cqw}
+#screen-02 .experience-metrics>div{text-align:center;border:.15cqw solid #b889df;border-radius:1.2cqw;background:#fcf7ffed;padding:.5cqw .2cqw}
+#screen-02 .experience-metrics strong{font:700 2.15cqw var(--font-en);white-space:nowrap}#screen-02 .experience-metrics strong span{font-size:1.1cqw}
+#screen-02 .experience-metrics p{font-size:1cqw;color:#6940a4}
+#screen-02 .experience-note{position:absolute;right:5%;top:17%;padding:1cqw 1.5cqw;background:#fff9f0dc;color:#674185;transform:rotate(5deg);font-size:1.35cqw;box-shadow:0 .2cqw .8cqw #55327520}
+#screen-02 .experience-note:before{content:'';position:absolute;top:-.5cqw;left:35%;width:3cqw;height:1.2cqw;background:#d5b89499;transform:rotate(-20deg)}
+#screen-02 .experience-transition{position:absolute;left:36%;bottom:3%;font:italic 1.35cqw var(--font-en);color:#7443aa;transform:rotate(-6deg)}
+@media(max-width:700px){
+#screen-02{height:auto;min-height:100svh;overflow:visible;background:#eee2f8}
+#screen-02 .page{position:relative;overflow:hidden;background:#eee2f8}
+#screen-02 .page__fill{display:none}
+#screen-02 .experience-frame{position:relative;left:auto;top:auto;translate:none;width:100%;aspect-ratio:auto;container-type:inline-size;background:#eee2f8;overflow:hidden;padding-top:57.15vw;box-shadow:none}
+#screen-02 .page__media{height:57.15vw;object-fit:contain}
+#screen-02 .experience-content{position:relative;left:auto;top:auto;width:auto;margin:20px 18px 24px;gap:14px}
+#screen-02 .experience-company,#screen-02 .experience-card{padding:16px;border-radius:16px}
+#screen-02 .experience-card{padding-top:42px}
+#screen-02 h2{font-size:19px}#screen-02 h3{font-size:19px}
+#screen-02 .experience-company p{font-size:13px;margin-top:8px}
+#screen-02 .experience-tags{font-size:12px;margin:6px 0 10px}
+#screen-02 ul{font-size:14px;padding-left:18px}#screen-02 li+li{margin-top:6px}
+#screen-02 .experience-number{font-size:23px;left:12px;top:5px;padding:0 12px}
+#screen-02 .experience-metrics{grid-template-columns:repeat(2,1fr);gap:10px}
+#screen-02 .experience-metrics>div{padding:12px 4px;border-radius:12px}
+#screen-02 .experience-metrics strong{font-size:27px}#screen-02 .experience-metrics strong span,#screen-02 .experience-metrics p{font-size:12px}
+#screen-02 .experience-note{display:none}
+#screen-02 .experience-transition{position:relative;left:auto;bottom:auto;text-align:center;font-size:16px;transform:none;margin:0 15px 32px}
+#screen-02 .hint{display:none}
+}
+@media(min-width:701px){
+#screen-02 .experience-content{left:3%;width:40%;gap:.8cqw}
+#screen-02 .experience-company,#screen-02 .experience-card{padding:.7cqw 1cqw}
+#screen-02 .experience-card{padding-left:4.4cqw}
+#screen-02 h2{font-size:1.4cqw}#screen-02 h3{font-size:1.4cqw}
+#screen-02 ul{font-size:1cqw}#screen-02 .experience-tags{font-size:.9cqw;margin-bottom:.35cqw}
+#screen-02 .experience-metrics strong{font-size:1.8cqw}#screen-02 .experience-metrics p{font-size:.85cqw}
+#screen-02 .experience-transition{left:36%;bottom:2%;font-size:1.05cqw;background:#f8effbda;border-radius:8px;padding:.4cqw}
+}
+/* Lavender paper surfaces and compact results, with clearance above the artwork badge. */
+#screen-02 .experience-company,#screen-02 .experience-card{background:linear-gradient(115deg,rgba(246,238,252,.96),rgba(232,218,247,.93));border-color:#ffffffd9}
+#screen-02 .experience-note{background-color:#f7f1e6;background-image:repeating-linear-gradient(0deg,transparent 0,transparent 1.7em,#9b87b526 1.7em,#9b87b526 calc(1.7em + 1px)),repeating-linear-gradient(95deg,#826b4610 0px,transparent 1px,transparent 4px),linear-gradient(110deg,#fffdf5,#eee6d9);border:1px solid #e7dece;box-shadow:2px 7px 12px #4e315e30,inset 0 0 18px #b7a98b1c;border-radius:1px 2px 12px 2px}
+#screen-02 .experience-note:after{content:'';position:absolute;bottom:0;right:0;width:1.2cqw;height:1.2cqw;background:linear-gradient(135deg,#d3c8b8 0%,#fffaf0 48%,#e8ddcd 50%);clip-path:polygon(100% 0,100% 100%,0 100%)}
+#screen-02 .experience-note:before{background:repeating-linear-gradient(90deg,#c6ad7c70 0,#d8c69c80 2px,#c6ad7c70 4px);box-shadow:0 1px 2px #6e563515}
+@media(min-width:701px){
+#screen-02 .experience-metrics{width:94%;gap:.75cqw}
+#screen-02 .experience-metrics>div{padding:.25cqw .15cqw;border-radius:.9cqw;border-width:.12cqw}
+#screen-02 .experience-metrics strong{font-size:1.5cqw;line-height:1.35}
+#screen-02 .experience-metrics p{font-size:.75cqw;line-height:1.5}
+}
+@media(max-width:700px){#screen-02 .experience-metrics>div{padding:8px 4px}#screen-02 .experience-metrics strong{font-size:23px}}
