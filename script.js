@@ -209,9 +209,16 @@
     },
     skill: {
       index: "02 / AI SKILL · PROJECT FILE", title: "Knowledge Skill", subtitle: "工程经验知识沉淀",
-      origin: "围绕工程实践中的测试经验与问题排查方法，探索把分散的个人经验整理为可查询、可追溯的知识。",
-      capabilities: ["整理工程经验与测试方法", "按问题和场景查询参考方法", "关联原始记录，保留知识来源"],
-      note: "以上为项目探索方向"
+      origin: "围绕汽车电子工程实践中的测试经验沉淀、测试方法查询和 Bug 排查问题，将分散的工程经验转化为可检索、可追溯、可复用的结构化知识。",
+      capabilities: [
+        "经验沉淀：支持工程师口述或文字输入，AI 自动整理为结构化知识卡草稿。",
+        "智能检索：支持自然语言提问、Query 改写、专业术语别名扩展和关键问题追问。",
+        "Bug 辅助排查：检索相似案例，生成分层排查思路。",
+        "可信知识管理：保留原始来源、适用条件和审核状态，设置人工确认机制。"
+      ],
+      result: "基于 WorkBuddy 完成复合型 Skill MVP，验证经验沉淀、测试方法查询和 Bug 辅助排查三个场景。",
+      cta: "查看完整项目详情",
+      href: "/projects/Knowledge_Skill.html"
     },
     video: {
       index: "03 / AI EVALUATION · PROJECT FILE", title: "AI Video Lab", subtitle: "AI 视频模型测评",
@@ -245,9 +252,20 @@
       data.capabilities.forEach(function (text) {
         var item = document.createElement("li"); item.textContent = text; list.appendChild(item);
       });
+      // 项目成果（可选区块：仅提供 result 的项目显示，如 Knowledge Skill）
+      var resultSection = document.getElementById("project-file-result-section");
+      if (data.result) {
+        document.getElementById("project-file-result").textContent = data.result;
+        resultSection.hidden = false;
+      } else {
+        resultSection.hidden = true;
+      }
       var link = projectDialog.querySelector(".project-file__link");
       link.hidden = !data.href;
       if (data.href) link.setAttribute("href", data.href); else link.removeAttribute("href");
+      // 按钮文案支持按项目自定义（默认「进入项目详情」）
+      var linkText = link.firstChild;
+      if (linkText && linkText.nodeType === 3) linkText.textContent = (data.cta || "进入项目详情") + " ";
       projectDialog.querySelector(".project-file__pending").hidden = !!data.href;
       projectDialog.querySelector(".project-file__note").textContent = data.note || "BYME · PROJECT ARCHIVE";
       projectDialog.classList.remove("is-closing");

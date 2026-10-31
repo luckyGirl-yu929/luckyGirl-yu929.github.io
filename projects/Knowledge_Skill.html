@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Knowledge Skill · 工程经验知识沉淀 | 曾雨作品集</title>
+<meta name="description" content="把工程师口述、测试资料和 Bug 处理经验，转化为可检索、可追溯、可审核、可复用的知识资产。基于 WorkBuddy 搭建的复合型 Skill MVP。">
+<style>
+  /* ============ 设计令牌：对齐 LabOps Agent 深色科技风 ============ */
+  :root{
+    --bg:#0b0812;
+    --bg-2:#0f0b17;
+    --panel:#151020;
+    --panel-2:#1b1429;
+    --line:rgba(167,139,250,.16);
+    --line-strong:rgba(167,139,250,.34);
+    --purple:#a78bfa;
+    --purple-2:#8b5cf6;
+    --purple-deep:#6d28d9;
+    --gold:#e9c77e;
+    --text:#ece8f6;
+    --muted:#9c93b2;
+    --muted-2:#756d8a;
+    --cherry:#f08cae;
+    --ok:#7fd1a8;
+    --warn:#e8b06a;
+    --radius:14px;
+    --shadow:0 10px 30px rgba(0,0,0,.42);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    line-height:1.8;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(900px 520px at 12% -8%, rgba(124,58,237,.26), transparent 62%),
+      radial-gradient(760px 420px at 96% 4%, rgba(233,199,126,.09), transparent 60%),
+      radial-gradient(900px 700px at 50% 108%, rgba(109,40,217,.18), transparent 65%);
+  }
+  a{color:var(--purple);text-decoration:none}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;position:relative;z-index:1}
+  ::selection{background:rgba(139,92,246,.35)}
+
+  /* ---------- 顶栏 ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(14px);
+    background:rgba(11,8,18,.78);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:58px}
+  .brand{display:flex;align-items:center;gap:10px;font-size:14px;letter-spacing:.04em;color:var(--text)}
+  .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold)}
+  .brand b{font-weight:600}
+  .brand span{color:var(--muted-2)}
+  .topnav{display:flex;gap:22px;font-size:13px}
+  .topnav a{color:var(--muted);transition:.15s}
+  .topnav a:hover{color:var(--purple)}
+
+  /* ---------- Hero：左文右图 ---------- */
+  .hero{padding:72px 0 50px}
+  .hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:46px;align-items:center}
+  .kicker{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--gold);border:1px solid rgba(233,199,126,.30);
+    background:rgba(233,199,126,.06);
+    padding:5px 13px;border-radius:999px;margin-bottom:20px;
+  }
+  h1{font-size:clamp(32px,4vw,52px);line-height:1.18;letter-spacing:-.02em;font-weight:700;color:var(--text)}
+  .hero-cn{
+    margin-top:8px;font-size:clamp(16px,1.8vw,21px);font-weight:600;letter-spacing:.02em;
+    background:linear-gradient(96deg,var(--purple) 0%,var(--cherry) 90%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero-sub{margin-top:14px;font-size:16px;color:var(--muted);max-width:520px;line-height:1.85}
+  .hero-sub b{color:var(--text);font-weight:600}
+  .hero-data{
+    margin-top:12px;font-size:12.5px;color:var(--muted-2);
+    border-left:2px solid var(--line-strong);padding:2px 0 2px 12px;line-height:1.7;max-width:520px;
+  }
+  .hero-data b{color:var(--gold);font-weight:600}
+  .caps{display:flex;flex-wrap:wrap;gap:9px;margin-top:22px}
+  .cap{
+    display:inline-flex;align-items:center;gap:7px;
+    font-size:13px;font-weight:600;color:var(--text);
+    border:1px solid var(--line);border-radius:999px;padding:7px 15px;
+    background:rgba(255,255,255,.03);transition:.15s;
+  }
+  .cap:hover{border-color:var(--line-strong);color:var(--purple);transform:translateY(-2px)}
+  .cap i{font-style:normal;width:22px;height:22px;border-radius:8px;display:grid;place-items:center;font-size:12px}
+  .cap:nth-child(1) i{background:rgba(139,92,246,.16)}
+  .cap:nth-child(2) i{background:rgba(233,199,126,.14)}
+  .cap:nth-child(3) i{background:rgba(225,75,95,.16)}
+  .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px;align-items:center}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;cursor:pointer;
+    padding:11px 22px;border-radius:11px;font-size:15px;font-weight:600;font-family:inherit;
+    transition:.18s;border:1px solid transparent;
+  }
+  .btn-p{background:linear-gradient(120deg,var(--purple-2),var(--purple-deep));color:#fff;box-shadow:0 8px 26px rgba(109,40,217,.34)}
+  .btn-p:hover{filter:brightness(1.1);transform:translateY(-1px)}
+  .btn-g{border-color:var(--line-strong);color:var(--text);background:rgba(255,255,255,.02)}
+  .btn-g:hover{background:rgba(167,139,250,.10);border-color:var(--purple)}
+  .btn-sm{padding:8px 16px;font-size:13.5px;border-radius:9px}
+  .btn:disabled{cursor:not-allowed;opacity:.55;transform:none;filter:none}
+
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:34px}
+  .tag{
+    font-size:12.5px;padding:5px 12px;border-radius:8px;
+    border:1px solid var(--line);background:rgba(255,255,255,.03);
+    color:var(--muted);
+  }
+  .tag.hl{border-color:var(--line-strong);color:var(--purple);background:rgba(139,92,246,.10)}
+
+  /* ---------- Skill 工作台 Mockup ---------- */
+  .mockwrap{position:relative}
+  .mockwrap .star{position:absolute;font-size:20px;opacity:.5;z-index:3;pointer-events:none}
+  .mockwrap .star.s1{top:-14px;right:5%;transform:rotate(12deg);color:var(--gold)}
+  .mockwrap .star.s2{bottom:-10px;left:-10px;font-size:15px;color:var(--purple);opacity:.45}
+  .mock{
+    border:1px solid var(--line-strong);border-radius:16px;background:var(--panel);
+    box-shadow:0 24px 64px rgba(0,0,0,.5);overflow:hidden;
+  }
+  .mock__bar{
+    display:flex;align-items:center;gap:7px;padding:10px 14px;
+    background:var(--panel-2);border-bottom:1px solid var(--line);
+    font-size:12px;color:var(--muted);font-weight:600;
+  }
+  .mock__bar i{width:9px;height:9px;border-radius:50%;background:rgba(167,139,250,.25)}
+  .mock__bar i:first-child{background:rgba(225,75,95,.55)}
+  .mock__bar span{margin-left:4px}
+  .mock__bar em{
+    margin-left:auto;font-style:normal;font-size:10.5px;font-weight:700;color:var(--gold);
+    border:1px solid rgba(233,199,126,.30);border-radius:999px;padding:2px 9px;background:rgba(233,199,126,.06);
+  }
+  .mock__body{display:grid;grid-template-columns:132px 1fr;min-height:330px}
+  .mock__nav{
+    border-right:1px solid var(--line);padding:14px 10px;
+    display:flex;flex-direction:column;gap:6px;background:rgba(15,11,23,.6);
+  }
+  .mock__nav b{font-size:10.5px;letter-spacing:.14em;color:var(--purple);margin-bottom:2px;font-weight:700}
+  .mock__nav .it{
+    font-size:12px;font-weight:600;color:var(--muted);line-height:1.5;
+    border-radius:9px;padding:7px 9px;border:1px solid transparent;
+  }
+  .mock__nav .it.on{
+    background:var(--panel);border-color:var(--line);color:var(--text);
+    box-shadow:0 3px 10px rgba(0,0,0,.35);
+  }
+  .mock__kb{
+    margin-top:auto;font-size:10.5px;color:var(--muted-2);line-height:1.6;
+    border:1px solid var(--line);border-radius:10px;padding:7px 9px;background:var(--panel);
+  }
+  .mock__kb i{font-style:normal;color:var(--purple);font-weight:700}
+  .mock__chat{padding:16px 16px 12px;display:grid;gap:10px;align-content:start}
+  .mk-msg{
+    font-size:13px;line-height:1.7;border-radius:13px;padding:9px 13px;max-width:88%;
+  }
+  .mk-msg.u{
+    justify-self:end;background:rgba(232,176,106,.08);border:1px solid rgba(232,176,106,.28);
+    border-radius:13px 13px 4px 13px;color:var(--text);font-weight:600;
+  }
+  .mk-msg.a{
+    justify-self:start;background:rgba(139,92,246,.10);border:1px solid var(--line);
+    border-radius:13px 13px 13px 4px;color:var(--text);
+  }
+  .mk-msg.a b{color:var(--purple)}
+  .mk-chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end}
+  .mk-chips span{
+    font-size:11.5px;font-weight:700;color:var(--text);
+    background:rgba(255,255,255,.03);border:1px solid var(--line);
+    border-radius:999px;padding:4px 11px;
+  }
+  .mk-chips span.on{background:rgba(139,92,246,.22);border-color:var(--purple);color:#fff}
+  .mk-card{
+    border:1px solid var(--line-strong);border-radius:13px;background:var(--panel-2);
+    padding:11px 13px;box-shadow:0 8px 24px rgba(0,0,0,.35);font-size:12.5px;line-height:1.7;color:var(--text);
+  }
+  .mk-card .h{
+    display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--text);margin-bottom:5px;flex-wrap:wrap;
+  }
+  .mk-card .src{margin-top:6px;font-size:11px;color:var(--muted-2);border-top:1px solid var(--line);padding-top:6px}
+  .mock__input{
+    display:flex;align-items:center;gap:10px;padding:10px 14px;
+    border-top:1px solid var(--line);font-size:12px;color:var(--muted);
+    background:rgba(11,8,18,.6);
+  }
+  .mock__input .box{
+    flex:1;border:1px solid var(--line);border-radius:999px;padding:6px 14px;
+    background:var(--panel);color:var(--muted-2);
+  }
+  .mock__input em{font-style:normal;font-size:10.5px;color:var(--gold);font-weight:700}
+
+  /* ---------- 状态徽标 ---------- */
+  .status{
+    display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;
+    border-radius:999px;padding:3px 11px;
+  }
+  .st-review{background:rgba(232,176,106,.12);color:var(--warn);border:1px solid rgba(232,176,106,.30)}
+  .st-miss{background:rgba(225,75,95,.12);color:var(--cherry);border:1px solid rgba(225,75,95,.32)}
+  .st-ok{background:rgba(127,209,168,.10);color:var(--ok);border:1px solid rgba(127,209,168,.28)}
+  .st-info{background:rgba(139,92,246,.12);color:var(--purple);border:1px solid var(--line-strong)}
+
+  /* ---------- 区块通用 ---------- */
+  section{padding:64px 0;border-top:1px solid var(--line);position:relative;scroll-margin-top:70px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:14px}
+  .sec-num{
+    font-size:12px;letter-spacing:.18em;color:var(--purple);font-weight:700;
+    border:1px solid var(--line-strong);border-radius:6px;padding:2px 8px;
+    transform:translateY(-3px);background:rgba(255,255,255,.02);
+  }
+  h2{font-size:clamp(21px,2.3vw,27px);font-weight:650;letter-spacing:-.01em;color:var(--text)}
+  .lead{color:var(--muted);max-width:800px;font-size:15.5px}
+  .lead b{color:var(--text);font-weight:600}
+  code{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:12.5px;color:var(--purple);
+    background:rgba(139,92,246,.10);padding:1.5px 6px;border-radius:5px;
+    border:1px solid rgba(139,92,246,.16);
+  }
+
+  /* ---------- 02 痛点×方案 ---------- */
+  .pains{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:26px}
+  .pain{
+    border:1px solid var(--line);border-radius:var(--radius);
+    background:linear-gradient(180deg,rgba(27,20,41,.72),rgba(21,16,32,.5));
+    padding:22px 24px 20px;
+  }
+  .pain .pn{font-size:12px;letter-spacing:.12em;font-weight:700;color:var(--cherry);margin-bottom:8px}
+  .pain h3{font-size:16.5px;color:var(--text);font-weight:650;margin-bottom:10px;line-height:1.5}
+  .pain .was{font-size:13.5px;color:var(--muted);line-height:1.75;margin-bottom:12px}
+  .pain .fix{
+    font-size:13.5px;line-height:1.75;border-radius:12px;padding:12px 14px;
+    background:rgba(139,92,246,.08);border:1px solid var(--line);
+  }
+  .pain:nth-child(2) .fix{background:rgba(233,199,126,.07);border-color:rgba(233,199,126,.22)}
+  .pain:nth-child(3) .fix{background:rgba(225,75,95,.08);border-color:rgba(225,75,95,.22)}
+  .pain:nth-child(4) .fix{background:rgba(233,199,126,.07);border-color:rgba(233,199,126,.22)}
+  .pain .fix b{color:var(--purple);font-weight:700}
+  .pain .fix .fk{display:block;font-size:11.5px;letter-spacing:.1em;color:var(--purple);font-weight:700;margin-bottom:4px}
+
+  /* ---------- 03 三大入口 ---------- */
+  .entries{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px}
+  .entrycard{
+    border:1px solid var(--line);border-radius:var(--radius);
+    background:linear-gradient(180deg,rgba(27,20,41,.7),rgba(21,16,32,.5));
+    padding:22px 20px 18px;display:flex;flex-direction:column;gap:10px;
+    transition:.18s;
+  }
+  .entrycard:hover{transform:translateY(-4px);border-color:var(--line-strong);box-shadow:0 16px 40px rgba(0,0,0,.4)}
+  .entrycard .type{
+    font-size:11.5px;letter-spacing:.14em;font-weight:700;color:var(--purple);
+    border:1px solid var(--line-strong);border-radius:999px;padding:3px 12px;align-self:flex-start;
+    background:rgba(139,92,246,.10);
+  }
+  .entrycard:nth-child(2) .type{color:var(--gold);border-color:rgba(233,199,126,.30);background:rgba(233,199,126,.07)}
+  .entrycard:nth-child(3) .type{color:var(--cherry);border-color:rgba(225,75,95,.32);background:rgba(225,75,95,.10)}
+  .entrycard h3{font-size:18px;font-weight:650;color:var(--text)}
+  .entrycard .say{
+    font-size:13px;color:var(--text);background:rgba(139,92,246,.08);
+    border:1px solid var(--line);border-radius:12px 14px 12px 4px;
+    padding:9px 13px;line-height:1.65;
+  }
+  .entrycard:nth-child(2) .say{background:rgba(233,199,126,.07);border-color:rgba(233,199,126,.22)}
+  .entrycard:nth-child(3) .say{background:rgba(225,75,95,.08);border-color:rgba(225,75,95,.22)}
+  .entrycard .flow{font-size:12.5px;color:var(--muted);line-height:1.75}
+  .entrycard .flow b{color:var(--purple);font-weight:700}
+  .entrycard .btn{margin-top:auto;align-self:flex-start}
+
+  /* ---------- 04 交互演示：三栏工作台 ---------- */
+  .demo{
+    margin-top:26px;border:1px solid var(--line-strong);border-radius:18px;
+    background:var(--panel);box-shadow:0 24px 60px rgba(0,0,0,.45);overflow:hidden;
+  }
+  .demo-top{
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+    padding:14px 20px;border-bottom:1px solid var(--line);background:var(--panel-2);
+  }
+  .demo-tabs{display:flex;gap:8px;flex-wrap:wrap}
+  .demo-tab{
+    font-family:inherit;cursor:pointer;font-size:13px;font-weight:700;
+    padding:8px 15px;border-radius:999px;border:1px solid var(--line);
+    background:var(--panel);color:var(--muted);transition:.15s;
+  }
+  .demo-tab:hover{border-color:var(--purple);color:var(--purple)}
+  .demo-tab.on{background:linear-gradient(120deg,var(--purple-2),var(--purple-deep));border-color:transparent;color:#fff}
+  .demo-flag{
+    margin-left:auto;font-size:11.5px;color:var(--gold);font-weight:700;
+    border:1px solid rgba(233,199,126,.30);border-radius:999px;padding:4px 12px;
+    background:rgba(233,199,126,.06);
+  }
+  .demo-grid{display:grid;grid-template-columns:216px 1fr 320px;min-height:430px}
+  .dnav{
+    border-right:1px solid var(--line);padding:16px 12px;
+    display:flex;flex-direction:column;gap:6px;background:rgba(15,11,23,.55);
+  }
+  .dnav .dtitle{font-size:10.5px;letter-spacing:.14em;font-weight:700;color:var(--purple);margin:0 4px 6px}
+  .dstepnav{
+    font-family:inherit;cursor:pointer;text-align:left;
+    display:flex;align-items:center;gap:9px;
+    border:1px solid transparent;border-radius:11px;
+    background:transparent;padding:8px 10px;
+    font-size:12.5px;font-weight:600;color:var(--muted);line-height:1.45;
+    transition:.14s;
+  }
+  .dstepnav i{
+    font-style:normal;flex:0 0 20px;width:20px;height:20px;border-radius:50%;
+    display:grid;place-items:center;font-size:10.5px;font-weight:800;
+    background:rgba(139,92,246,.16);color:var(--purple);
+  }
+  .dstepnav:hover{border-color:var(--line);color:var(--purple)}
+  .dstepnav.done i{background:rgba(233,199,126,.18);color:var(--gold)}
+  .dstepnav.on{
+    background:var(--panel);border-color:var(--line-strong);color:var(--text);
+    box-shadow:0 4px 14px rgba(0,0,0,.35);
+  }
+  .dstepnav.on i{background:var(--purple-2);color:#fff}
+  .dnav .dbar{margin-top:auto;padding:6px 4px 0}
+  .dnav .dbar .track{height:7px;border-radius:999px;background:rgba(139,92,246,.14);overflow:hidden}
+  .dnav .dbar .track i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--purple),var(--cherry));transition:width .35s cubic-bezier(.22,1,.36,1)}
+  .dnav .dbar .cnt{font-size:11px;font-weight:700;color:var(--purple);margin-top:6px;letter-spacing:.05em}
+  .dmid{padding:18px 22px;overflow:auto}
+  .dmid .tagline{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:11.5px;font-weight:700;letter-spacing:.1em;color:var(--purple);
+    background:rgba(139,92,246,.10);border:1px solid var(--line);
+    border-radius:999px;padding:4px 13px;margin-bottom:14px;
+  }
+  .dmid h3{font-size:16.5px;color:var(--text);font-weight:650;margin-bottom:14px;line-height:1.5}
+  .chat{display:grid;gap:12px}
+  .msg{
+    max-width:92%;border-radius:15px;padding:11px 15px;font-size:13.5px;line-height:1.75;
+    animation:stepIn .35s cubic-bezier(.22,1,.36,1);
+  }
+  .msg.user{
+    justify-self:end;background:rgba(232,176,106,.08);border:1px solid rgba(232,176,106,.28);
+    border-radius:15px 15px 4px 15px;color:var(--text);
+  }
+  .msg.ai{justify-self:start;background:rgba(139,92,246,.10);border:1px solid var(--line);border-radius:15px 15px 15px 4px;color:var(--text)}
+  .msg .who{display:block;font-size:10.5px;font-weight:700;letter-spacing:.1em;margin-bottom:4px;color:var(--purple)}
+  .msg.user .who{color:var(--warn)}
+  .msg ul{padding-left:18px}
+  .msg li{margin:3px 0}
+  .msg b{color:var(--text)}
+  .opts{display:grid;gap:14px}
+  .optg .optl{font-size:12px;font-weight:700;color:var(--purple);letter-spacing:.06em;margin-bottom:7px}
+  .optg .optl em{font-style:normal;color:var(--cherry);font-weight:700}
+  .optrow{display:flex;flex-wrap:wrap;gap:8px}
+  .opt{
+    font-family:inherit;cursor:pointer;font-size:13px;font-weight:600;color:var(--text);
+    border:1px solid var(--line);border-radius:999px;padding:7px 15px;
+    background:rgba(255,255,255,.03);transition:.14s;line-height:1.4;
+  }
+  .opt:hover{border-color:var(--purple);color:var(--purple)}
+  .opt.on{background:linear-gradient(120deg,var(--purple-2),var(--purple-deep));border-color:transparent;color:#fff;font-weight:700}
+  .opt-hint{font-size:12px;color:var(--muted-2)}
+  .opt-hint b{color:var(--purple)}
+  @keyframes stepIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .dside{
+    border-left:1px solid var(--line);padding:18px 18px;
+    background:rgba(11,8,18,.45);overflow:auto;
+  }
+  .dside .stitle{font-size:10.5px;letter-spacing:.14em;font-weight:700;color:var(--purple);margin-bottom:12px}
+  .kcard{
+    border:1px solid var(--line-strong);border-radius:14px;background:var(--panel-2);
+    padding:14px 16px;box-shadow:0 8px 24px rgba(0,0,0,.35);
+  }
+  .kcard .kid{font-size:11px;letter-spacing:.14em;font-weight:700;color:var(--purple)}
+  .kcard h4{font-size:14.5px;color:var(--text);font-weight:650;margin:4px 0 8px;line-height:1.5}
+  .kcard .row{display:flex;gap:8px;font-size:12.5px;line-height:1.7;flex-wrap:wrap}
+  .kcard .row .k{flex:0 0 78px;color:var(--muted-2)}
+  .kcard .row .v{flex:1;color:var(--text)}
+  .missing{list-style:none;display:grid;gap:6px;margin-top:8px}
+  .missing li{
+    font-size:12.5px;color:var(--text);background:rgba(225,75,95,.08);
+    border:1px solid rgba(225,75,95,.22);border-radius:10px;padding:6px 11px;line-height:1.65;
+  }
+  .missing li b{color:var(--cherry)}
+  .steps-flow{display:flex;flex-direction:column;gap:8px}
+  .steps-flow .sline{
+    display:flex;gap:10px;align-items:flex-start;
+    border:1px solid var(--line);border-radius:12px;background:var(--panel-2);
+    padding:9px 12px;font-size:12.5px;line-height:1.65;color:var(--text);
+  }
+  .steps-flow .sline b{flex:0 0 auto;color:var(--purple);font-weight:800;font-size:11.5px;letter-spacing:.04em;padding-top:2px}
+  .steps-flow .sline.warn{background:rgba(232,176,106,.09);border-color:rgba(232,176,106,.28)}
+  .steps-flow .sline.warn b{color:var(--warn)}
+  .note{
+    font-size:12px;color:var(--muted);border-left:2px solid var(--purple);
+    background:rgba(139,92,246,.07);border-radius:4px 12px 12px 4px;padding:9px 13px;line-height:1.7;
+  }
+  .note b{color:var(--text)}
+  .note.warn{border-color:var(--warn);background:rgba(232,176,106,.08)}
+  .note.warn b{color:var(--warn)}
+  .dside .stack{display:grid;gap:12px}
+  .stflow{display:grid}
+  .stflow .row{display:grid;grid-template-columns:18px 10px 1fr;column-gap:8px}
+  .stflow .row .b{
+    width:18px;height:18px;border-radius:50%;display:grid;place-items:center;
+    font-size:10px;font-weight:800;background:rgba(139,92,246,.18);color:var(--purple);
+  }
+  .stflow .row .rail{display:flex;justify-content:center}
+  .stflow .row .rail i{width:2px;background:rgba(139,92,246,.22);display:block;height:100%}
+  .stflow .row:last-child .rail{display:none}
+  .stflow .row p{font-size:12.5px;line-height:1.65;padding-bottom:10px;color:var(--text)}
+  .stflow .row p b{color:var(--purple)}
+  .stflow .row p small{display:block;font-size:11.5px;color:var(--muted-2)}
+  .demo-foot{
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+    padding:13px 20px 18px;border-top:1px solid var(--line);
+  }
+  .demo-foot .spacer{flex:1}
+  .demo-foot .case-open{display:none;cursor:pointer;font-family:inherit}
+
+  /* ---------- 05 案例与交付物 ---------- */
+  .cases{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px}
+  .case{
+    border:1px solid var(--line);border-radius:var(--radius);
+    background:linear-gradient(180deg,rgba(27,20,41,.72),rgba(21,16,32,.5));
+    overflow:hidden;display:flex;flex-direction:column;transition:.18s;
+  }
+  .case:hover{transform:translateY(-4px);border-color:var(--line-strong);box-shadow:0 16px 40px rgba(0,0,0,.4)}
+  .case .chead{padding:18px 20px 14px;border-bottom:1px solid var(--line)}
+  .case .cid{font-size:11.5px;letter-spacing:.14em;font-weight:700;color:var(--purple)}
+  .case h3{font-size:16.5px;color:var(--text);font-weight:650;line-height:1.5;margin:4px 0 8px}
+  .case .scene-tag{
+    display:inline-block;font-size:12px;font-weight:700;border-radius:999px;
+    padding:3px 12px;border:1px solid transparent;
+  }
+  .case:nth-child(1) .scene-tag{background:rgba(139,92,246,.14);color:var(--purple)}
+  .case:nth-child(2) .scene-tag{background:rgba(233,199,126,.10);color:var(--gold)}
+  .case:nth-child(3) .scene-tag{background:rgba(225,75,95,.12);color:var(--cherry)}
+  .case .cbody{padding:14px 20px 6px;font-size:13px;line-height:1.75;color:var(--muted);flex:1}
+  .case .cbody p{margin-bottom:8px}
+  .case .cbody b{color:var(--text);font-weight:600}
+  .case .cfoot{padding:12px 20px 18px;display:flex;align-items:center;justify-content:center;gap:8px}
+  .case .cfoot .btn{cursor:pointer;font-family:inherit}
+
+  /* 案例详情弹窗 */
+  .casedialog{
+    border:1px solid var(--line-strong);border-radius:20px;
+    background:var(--panel);color:var(--text);
+    width:min(780px,94vw);max-height:86vh;padding:0;
+    box-shadow:0 30px 90px rgba(0,0,0,.6);
+  }
+  .casedialog::backdrop{background:rgba(6,4,10,.78);backdrop-filter:blur(10px)}
+  .casedialog .cpaper{padding:26px 28px 22px;overflow:auto;max-height:86vh}
+  .casedialog .ctop{
+    display:flex;align-items:flex-start;gap:12px;
+    padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:16px;
+    position:sticky;top:0;background:var(--panel);z-index:2;
+  }
+  .casedialog h3{font-size:21px;color:var(--text);font-weight:650;line-height:1.4;flex:1;padding-top:2px}
+  .cclose{
+    flex:0 0 auto;width:36px;height:36px;border-radius:50%;cursor:pointer;
+    border:1px solid var(--line-strong);background:var(--panel-2);color:var(--muted);
+    font-size:15px;line-height:1;transition:.15s;
+  }
+  .cclose:hover{background:var(--purple-2);border-color:var(--purple-2);color:#fff}
+  .casedialog .csec{margin-bottom:18px}
+  .casedialog .csec h4{
+    font-size:13px;letter-spacing:.1em;font-weight:700;color:var(--purple);
+    margin-bottom:8px;display:flex;align-items:center;gap:8px;
+  }
+  .casedialog .csec h4::before{content:"";width:14px;height:3px;border-radius:2px;background:var(--purple)}
+  .casedialog p{font-size:14px;line-height:1.8;color:var(--text)}
+  .casedialog .csec p+p{margin-top:8px}
+  .casedialog table{
+    width:100%;border-collapse:collapse;font-size:13px;margin-top:6px;
+    border:1px solid var(--line);border-radius:10px;overflow:hidden;
+  }
+  .casedialog th,.casedialog td{border:1px solid var(--line);padding:7px 12px;text-align:left;line-height:1.6}
+  .casedialog th{background:rgba(139,92,246,.12);color:var(--text);font-weight:700}
+  .casedialog td{color:var(--muted)}
+  .casedialog td b{color:var(--text)}
+
+  /* 截图（带放大） */
+  .shots{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:26px}
+  .shotgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .shot{
+    border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    background:var(--panel-2);cursor:zoom-in;transition:.18s;
+  }
+  .shot:hover{border-color:var(--purple);transform:translateY(-2px);box-shadow:0 16px 40px rgba(0,0,0,.5)}
+  .shot img{display:block;width:100%;height:auto;background:#f4f6f1}
+  .shot .cap{padding:10px 13px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);line-height:1.65}
+  .shot .cap b{display:block;color:var(--text);font-size:13px;font-weight:600;margin-bottom:2px}
+
+  /* ---------- 06 架构 ---------- */
+  .arch{margin-top:26px;display:grid;gap:20px}
+  .arch-block{
+    border:1px solid var(--line);border-radius:var(--radius);
+    background:linear-gradient(180deg,rgba(27,20,41,.7),rgba(21,16,32,.5));padding:22px 24px;
+  }
+  .arch-block h3{
+    font-size:16px;color:var(--text);font-weight:650;margin-bottom:16px;
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  }
+  .arch-block h3 .chip{
+    font-size:11px;letter-spacing:.12em;font-weight:700;color:var(--purple);
+    background:rgba(139,92,246,.10);border:1px solid var(--line);
+    border-radius:999px;padding:2px 11px;
+  }
+  .pipe{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;justify-content:center}
+  .pipe .pnode{
+    flex:1 1 120px;min-width:112px;text-align:center;
+    border:1px solid var(--line);border-radius:12px;
+    background:rgba(139,92,246,.08);padding:10px 8px;
+    font-size:13px;font-weight:600;color:var(--text);line-height:1.55;
+  }
+  .pipe .pnode small{display:block;font-size:11px;color:var(--muted-2);font-weight:400}
+  .pipe .parr{align-self:center;padding:0 7px;color:var(--purple);font-weight:700}
+  .arch-block.sediment .pipe .pnode:nth-child(3){background:rgba(233,199,126,.08)}
+  .arch-block.sediment .pipe .pnode:nth-child(7){background:rgba(225,75,95,.08)}
+  .arch-block.sediment .pipe .pnode:nth-child(9){background:rgba(127,209,168,.08);border-color:rgba(127,209,168,.25)}
+  .tech-notes{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+  .tech-note{
+    font-size:13px;line-height:1.75;color:var(--muted);
+    border:1px solid var(--line);border-radius:12px;padding:12px 16px;background:var(--panel-2);
+  }
+  .tech-note b{color:var(--purple)}
+
+  /* ---------- 07 边界 ---------- */
+  .bounds{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:26px}
+  .bound{
+    border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 24px;
+    background:linear-gradient(180deg,rgba(27,20,41,.7),rgba(21,16,32,.5));
+  }
+  .bound.can{border-color:rgba(127,209,168,.28);background:linear-gradient(180deg,rgba(127,209,168,.06),rgba(21,16,32,.6))}
+  .bound.cant{border-color:rgba(232,176,106,.28);background:linear-gradient(180deg,rgba(232,176,106,.06),rgba(21,16,32,.6))}
+  .bound h3{font-size:15px;font-weight:700;letter-spacing:.06em;margin-bottom:14px}
+  .bound.can h3{color:var(--ok)}
+  .bound.cant h3{color:var(--warn)}
+  .bound ul{list-style:none;display:grid;gap:9px}
+  .bound li{font-size:14px;color:var(--text);line-height:1.7;padding-left:26px;position:relative}
+  .bound.can li::before{content:"✓";position:absolute;left:2px;top:0;color:var(--ok);font-weight:800}
+  .bound.cant li::before{content:"✕";position:absolute;left:2px;top:0;color:var(--warn);font-weight:800}
+  .principle{
+    margin-top:16px;border:1px solid var(--line-strong);border-radius:var(--radius);
+    background:linear-gradient(150deg,rgba(124,58,237,.16),rgba(21,16,32,.7) 62%);
+    padding:20px 26px;text-align:center;
+  }
+  .principle b{color:var(--purple)}
+  .principle p{font-size:15px;color:var(--text);line-height:1.9}
+
+  /* ---------- 08 总结 ---------- */
+  .summary{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:26px}
+  .sumcard{
+    border:1px solid var(--line);border-radius:var(--radius);
+    background:linear-gradient(180deg,rgba(27,20,41,.7),rgba(21,16,32,.5));padding:20px 24px;
+  }
+  .sumcard h3{font-size:13px;letter-spacing:.12em;font-weight:700;color:var(--purple);margin-bottom:10px}
+  .sumcard ul{list-style:none;display:grid;gap:8px}
+  .sumcard li{font-size:13.5px;color:var(--muted);line-height:1.7;padding-left:16px;position:relative}
+  .sumcard li::before{content:"";position:absolute;left:0;top:10px;width:6px;height:6px;border-radius:50%;background:rgba(139,92,246,.4)}
+  .sumcard li b{color:var(--text);font-weight:600}
+  .sumcard.next li::before{background:rgba(233,199,126,.45)}
+  .sumcard.next h3{color:var(--gold)}
+
+  /* ---------- 结尾 / 页脚 ---------- */
+  .cta{
+    margin:10px 0 0;padding:34px;border-radius:18px;text-align:center;
+    border:1px solid var(--line-strong);
+    background:linear-gradient(150deg,rgba(124,58,237,.20),rgba(21,16,32,.7) 62%);
+  }
+  .cta h3{font-size:20px;color:var(--text);margin-bottom:10px;font-weight:650}
+  .cta p{color:var(--muted);font-size:14.5px;margin-bottom:20px}
+  footer{padding:44px 0 64px;text-align:center;color:var(--muted-2);font-size:13px;border-top:1px solid var(--line)}
+  footer a{color:var(--muted)}
+  footer a:hover{color:var(--purple)}
+
+  /* ---------- 灯箱（dialog：与案例弹窗同在 top layer） ---------- */
+  dialog.lb{
+    border:0;padding:0;background:transparent;
+    width:100vw;height:100vh;max-width:100vw;max-height:100vh;
+    display:none;place-items:center;cursor:zoom-out;
+  }
+  dialog.lb[open]{display:grid}
+  dialog.lb::backdrop{background:rgba(6,4,10,.92);backdrop-filter:blur(6px)}
+  dialog.lb img{max-width:94vw;max-height:86vh;border-radius:10px;border:1px solid var(--line-strong);box-shadow:0 30px 80px rgba(0,0,0,.6);background:#fff}
+  dialog.lb .txt{position:fixed;bottom:16px;left:0;right:0;text-align:center;font-size:13px;color:var(--muted);text-shadow:0 1px 6px rgba(0,0,0,.8);pointer-events:none}
+
+  /* ---------- 响应式 ---------- */
+  @media (max-width:1120px){
+    .demo-grid{grid-template-columns:190px 1fr}
+    .dside{grid-column:1 / -1;border-left:none;border-top:1px solid var(--line)}
+  }
+  @media (max-width:960px){
+    .hero-grid{grid-template-columns:1fr;gap:34px}
+    .mockwrap{max-width:560px;margin:0 auto}
+  }
+  @media (max-width:900px){
+    .topnav{display:none}
+    .pains,.entries,.cases,.tech-notes,.bounds,.summary{grid-template-columns:1fr}
+    .shots,.shotgrid{grid-template-columns:1fr}
+    .hero{padding:52px 0 34px}
+    .demo-flag{margin-left:0}
+    .demo-grid{grid-template-columns:1fr;min-height:0}
+    .dnav{
+      flex-direction:row;flex-wrap:wrap;align-items:center;border-right:none;
+      border-bottom:1px solid var(--line);padding:12px 14px;gap:6px;
+    }
+    .dnav .dtitle{width:100%;margin:0 0 2px}
+    .dstepnav{padding:6px 10px}
+    .dnav .dbar{width:100%;margin:4px 0 0}
+    .dnav .dbar .cnt{margin-top:4px}
+    .dside{border-top:1px solid var(--line)}
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    .msg{animation:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span><b>Knowledge Skill</b><span>· 工程经验知识沉淀</span></div>
+    <nav class="topnav">
+      <a href="#problem">痛点</a>
+      <a href="#entries">入口</a>
+      <a href="#demo">演示</a>
+      <a href="#cases">案例</a>
+      <a href="#arch">架构</a>
+      <a href="#bounds">边界</a>
+      <a href="#summary">总结</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ============ 01 Hero：左文右图 ============ -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <span class="kicker">BYME 作品集 · AI SKILL · 真实业务场景驱动</span>
+        <h1>Knowledge Skill</h1>
+        <p class="hero-cn">工程经验知识沉淀</p>
+        <p class="hero-sub">把工程师<b>口述、测试资料和 Bug 处理经验</b>，转化为<b>可检索、可追溯、可审核、可复用</b>的知识资产。</p>
+        <p class="hero-data">业务观察：一次基础的以太网物理层连通性测试仅需 2 个步骤，但新人独立完成比例不足 20%，平均需询问 3–5 位同事，检索与等待耗时约 30–60 分钟。<b>（来源：本人业务观察估计，非正式统计）</b></p>
+        <div class="caps" aria-label="三大核心能力">
+          <span class="cap"><i aria-hidden="true">✎</i>经验沉淀 · 入口 C</span>
+          <span class="cap"><i aria-hidden="true">🔍</i>新人查询 · 入口 A</span>
+          <span class="cap"><i aria-hidden="true">🧭</i>Bug 排查 · 入口 B</span>
+        </div>
+        <div class="actions">
+          <a class="btn btn-p" href="#demo">立即体验 ↓</a>
+          <a class="btn btn-g" href="#cases">查看成果</a>
+        </div>
+      </div>
+
+      <!-- Skill 工作台 Mockup：内容来自真实案例（场景 B） -->
+      <div class="mockwrap" aria-label="Skill 工作台界面示意">
+        <span class="star s1" aria-hidden="true">✦</span>
+        <span class="star s2" aria-hidden="true">✧</span>
+        <div class="mock">
+          <div class="mock__bar"><i></i><i></i><i></i><span>hw-test-kb-assistant · WorkBuddy</span><em>预置案例</em></div>
+          <div class="mock__body">
+            <aside class="mock__nav" aria-hidden="true">
+              <b>SKILL 入口</b>
+              <span class="it on">A · 测试方法查询</span>
+              <span class="it">B · Bug 排查</span>
+              <span class="it">C · 经验沉淀</span>
+              <div class="mock__kb"><i>◈</i> knowledge-base<br>23 条初始知识 · JSON 索引</div>
+            </aside>
+            <div class="mock__chat">
+              <div class="mk-msg u">测以太网怎么弄？</div>
+              <div class="mk-msg a">为了给你<b>能直接用的步骤</b>而不是通用科普，先确认 3 件事 ↓</div>
+              <div class="mk-chips">
+                <span class="on">摄像头 · PHY 转接板</span>
+                <span class="on">链路通断</span>
+                <span class="on">DVT 阶段</span>
+              </div>
+              <div class="mk-card">
+                <div class="h">检索命中 · DVT 检查清单 <span class="status st-review">待审核</span></div>
+                整合 TM-010 + TM-016：S0 断电插拔安全检查 → S1 链路建立 → S2 协商核对 → S3 连通性与丢包 → S4 数据记录
+                <div class="src">来源：TM-010（通用方法 · 待项目验证）＋ TM-016（工程师经验 · 已发生事故）· 具体器件与阈值待工程师确认</div>
+              </div>
+              <div class="mk-msg a">BE 系列相似案例为<b>模拟数据</b>，仅作排查线索，不作为正式操作依据。</div>
+            </div>
+          </div>
+          <div class="mock__input">
+            <span class="box">向 Skill 提问…</span>
+            <em>预置案例演示 · 非实时连接</em>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="meta" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:34px">
+      <span class="tag hl">从真实测试场景出发</span>
+      <span class="tag">复合型 Skill（沉淀 + 检索）</span>
+      <span class="tag">基于 WorkBuddy 搭建 MVP</span>
+      <span class="tag">预置案例 · 全流程可交互</span>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 02 痛点与方案 ============ -->
+<section id="problem">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">01</span><h2>业务痛点与产品方案</h2></div>
+    <p class="lead">在硬件研发与测试中，经验通常分散在<b>个人记忆、历史报告、Bug 记录与跨部门沟通</b>里。以下四个痛点来自我在汽车电子 Tier 1 的实际观察，每一条都对应产品中的一个具体环节。</p>
+    <div class="pains">
+      <div class="pain">
+        <div class="pn">痛点 01</div>
+        <h3>老工程师缺乏沉淀动力</h3>
+        <p class="was">测试和调试本身已占满工时，额外整理文档既耽误工作又没有工时——经验停留在口头交流中，甚至「经验跟着人走」。</p>
+        <div class="fix"><span class="fk">产品方案 · 入口 C</span><b>口述即可，不必从零写文档。</b>AI 分类与字段提取、按模板生成草稿，工程师只做确认与补充。</div>
+      </div>
+      <div class="pain">
+        <div class="pn">痛点 02</div>
+        <h3>资料分散且格式不统一</h3>
+        <p class="was">测试方法记在测试报告里，仪器操作写在操作文档里，Bug 过程留在问题日志或聊天记录里——难以形成完整、可检索的经验记录。</p>
+        <div class="fix"><span class="fk">产品方案 · 统一模板</span><b>测试方法卡与 Bug 经验卡两套统一模板。</b>原始输入逐句保留，AI 整理结果与原始材料都可回溯核对。</div>
+      </div>
+      <div class="pain">
+        <div class="pn">痛点 03</div>
+        <h3>跨项目经验难以复用</h3>
+        <p class="was">即使其他项目解决过类似问题，新人也不知道资料在哪、该找谁，且非项目组人员通常没有访问权限。</p>
+        <div class="fix"><span class="fk">产品方案 · 权限内共享</span><b>共享的是测试与排查经验，而非受限文档。</b>沿用企业安全规则（如受控文档 SI-002），项目机密不进入检索范围。</div>
+      </div>
+      <div class="pain">
+        <div class="pn">痛点 04</div>
+        <h3>新人不会提问，也难以检索</h3>
+        <p class="was">新人只知道「测试结果异常」，不知道如何检索、提问时该提供什么信息；向老工程师提问也问不到点子上。</p>
+        <div class="fix"><span class="fk">产品方案 · Query 改写</span><b>AI 先追问 1–3 个关键问题，再改写检索条件。</b>把模糊口语转化为有上下文、有边界、可检索的结构化 Query。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 三大入口 ============ -->
+<section id="entries">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">02</span><h2>三大产品入口</h2></div>
+    <p class="lead">入口编号与 <code>SKILL.md</code> 一致：<b>入口 A 测试方法查询、入口 B Bug 排查、入口 C 经验沉淀</b>。两个方向（使用 / 沉淀）共享同一套知识库、数据结构、别名表与检索模块。</p>
+    <div class="entries">
+      <div class="entrycard">
+        <span class="type">入口 C · 沉淀</span>
+        <h3>经验沉淀</h3>
+        <p class="say">「今天测这个千兆以太网……差点烧了，必须注意断电插拔。」</p>
+        <p class="flow">分类判定 → 字段提取 → 模板草稿 → <b>工程师确认</b> → 写入（待审核）</p>
+        <button class="btn btn-g btn-sm" type="button" data-goto-scene="a">体验流程 ↓</button>
+      </div>
+      <div class="entrycard">
+        <span class="type">入口 A · 查询</span>
+        <h3>新人查询</h3>
+        <p class="say">「测以太网怎么弄？」</p>
+        <p class="flow">意图识别 → 关键追问 → Query 改写 → 检索 → <b>带来源与状态</b>的方法卡 / 清单</p>
+        <button class="btn btn-g btn-sm" type="button" data-goto-scene="b">体验流程 ↓</button>
+      </div>
+      <div class="entrycard">
+        <span class="type">入口 B · 排查</span>
+        <h3>Bug 辅助排查</h3>
+        <p class="say">「串口报 Error 0x0A，板子灯不亮。」</p>
+        <p class="flow">相似案例检索 → 追问上下文 → 分层排查路径 → 按需生成<b>草稿（待审核）</b></p>
+        <button class="btn btn-g btn-sm" type="button" data-goto-scene="c">体验流程 ↓</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 核心交互演示：三栏工作台 ============ -->
+<section id="demo">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">03</span><h2>核心交互演示</h2></div>
+    <p class="lead">基于真实案例的<b>预置前端演示</b>：内容来自实际测试记录与交付文档，可点击体验；未连接实时模型与生产知识库。场景 A/B/C 沿用案例叙事顺序，与 Skill 入口号（A 查询 / B 排查 / C 沉淀）的对应关系见上方入口卡。</p>
+    <div class="demo">
+      <div class="demo-top">
+        <div class="demo-tabs" role="tablist" aria-label="演示场景">
+          <button class="demo-tab on" type="button" data-scene="a" role="tab" aria-selected="true">场景 A · 老工程师经验沉淀</button>
+          <button class="demo-tab" type="button" data-scene="b" role="tab" aria-selected="false">场景 B · 新人日常查询</button>
+          <button class="demo-tab" type="button" data-scene="c" role="tab" aria-selected="false">场景 C · 新人遇到故障</button>
+        </div>
+        <span class="demo-flag">预置案例演示 · 非实时连接</span>
+      </div>
+      <div class="demo-grid">
+        <nav class="dnav" id="dnav" aria-label="演示步骤"></nav>
+        <div class="dmid" id="dmid" aria-live="polite"></div>
+        <aside class="dside" id="dside"></aside>
+      </div>
+      <div class="demo-foot">
+        <button class="btn btn-g btn-sm" type="button" id="demoPrev">‹ 上一步</button>
+        <button class="btn btn-p btn-sm" type="button" id="demoNext">下一步 ›</button>
+        <span class="spacer"></span>
+        <button class="btn btn-g btn-sm case-open" type="button" id="demoCase">查看案例 ↗</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 真实案例与交付物 ============ -->
+<section id="cases">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">04</span><h2>真实案例与交付物</h2></div>
+    <p class="lead">三个案例均来自 Skill MVP 的实际运行记录。点击「查看详情」展开摘要、关键流程与<b>WorkBuddy 实测截图</b>（支持点击放大）。</p>
+    <div class="cases">
+      <article class="case">
+        <div class="chead">
+          <span class="cid">TM-016 · 测试方法卡</span>
+          <h3>以太网接口断电插拔操作规范</h3>
+          <span class="scene-tag">入口 C · 经验沉淀</span>
+        </div>
+        <div class="cbody">
+          <p><b>业务场景：</b>千兆以太网接口测试中，因「先插线再上电」导致 PHY 芯片引脚真损坏。</p>
+          <p><b>解决：</b>把口头讲述的事故整理为可执行、可追溯的操作顺序规范。</p>
+          <p><b>关键交付：</b>强制规则 + 正确操作顺序 + 禁止事项表 + 待确认清单。</p>
+        </div>
+        <div class="cfoot">
+          <button class="btn btn-g btn-sm" type="button" data-case="tm016">查看详情</button>
+        </div>
+      </article>
+      <article class="case">
+        <div class="chead">
+          <span class="cid">DVT · 检查清单</span>
+          <h3>以太网链路测试检查清单</h3>
+          <span class="scene-tag">入口 A · 新人查询</span>
+        </div>
+        <div class="cbody">
+          <p><b>业务场景：</b>新人首次做摄像头 PHY 转接板的以太网链路连通性验证（DVT）。</p>
+          <p><b>解决：</b>「测以太网怎么弄」→ 从知识库整合出带安全纪律的分步清单。</p>
+          <p><b>关键交付：</b>S0 安全检查 + 链路建立 + 协商核对 + 连通性与丢包 + 数据记录表。</p>
+        </div>
+        <div class="cfoot">
+          <button class="btn btn-g btn-sm" type="button" data-case="dvt">查看详情</button>
+        </div>
+      </article>
+      <article class="case">
+        <div class="chead">
+          <span class="cid">BE-007 · 经验草稿</span>
+          <h3>PMIC 上电异常故障经验草稿</h3>
+          <span class="scene-tag">入口 B · 故障排查</span>
+        </div>
+        <div class="cbody">
+          <p><b>业务场景：</b>整机样机上电瞬间指示灯闪一下就灭，串口助手报 Error 0x0A。</p>
+          <p><b>解决：</b>新人不知道排查顺序 → 给出「供电 → 时序 → 链路」分层路径并沉淀为草稿。</p>
+          <p><b>关键交付：</b>分层排查步骤 + 所需仪器 + 逐句保留的口述记录 + 待补充字段。</p>
+        </div>
+        <div class="cfoot">
+          <button class="btn btn-g btn-sm" type="button" data-case="be007">查看详情</button>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 实现架构 ============ -->
+<section id="arch">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">05</span><h2>Skill 的实现架构</h2></div>
+    <p class="lead">MVP 基于 <b>WorkBuddy</b> 搭建，Skill 定义见 <code>SKILL.md</code>（hw-test-kb-assistant），检索与沉淀由独立脚本实际执行（<code>kb_search.py</code> / <code>kb_sediment.py</code>），共享库 <code>kb_lib.py</code> 负责加载、别名、改写与评分检索。</p>
+    <div class="arch">
+      <div class="arch-block">
+        <h3>使用入口<span class="chip">入口 A 测试方法查询 · 入口 B Bug 排查</span></h3>
+        <div class="pipe">
+          <div class="pnode">用户输入<small>口语化问题</small></div><span class="parr">→</span>
+          <div class="pnode">意图识别<small>与实体提取</small></div><span class="parr">→</span>
+          <div class="pnode">Query 改写<small>别名扩展 + 追问</small></div><span class="parr">→</span>
+          <div class="pnode">知识检索<small>评分与排序</small></div><span class="parr">→</span>
+          <div class="pnode">结构化答案<small>方法卡 / 排查路径</small></div><span class="parr">→</span>
+          <div class="pnode">来源与状态<small>verification / review</small></div>
+        </div>
+      </div>
+      <div class="arch-block sediment">
+        <h3>沉淀入口<span class="chip">入口 C 经验沉淀</span></h3>
+        <div class="pipe">
+          <div class="pnode">口述 / 文本输入<small>逐句保留原文</small></div><span class="parr">→</span>
+          <div class="pnode">分类与字段提取<small>Bug / 测试方法</small></div><span class="parr">→</span>
+          <div class="pnode">生成结构化草稿<small>按统一模板</small></div><span class="parr">→</span>
+          <div class="pnode">工程师确认草稿<small>补充缺失字段</small></div><span class="parr">→</span>
+          <div class="pnode">确认后写入<small>review_status=待审核</small></div><span class="parr">→</span>
+          <div class="pnode">评审通过<small>成为正式知识</small></div>
+        </div>
+        <div class="tech-notes">
+          <p class="tech-note"><b>三级状态，严格区分：</b>① 草稿（未确认，不写入）；② 工程师确认后 <code>--commit</code> 写入，记录 <code>review_status=待审核</code>；③ 评审通过后才成为正式知识。待审核内容在检索中只作「待确认线索」，不作正式操作依据。</p>
+          <p class="tech-note"><b>检索口径（如实描述）：</b>当前实现为<b>关键词 + 别名扩展 + 字段过滤 + 排序</b>的可解释检索，读取 <code>knowledge-base.json</code>；未引入向量检索。规模扩大后可升级，但任何升级不得改变「结果带来源与状态」的契约。</p>
+          <p class="tech-note"><b>语音输入（平台能力衔接）：</b>本 Skill 脚本不含语音识别。若提供音频，先由平台语音转文字能力转写为文本，再走入口 C 同一流程；转写内容同样先生成草稿待确认。</p>
+          <p class="tech-note"><b>写入纪律：</b>沉淀只新增文件不覆盖已有知识；<code>--commit</code> 必须发生在工程师看过草稿并确认之后；写入后自动重建索引并复核新记录可被检索。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 AI 能力边界 ============ -->
+<section id="bounds">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">06</span><h2>AI 能力边界与风险控制</h2></div>
+    <p class="lead">风险高度集中在「AI 输出看起来对」。设计原则：<b>AI 多做事，人做判断</b>，每一条 AI 输出可追溯、可回退、可溯源。</p>
+    <div class="bounds">
+      <div class="bound can">
+        <h3>AI 可以</h3>
+        <ul>
+          <li>整理口述经验，生成结构化知识卡草稿</li>
+          <li>补充检索上下文，改写模糊问题为可检索 Query</li>
+          <li>查找相关知识：相似案例、测试方法、关联知识卡</li>
+          <li>生成结构化测试清单和 Bug 经验草稿</li>
+          <li>展示每条结果的来源、审核状态与适用限制</li>
+        </ul>
+      </div>
+      <div class="bound cant">
+        <h3>AI 不能直接决定</h3>
+        <ul>
+          <li>未经确认的测试标准和电气限值（以器件手册为准）</li>
+          <li>最终 Pass / Fail 判定（属合规与数值判定）</li>
+          <li>没有证据支撑的故障根因（只列「嫌疑待验证」）</li>
+          <li>正式规范发布和变更放行（待审核 ≠ 已发布）</li>
+        </ul>
+      </div>
+    </div>
+    <div class="principle">
+      <p><b>核心原则：</b>AI 负责整理、检索和辅助解释；工程师负责专业判断与审核；知识库负责管理经过确认的经验。器件规格、产品需求、公司测试规范和实际测试结果必须明确区分，不能混为一谈。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 08 总结 ============ -->
+<section id="summary">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">07</span><h2>项目总结与后续方向</h2></div>
+    <div class="summary">
+      <div class="sumcard">
+        <h3>解决的核心问题</h3>
+        <ul>
+          <li><b>经验难沉淀</b>：口述即可生成草稿，降低整理成本</li>
+          <li><b>知识难检索</b>：Query 改写 + 别名扩展，模糊问题也能查</li>
+          <li><b>新人难上手</b>：带来源与状态的方法卡 / 排查路径</li>
+        </ul>
+      </div>
+      <div class="sumcard">
+        <h3>产品思路</h3>
+        <ul>
+          <li>将<b>知识沉淀、知识检索与人工审核</b>整合为闭环</li>
+          <li>两个方向共享一套知识库与数据结构</li>
+          <li>新经验回流沉淀流程，知识持续更新</li>
+        </ul>
+      </div>
+      <div class="sumcard">
+        <h3>当前成果</h3>
+        <ul>
+          <li>基于 <b>WorkBuddy</b> 搭建 Skill MVP（23 条初始知识）</li>
+          <li>以<b>三个场景</b>验证全链路：沉淀 / 查询 / 排查</li>
+          <li>产出 TM-016、DVT 清单、BE-007 草稿三份真实交付物</li>
+        </ul>
+      </div>
+      <div class="sumcard next">
+        <h3>后续优化方向</h3>
+        <ul>
+          <li>完善测试集与<b>检索质量评估</b></li>
+          <li>知识<b>版本管理</b>与权限控制</li>
+          <li>沉淀-复用的<b>效果量化</b>（不预设数字）</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cta">
+      <h3>回顾这个项目</h3>
+      <p>AI 是能力放大器，而不是决策替代者。真正有价值的 AI 产品，需要理解用户场景，找到 AI 能力与业务流程之间的结合点。</p>
+      <div class="actions" style="justify-content:center">
+        <a class="btn btn-p" href="#demo">再体验一遍演示</a>
+        <a class="btn btn-g" href="../index.html">← 返回个人主页</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Knowledge Skill · 工程经验知识沉淀 ｜ 预置案例演示，不连接生产知识库 ｜ <a href="../index.html">← 返回个人主页</a></p>
+  </div>
+</footer>
+
+<!-- ============ 案例详情弹窗 ============ -->
+<dialog class="casedialog" id="case-tm016" aria-labelledby="case-tm016-title">
+  <div class="cpaper">
+    <div class="ctop">
+      <h3 id="case-tm016-title">TM-016 · 以太网接口断电插拔操作规范</h3>
+      <button class="cclose" type="button" data-close aria-label="关闭详情">✕</button>
+    </div>
+    <div class="csec">
+      <h4>摘要</h4>
+      <p>一次<b>已实际发生</b>的器件损坏（PHY 芯片引脚真损坏，工程师本人经历），核心价值是一条可执行的<b>操作顺序规范</b>：进行任何网线 / 以太网跳线 / 转接板的插拔前，必须先将相关设备全部断电。它不是芯片功能测试方法，也不是根因分析报告。</p>
+    </div>
+    <div class="csec">
+      <h4>关键流程</h4>
+      <table>
+        <tr><th>步骤</th><th>内容</th></tr>
+        <tr><td>全部断电</td><td>主设备 → 被测板（含转接板）→ 确认指示灯熄灭、输出电压归零</td></tr>
+        <tr><td>断电插线</td><td>断电状态下插好网线与转接板，接头插到位</td></tr>
+        <tr><td>复核连接</td><td>线缆无破损 / 无裸铜 / 无短路，网口触点无异物</td></tr>
+        <tr><td>依次上电</td><td>上电顺序属项目定义项，按项目规范执行（待确认）</td></tr>
+        <tr><td>通电后</td><td>只允许拔插非电气侧；禁止触碰 RJ45 金属触点、禁止反复带电插拔试错</td></tr>
+      </table>
+    </div>
+    <div class="csec">
+      <h4>状态与限制</h4>
+      <p><span class="status st-review">待审核</span> <span class="status st-info">工程师经验 · 已发生事故</span></p>
+      <p style="margin-top:10px">本条不含任何电压 / 电流 / 阻抗限值，PHY 耐压与引脚绝对最大额定值必须以器件手册为准；依据来源（项目 EHS 规程 / 安全规范）待补充。在依据补齐前，按「工程师经验 + 一次实证事故」支撑，<b>不作为公司正式规范引用</b>。</p>
+    </div>
+    <div class="csec">
+      <h4>WorkBuddy 实测截图（点击放大）</h4>
+      <div class="shotgrid">
+        <div class="shot" data-full="../assets/knowledge-skill/scene-a-input.jpg" data-cap="老工程师口述原始输入，AI 分析风险机理并对比错误与正确操作顺序">
+          <img src="../assets/knowledge-skill/scene-a-input.jpg" alt="经验沉淀输入截图" loading="lazy">
+          <div class="cap"><b>① 口述输入</b>千兆以太网带电插拔险些烧毁的原始经验</div>
+        </div>
+        <div class="shot" data-full="../assets/knowledge-skill/scene-a-commit.jpg" data-cap="工程师确认 PHY 引脚真损坏、端口不带 PoE 后，生成 TM-016 安全操作规范卡">
+          <img src="../assets/knowledge-skill/scene-a-commit.jpg" alt="TM-016 生成截图" loading="lazy">
+          <div class="cap"><b>② 确认后写入</b>澄清三处细节后生成规范卡，标注待审核</div>
+        </div>
+        <div class="shot" data-full="../assets/knowledge-skill/scene-a-missing.jpg" data-cap="AI 解释暂不写入的原因：缺少 5 项关键信息，列出待确认项并追问最少必要问题">
+          <img src="../assets/knowledge-skill/scene-a-missing.jpg" alt="缺失字段清单截图" loading="lazy">
+          <div class="cap"><b>③ 缺失字段</b>未确认前不写入，待补项一目了然</div>
+        </div>
+        <div class="shot" data-full="../assets/knowledge-skill/scene-a-draft.jpg" data-cap="AI 判定经验性质为安全操作规范而非 Bug，按测试方法卡模板生成未写入草稿">
+          <img src="../assets/knowledge-skill/scene-a-draft.jpg" alt="知识卡草稿截图" loading="lazy">
+          <div class="cap"><b>④ 草稿预览</b>分类判定 + 结构化草稿，原文逐句保留</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="casedialog" id="case-dvt" aria-labelledby="case-dvt-title">
+  <div class="cpaper">
+    <div class="ctop">
+      <h3 id="case-dvt-title">DVT · 以太网链路测试检查清单（摄像头 / PHY 转接板）</h3>
+      <button class="cclose" type="button" data-close aria-label="关闭详情">✕</button>
+    </div>
+    <div class="csec">
+      <h4>摘要</h4>
+      <p>由知识库 <b>TM-010</b>《通信与高速数据链路测试》S5 以太网步骤 + <b>TM-016</b>《以太网接口断电插拔操作规范》整合而成。适用范围：摄像头产品的以太网 PHY 转接板（半成品板级验证），目标仅验证「链路通不通」（link-up / 协商 / 连通性 / 丢包），不含吞吐 / 延迟性能与协议一致性。阶段：DVT。</p>
+    </div>
+    <div class="csec">
+      <h4>检查步骤</h4>
+      <table>
+        <tr><th>步骤</th><th>检查内容</th></tr>
+        <tr><td>S0 安全检查</td><td>两侧设备全部断电 → 断电插线 → 复核（最优先，跳过不得进入后续）</td></tr>
+        <tr><td>S1 上电与链路建立</td><td>按项目顺序上电；读 PHY 状态寄存器确认 link-up（寄存器地址依手册，待确认）</td></tr>
+        <tr><td>S2 协商结果核对</td><td>协商速率（100M/1000M）与双工是否符合项目预期</td></tr>
+        <tr><td>S3 连通性与丢包</td><td>互 ping 统计丢包率与延迟分布；抓包确认无异常错帧 / CRC 错误</td></tr>
+        <tr><td>S4 DVT 增强项</td><td>样本量 ≥3 台、高低温复测、线缆变量、长时稳定性、插拔循环（每次回 S0）</td></tr>
+      </table>
+    </div>
+    <div class="csec">
+      <h4>待确认项（工程师补全后才可放行）</h4>
+      <p>PHY 芯片型号 / 位号 / 板卡版本、端口是否带 PoE / 是否声明热插拔、上电顺序（项目规范）、PHY 状态与协商寄存器地址、丢包阈值与 ping 包数、DVT 样本量与温度范围、链路伙伴型号。<b>清单中的具体器件信息、测试参数和判定阈值，仍有需要工程师确认的项目。</b></p>
+    </div>
+    <div class="csec">
+      <h4>WorkBuddy 实测截图（点击放大）</h4>
+      <div class="shotgrid">
+        <div class="shot" data-full="../assets/knowledge-skill/scene-b-input.jpg" data-cap="新人输入「测以太网怎么弄？」，助手先给出第一条铁律：插拔网线前必须断电，并引用真实事故作为警示">
+          <img src="../assets/knowledge-skill/scene-b-input.jpg" alt="新人查询输入截图" loading="lazy">
+          <div class="cap"><b>① 模糊提问</b>自然语言查询，AI 不直接甩通用答案</div>
+        </div>
+        <div class="shot" data-full="../assets/knowledge-skill/scene-b-checklist.jpg" data-cap="用户补充「摄像头、PHY 转接板、测链路通断、DVT 阶段」后，AI 生成 DVT 检查清单，强调断电插拔安全步骤">
+          <img src="../assets/knowledge-skill/scene-b-checklist.jpg" alt="DVT 清单生成截图" loading="lazy">
+          <div class="cap"><b>② 补充上下文后</b>整合 TM-010 + TM-016 生成分步清单</div>
+        </div>
+        <div class="shot" data-full="../assets/knowledge-skill/scene-b-checklist-full.jpg" data-cap="以太网链路测试 S0-S4 步骤清单、Pass/Fail 判定表与 DVT 检查清单文件交付">
+          <img src="../assets/knowledge-skill/scene-b-checklist-full.jpg" alt="完整检查清单截图" loading="lazy">
+          <div class="cap"><b>③ 清单交付</b>S0–S4 步骤 + 判定表 + 数据记录表</div>
+        </div>
+        <div class="shot" data-full="../assets/knowledge-skill/scene-b-followup.jpg" data-cap="助手展示 TM-010 分层测试流程表，并追问具体产品类型与测试目的">
+          <img src="../assets/knowledge-skill/scene-b-followup.jpg" alt="追问关键信息截图" loading="lazy">
+          <div class="cap"><b>④ 关键追问</b>优先询问最影响检索结果的 1–3 个问题</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="casedialog" id="case-be007" aria-labelledby="case-be007-title">
+  <div class="cpaper">
+    <div class="ctop">
+      <h3 id="case-be007-title">BE-007 · PMIC 上电异常故障经验草稿</h3>
+      <button class="cclose" type="button" data-close aria-label="关闭详情">✕</button>
+    </div>
+    <div class="csec">
+      <h4>摘要</h4>
+      <p>车载摄像头整机样机，上电瞬间指示灯<b>闪一下就灭</b>（不是完全不亮），供电经过 PMIC 转接板；上位机串口助手报 <code>Error 0x0A</code>（含义待确认，疑似设备无响应 / 通信失败，<b>属于结果而非根因</b>）。本卡片由工程师口述整理生成，<b>根因尚未定位</b>，证据待补充，草稿待审核。</p>
+    </div>
+    <div class="csec">
+      <h4>分层排查路径（供电 → 时序 → 链路）</h4>
+      <table>
+        <tr><th>层级</th><th>动作</th></tr>
+        <tr><td>① 验证测量链</td><td>仪器共地、探头接地弹簧 &lt;1cm、电源先设限流再升压，排除假故障</td></tr>
+        <tr><td>② 供电检查</td><td>冷态量 PMIC 各输出轨对地阻抗，判断短路 / 低阻（OCP/SCP 关断为强嫌疑，待确认）</td></tr>
+        <tr><td>③ 上电波形与时序</td><td>多通道示波器以输入 / 第一级轨 / EN / PGOOD 触发，锁存完整上电过程</td></tr>
+        <tr><td>④ 通信链路</td><td>0x0A 作为通信失败结果，不优先排查串口，先解决供电</td></tr>
+      </table>
+    </div>
+    <div class="csec">
+      <h4>所需仪器与待确认项</h4>
+      <p>仪器：示波器（多通道，抓上电波形最关键）、万用表、可编程电源（限流 + 看输入跌落）、电子负载（可选，验证带载跌落）。</p>
+      <p style="margin-top:8px">待补充：PMIC 具体型号、当前阶段（EVT/DVT/PVT）、哪颗 LED / 哪路供电、0x0A 出自哪个软件、实测阻抗与波形结果、复现条件。<b>排查假设不写成已确认根因，不编造测试限值。</b></p>
+    </div>
+    <div class="csec">
+      <h4>WorkBuddy 实测截图（点击放大）</h4>
+      <div class="shotgrid">
+        <div class="shot" data-full="../assets/knowledge-skill/scene-c-input.jpg" data-cap="新人输入「串口报 Error 0x0A，板子灯不亮」，助手检索无直接匹配案例，列出 4 个相似模拟案例供参考">
+          <img src="../assets/knowledge-skill/scene-c-input.jpg" alt="故障输入截图" loading="lazy">
+          <div class="cap"><b>① 故障提问</b>无直接命中时如实告知，给相似案例作线索</div>
+        </div>
+        <div class="shot" data-full="../assets/knowledge-skill/scene-c-approach.jpg" data-cap="助手解释模拟数据用途，给出供电 / 时序 / 链路分层排查顺序，并说明不猜测 Error 0x0A 含义">
+          <img src="../assets/knowledge-skill/scene-c-approach.jpg" alt="分层排查截图" loading="lazy">
+          <div class="cap"><b>② 分层排查</b>先供电后通信，不猜测错误码含义</div>
+        </div>
+        <div class="shot" data-full="../assets/knowledge-skill/scene-c-instruments.jpg" data-cap="助手详解 Error 0x0A 含义的不确定性，列出所需仪器，并提供「整理草稿 / 继续排查」两个选项">
+          <img src="../assets/knowledge-skill/scene-c-instruments.jpg" alt="仪器与选项截图" loading="lazy">
+          <div class="cap"><b>③ 仪器与证据</b>列仪器清单，把选择权留给工程师</div>
+        </div>
+        <div class="shot" data-full="../assets/knowledge-skill/scene-c-draft.jpg" data-cap="用户要求把「上电闪一下就灭」排查思路整理成知识卡草稿，助手生成 BE-007 草稿">
+          <img src="../assets/knowledge-skill/scene-c-draft.jpg" alt="BE-007 草稿截图" loading="lazy">
+          <div class="cap"><b>④ 草稿生成</b>BE-007 经验草稿，标注待审核与待补字段</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="lb" id="lb" aria-label="截图放大查看"><img id="lb-img" alt=""><div class="txt" id="lb-txt"></div></dialog>
+
+<script>
+/* ============================================================
+   Knowledge Skill 页面交互（v2 · 三栏工作台）
+   1. 演示工作台：左步骤导航 / 中对话流程 / 右知识卡结果
+   2. 场景 B：可点击的预置上下文选项 → 动态 Query 改写
+   3. 案例详情弹窗 + 截图灯箱（均为 <dialog>）
+   全部为预置案例内容，无网络请求。
+   ============================================================ */
+(function () {
+  "use strict";
+
+  /* ---------- 场景 B 交互状态（预置选项） ---------- */
+  var ctx = { obj: "", goal: "", stage: "" };
+  var OPTS = {
+    obj:  ["摄像头 · PHY 转接板", "车载雷达整机", "半成品裸板"],
+    goal: ["链路通断", "协商速率与双工", "吞吐性能"],
+    stage:["EVT", "DVT", "PVT"]
+  };
+
+  /* ---------- 演示数据（内容依据真实文档与测试记录） ----------
+     每步：{ nav: 短标签, tag: 步骤条, title: 标题, mid: 中栏对话 HTML,
+             side: 右栏结果卡 HTML（可为函数，接收 ctx） } */
+  var SCENES = {
+    a: {
+      label: "场景 A · 老工程师经验沉淀",
+      caseBtn: "查看案例：TM-016 ↗", caseId: "tm016",
+      steps: [
+        {
+          nav: "口述输入", tag: "STEP 1 · 原始输入",
+          title: "老工程师口述一段刚发生的测试经验",
+          mid: '<div class="chat"><div class="msg user"><span class="who">工程师（口述）</span>今天测这个千兆以太网，需要一个主设备，一根网线，一个转接板。步骤就是先插线再上电，<b>差点烧了，必须注意断电插拔</b>。</div></div>',
+          side: '<div class="stack"><p class="note">AI 不要求工程师「写一篇规范文档」——<b>原话直接就是输入</b>，整理工作交给 Skill（入口 C）。</p><p class="note warn">本演示为<b>预置案例</b>，内容来自真实测试记录。</p></div>'
+        },
+        {
+          nav: "意图识别", tag: "STEP 2 · 意图识别",
+          title: "AI 识别经验类型：安全操作规范，不是 Bug",
+          mid: '<div class="chat"><div class="msg ai"><span class="who">Knowledge Skill</span>识别到一条<b>经验沉淀</b>请求。初步判定：性质不是 Bug 调试记录，而是<b>安全操作规范（测试方法类）</b>——核心是「插拔网线必须断电」的操作顺序。是否按测试方法卡 / 安全操作规范来归档？</div><div class="msg user"><span class="who">工程师</span>1. 烧的是 PHY 芯片引脚，真损坏了。 2. 这个口不带 PoE。 3. 按测试方法卡 / 安全操作规范来写。</div></div>',
+          side: '<div class="stack"><div class="kcard"><span class="kid">关键澄清 × 3</span><h4>只问最必要的</h4><ul class="missing"><li><b>损坏部位</b>：PHY 芯片引脚，真损坏</li><li><b>端口属性</b>：不带 PoE</li><li><b>卡片类型</b>：测试方法卡 / 安全操作规范</li></ul></div><p class="note"><b>追问纪律：</b>一次最多 3 个关键问题，不抛十几个问题。</p></div>'
+        },
+        {
+          nav: "草稿预览", tag: "STEP 3 · 结构化草稿",
+          title: "按统一模板生成 TM-016 知识卡草稿",
+          mid: '<div class="chat"><div class="msg ai"><span class="who">Knowledge Skill</span>已按测试方法卡模板生成草稿：<b>原文逐句保留</b>，未提供的信息一律标「待补充 / 待确认」，未补充任何原文之外的结论。草稿未写入。</div></div>',
+          side: '<div class="kcard"><span class="kid">TM-016 · test_method</span><h4>以太网接口断电插拔操作规范</h4><div class="row"><span class="k">强制规则</span><span class="v">插拔网线 / 跳线 / 转接板前，主设备 + 被测板 + 电源<b>全部断电</b></span></div><div class="row"><span class="k">适用范围</span><span class="v">台架链路验证、整机 / 半成品以太网通信测试</span></div><div class="row"><span class="k">来源</span><span class="v">工程师本人真实经历（PHY 引脚确已损坏）</span></div><div class="row"><span class="k">原文</span><span class="v">口述逐句保留，可回溯核对</span></div></div>'
+        },
+        {
+          nav: "缺失字段", tag: "STEP 4 · 来源与缺失字段",
+          title: "如实标注：哪些已确认，哪些还缺",
+          mid: '<div class="chat"><div class="msg ai"><span class="who">Knowledge Skill</span>草稿暂不写入。以下信息缺失，补齐后才能支撑审核：<ul><li>产品类型、板卡版本、<b>PHY 芯片型号与位号</b></li><li>损坏瞬间现象（打火 / 发烫 / 冒烟）与照片、测量数据</li><li>供电条件与限流设置</li><li>「断电插拔」规则的正式依据出处（EHS 规程 / 安全规范）</li></ul></div></div>',
+          side: '<div class="kcard"><span class="kid">缺失字段清单</span><h4>未确认 ≠ 可省略</h4><ul class="missing"><li>本条<b>不含任何电压 / 电流 / 阻抗限值</b>——PHY 耐压必须查器件手册</li><li>「断电插拔」依据来源<b>待补充</b>：工程师工程判断 or 项目安全规范</li><li>单次事故、口述整理、未做测量取证——<b>证据强度有限</b>，如实标注</li></ul></div>'
+        },
+        {
+          nav: "审核状态", tag: "STEP 5 · 审核状态",
+          title: "三级状态：草稿 → 确认 → 待审核 → 发布",
+          mid: '<div class="chat"><div class="msg ai"><span class="who">Knowledge Skill</span>当前状态：<b>草稿（未写入）</b>。写入后记录 <code>review_status=待审核</code>；评审通过后才成为正式知识。待审核内容在检索中只作「待确认线索」，不作正式操作依据。</div></div>',
+          side: '<div class="stack"><div class="sttitle" style="font-size:10.5px;letter-spacing:.14em;font-weight:700;color:var(--purple)">知识状态流转</div><div class="stflow">' +
+            '<div class="row"><span class="b">1</span><span class="rail"><i></i></span><p><b>草稿</b><small>AI 生成 · 未写入 · 可随时修改</small></p></div>' +
+            '<div class="row"><span class="b">2</span><span class="rail"><i></i></span><p><b>工程师确认</b><small>看过草稿 · 补充缺失字段 · --commit</small></p></div>' +
+            '<div class="row"><span class="b">3</span><span class="rail"><i></i></span><p><b>写入 · 待审核</b><small>进入知识库 · 检索中标注「待确认线索」</small></p></div>' +
+            '<div class="row"><span class="b">✓</span><span class="rail"><i></i></span><p><b>评审通过</b><small>成为正式知识 · 可作为操作依据</small></p></div>' +
+            '</div></div>'
+        },
+        {
+          nav: "写入检索", tag: "STEP 6 · 交付",
+          title: "确认后写入，知识卡可被检索复用",
+          mid: '<div class="chat"><div class="msg ai"><span class="who">Knowledge Skill</span>已生成完整规范卡：强制规则、正确操作顺序（断电 → 插线 → 复核 → 上电）、五条禁止事项、需查阅资料清单、关联知识（TM-010 / TM-013 / TM-012）。写入后自动重建索引，并复核新记录可被检索。</div></div>',
+          side: '<div class="stack"><p class="note">沉淀的价值闭环：<b>下次新人查「以太网怎么测」，第一条铁律就是这张卡。</b></p><button class="btn btn-g btn-sm case-open" type="button" style="display:inline-flex" data-case="tm016">查看 TM-016 完整内容 ↗</button></div>'
+        }
+      ]
+    },
+    b: {
+      label: "场景 B · 新人日常查询",
+      caseBtn: "查看案例：DVT 检查清单 ↗", caseId: "dvt",
+      steps: [
+        {
+          nav: "模糊提问", tag: "STEP 1 · 用户输入",
+          title: "新人的模糊问题",
+          mid: '<div class="chat"><div class="msg user"><span class="who">新工程师</span>测以太网怎么弄？</div></div>',
+          side: '<div class="stack"><p class="note">典型的「小白提问」：不知道测试对象、测试目标，也不知道该用什么关键词检索（入口 A）。</p><p class="note warn"><b>预置案例演示</b>，非实时连接。</p></div>'
+        },
+        {
+          nav: "关键追问", tag: "STEP 2 · 关键追问",
+          title: "AI 只追问最影响检索的 3 个问题",
+          mid: '<div class="chat"><div class="msg ai"><span class="who">Knowledge Skill</span>为了给你<b>能直接用</b>的步骤而不是通用科普，先确认 3 件事：<ul><li><b>测试对象</b>？（如摄像头、PHY 转接板）</li><li><b>测试目标</b>？（链路通断 / 协商速率 / 吞吐）</li><li>当前<b>研发阶段</b>？（EVT / DVT / PVT）</li></ul></div></div>',
+          side: '<div class="kcard"><span class="kid">追问纪律</span><h4>少问、问关键</h4><div class="row"><span class="k">规则</span><span class="v">优先询问<b>最影响检索结果与操作正确性</b>的 1–3 个问题；能从可信资料自动获取的不问。</span></div><div class="row"><span class="k">禁止</span><span class="v">不把「项目默认版本」当作用户正在测的版本。</span></div></div>'
+        },
+        {
+          nav: "补充上下文", tag: "STEP 3 · 补充上下文（点击选择）",
+          title: "你来补充：测试对象 / 目标 / 阶段",
+          mid: '<div class="opts">' +
+            '<div class="optg"><div class="optl">测试对象 <em>*</em></div><div class="optrow" data-kg="obj">' + OPTS.obj.map(function(o){return '<button class="opt" type="button" data-v="'+o+'">'+o+'</button>';}).join("") + '</div></div>' +
+            '<div class="optg"><div class="optl">测试目标 <em>*</em></div><div class="optrow" data-kg="goal">' + OPTS.goal.map(function(o){return '<button class="opt" type="button" data-v="'+o+'">'+o+'</button>';}).join("") + '</div></div>' +
+            '<div class="optg"><div class="optl">研发阶段 <em>*</em></div><div class="optrow" data-kg="stage">' + OPTS.stage.map(function(o){return '<button class="opt" type="button" data-v="'+o+'">'+o+'</button>';}).join("") + '</div></div>' +
+            '<p class="opt-hint">已选 <b id="optCnt">0 / 3</b> —— 点「下一步」查看 Query 如何被改写（未选的维度将标「待补充」）。</p>' +
+            '</div>',
+          side: function () {
+            var picked = [ctx.obj, ctx.goal, ctx.stage].filter(Boolean).length;
+            return '<div class="stack"><div class="kcard"><span class="kid">已补充的上下文</span><h4>Query 前置条件</h4><div class="row"><span class="k">测试对象</span><span class="v">' + (ctx.obj || '<span style="color:var(--cherry)">待补充</span>') + '</span></div><div class="row"><span class="k">测试目标</span><span class="v">' + (ctx.goal || '<span style="color:var(--cherry)">待补充</span>') + '</span></div><div class="row"><span class="k">研发阶段</span><span class="v">' + (ctx.stage || '<span style="color:var(--cherry)">待补充</span>') + '</span></div></div>' + (picked === 3 ? '<p class="note">三项齐了，下一步看 <b>Query 改写</b>。</p>' : '<p class="note warn">还差 <b>' + (3 - picked) + '</b> 项——真实使用中，这些就是 AI 追问的问题。</p>') + '</div>';
+          }
+        },
+        {
+          nav: "Query 改写", tag: "STEP 4 · Query 改写",
+          title: "模糊口语 → 有上下文、有边界的检索任务",
+          mid: function () {
+            return '<div class="chat"><div class="msg ai"><span class="who">Knowledge Skill</span>内部 Query 已按你补充的上下文改写：</div></div>';
+          },
+          side: function () {
+            return '<div class="kcard"><span class="kid">内部 Query（改写后摘要）</span><h4>以太网链路连通性测试 · ' + (ctx.stage || '<span style="color:var(--cherry)">阶段待补充</span>') + '</h4><div class="row"><span class="k">测试对象</span><span class="v">' + (ctx.obj || '<span style="color:var(--cherry)">待补充</span>') + '</span></div><div class="row"><span class="k">测试目标</span><span class="v">' + (ctx.goal || '<span style="color:var(--cherry)">待补充</span>') + '</span></div><div class="row"><span class="k">别名扩展</span><span class="v">千兆以太网 · 1000BASE-T · link-up · 丢包</span></div></div><p class="note" style="margin-top:12px">Query 改写不是加同义词，而是转化为<b>有上下文、有检索条件、有边界</b>的查询任务。回到第 3 步可以换一组选择再看变化。</p>';
+          }
+        },
+        {
+          nav: "检索命中", tag: "STEP 5 · 检索结果",
+          title: "命中 TM-010 + TM-016，整合为 DVT 检查清单",
+          mid: '<div class="chat"><div class="msg ai"><span class="who">Knowledge Skill</span>检索命中：<b>TM-010</b>《通信与高速数据链路测试》S5 以太网步骤（待审核 · 通用方法-待项目验证）+ <b>TM-016</b>《以太网接口断电插拔操作规范》（待审核 · 工程师经验-已发生事故）。已按你的场景整合为检查清单，来源与状态逐条标注。</div></div>',
+          side: '<div class="kcard"><span class="kid">检索优先级</span><h4>结果怎么排序</h4><div class="row"><span class="k">①</span><span class="v">同产品、同版本、同条件的<b>已审核</b>经验</span></div><div class="row"><span class="k">②</span><span class="v">同产品不同版本，<b>明确提示差异</b></span></div><div class="row"><span class="k">③</span><span class="v">相似产品 / 故障经验，作排查线索</span></div><div class="row"><span class="k">④</span><span class="v">正式规范、Datasheet、仪器手册</span></div><div class="row"><span class="k">⑤</span><span class="v"><b>未审核经验只作待确认线索</b>，不作正式操作依据</span></div></div>'
+        },
+        {
+          nav: "检查清单", tag: "STEP 6 · 检查清单",
+          title: "从安全纪律到数据记录，分步可执行",
+          mid: '<div class="chat"><div class="msg ai"><span class="who">Knowledge Skill</span>这是整合后的检查清单（S0–S4）：</div></div>',
+          side: '<div class="stack"><div class="steps-flow">' +
+            '<div class="sline warn"><b>S0</b><span><b>安全检查（最优先）</b>：两侧全部断电 → 断电插线 → 复核。跳过不得进入后续。</span></div>' +
+            '<div class="sline"><b>S1</b><span>上电与链路建立：读 PHY 状态寄存器确认 link-up（地址依手册，待确认）</span></div>' +
+            '<div class="sline"><b>S2</b><span>协商核对：速率（100M/1000M）与双工符合项目预期</span></div>' +
+            '<div class="sline"><b>S3</b><span>连通性与丢包：互 ping 统计丢包率与延迟（阈值待确认）</span></div>' +
+            '<div class="sline"><b>S4</b><span>数据记录：每次测试一行，含插拔时机与操作人</span></div>' +
+            '</div><p class="note warn">具体器件信息、测试参数和判定阈值<b>仍需工程师确认</b>。</p><button class="btn btn-g btn-sm case-open" type="button" style="display:inline-flex" data-case="dvt">查看完整检查清单 ↗</button></div>'
+        }
+      ]
+    },
+    c: {
+      label: "场景 C · 新人遇到故障",
+      caseBtn: "查看案例：BE-007 ↗", caseId: "be007",
+      steps: [
+        {
+          nav: "故障提问", tag: "STEP 1 · 初始问题",
+          title: "新人带着现象来求助",
+          mid: '<div class="chat"><div class="msg user"><span class="who">新工程师</span>串口报了 <b>Error 0x0A</b>，板子灯不亮。</div></div>',
+          side: '<div class="stack"><p class="note">信息严重不足：不知道产品类型、错误码来源、供电方式。AI <b>不会</b>直接生成一段「通用排查步骤」应付（入口 B）。</p></div>'
+        },
+        {
+          nav: "检索+追问", tag: "STEP 2 · 追问上下文",
+          title: "如实告知无直接命中，再追问关键信息",
+          mid: '<div class="chat"><div class="msg ai"><span class="who">Knowledge Skill</span>知识库中<b>没有直接匹配的已审核案例</b>；有 4 条相似模拟案例可作排查线索。为缩小范围请补充：<ul><li><b>产品类型</b>？整机样机还是半成品板？</li><li><b>报错软件</b>？（上位机 / 串口助手 / 自研工具）</li><li><b>上电表现</b>？指示灯有无动作？供电路径？</li></ul></div></div>',
+          side: '<div class="kcard"><span class="kid">检索口径</span><h4>无命中时怎么办</h4><div class="row"><span class="k">规则</span><span class="v">score 无命中时<b>明确告知</b>「未检索到已审核案例」，再给有边界的通用框架，全部标「待确认」。</span></div><div class="row"><span class="k">限制</span><span class="v">BE-001~004 为<b>模拟案例</b>，只作线索，不包装成真实项目经验。</span></div></div>'
+        },
+        {
+          nav: "补充信息", tag: "STEP 3 · 补充信息",
+          title: "故障画像逐渐清晰",
+          mid: '<div class="chat"><div class="msg user"><span class="who">新工程师</span>1. 车载摄像头，整机样机。 2. 上位机测试软件（串口助手）报的。 3. 上电瞬间闪一下就灭了，供电是经过 PMIC 转接板的。</div></div>',
+          side: '<div class="kcard"><span class="kid">关键线索</span><h4>「上电瞬间闪一下就灭」</h4><div class="row"><span class="k">指向</span><span class="v"><b>供电问题</b>，而非串口通信本身</span></div><div class="row"><span class="k">0x0A</span><span class="v">含义待确认，疑似设备无响应 / 通信失败——<b>属于结果而非根因</b></span></div></div>'
+        },
+        {
+          nav: "分层排查", tag: "STEP 4 · 分层排查路径",
+          title: "供电 → 时序 → 链路，顺序不乱",
+          mid: '<div class="chat"><div class="msg ai"><span class="who">Knowledge Skill</span>按「供电到时序到链路」的分层排查思路（参考 TM-001 PMIC 全项、TM-009 电源与启动时序、TM-013 先验证测量链）：</div></div>',
+          side: '<div class="steps-flow">' +
+            '<div class="sline"><b>①</b><span><b>验证测量链</b>：仪器共地、探头接地弹簧 &lt;1cm、电源先设限流再升压，排除假故障</span></div>' +
+            '<div class="sline"><b>②</b><span><b>供电检查</b>：冷态量 PMIC 各输出轨对地阻抗；短路 / 低阻 → OCP/SCP 关断是「闪一下就灭」的强嫌疑根因（<b>待确认</b>）</span></div>' +
+            '<div class="sline"><b>③</b><span><b>上电波形与时序</b>：多通道示波器以输入 / 第一级轨 / EN / PGOOD 触发，锁存完整上电过程</span></div>' +
+            '<div class="sline"><b>④</b><span><b>通信链路</b>：0x0A 是结果不是根因，不优先排查串口</span></div>' +
+            '</div>'
+        },
+        {
+          nav: "仪器证据", tag: "STEP 5 · 仪器与证据",
+          title: "需要什么仪器，要采什么证据",
+          mid: '<div class="chat"><div class="msg ai"><span class="who">Knowledge Skill</span>排查准备如下。注意：目前<b>根因尚未定位</b>，以下为待验证的排查假设与证据采集清单，不是结论。</div></div>',
+          side: '<div class="stack"><div class="kcard"><span class="kid">排查准备</span><h4>仪器与证据</h4><div class="row"><span class="k">仪器</span><span class="v">示波器（多通道，抓上电波形最关键）· 万用表 · 可编程电源 · 电子负载（可选）</span></div><div class="row"><span class="k">证据</span><span class="v">各轨对地阻抗实测值 · 完整上电波形（哪级先掉 / 电流尖峰 / EN 抖动）</span></div><div class="row"><span class="k">待确认</span><span class="v">PMIC 型号 · 阶段 · 哪路供电 · 0x0A 来源软件 · 复现条件</span></div></div></div>'
+        },
+        {
+          nav: "知识草稿", tag: "STEP 6 · 知识草稿",
+          title: "「把这次排查整理成知识卡」",
+          mid: '<div class="chat"><div class="msg user"><span class="who">新工程师</span>帮我把上面这套『上电闪一下就灭』的分层排查整理成一条知识卡草稿。</div><div class="msg ai"><span class="who">Knowledge Skill</span>已生成 <b>BE-007 · PMIC 电源管理芯片 不亮问题 · 工程师经验草稿</b>：口述原文逐句保留、按 Bug 经验卡模板组织、标注拟分配 knowledge_id 与拟写入目录。草稿<b>未写入</b>——需工程师确认后再 --commit，写入后为「待审核」状态。</div></div>',
+          side: '<div class="stack"><div class="kcard"><span class="kid">BE-007 状态</span><h4>如实标注</h4><ul class="missing"><li><b>根因尚未定位</b>——排查假设不写成已确认根因</li><li><b>证据待补充</b>——波形 / 日志 / 实测数据</li><li><b>草稿待审核</b>——未经评审不得作为放行依据</li><li>不编造测试限值，不声称已修复故障</li></ul></div><button class="btn btn-g btn-sm case-open" type="button" style="display:inline-flex" data-case="be007">查看 BE-007 完整草稿 ↗</button></div>'
+        }
+      ]
+    }
+  };
+
+  /* ---------- 工作台渲染 ---------- */
+  var dnav = document.getElementById("dnav");
+  var dmid = document.getElementById("dmid");
+  var dside = document.getElementById("dside");
+  var btnPrev = document.getElementById("demoPrev");
+  var btnNext = document.getElementById("demoNext");
+  var btnCase = document.getElementById("demoCase");
+  var tabs = Array.prototype.slice.call(document.querySelectorAll(".demo-tab"));
+  var curScene = "a", curStep = 0;
+
+  function html(v) { return typeof v === "function" ? v(ctx) : v; }
+
+  function render() {
+    var sc = SCENES[curScene];
+    /* 左：步骤导航 */
+    dnav.replaceChildren();
+    var t = document.createElement("p");
+    t.className = "dtitle"; t.textContent = "演示步骤";
+    dnav.appendChild(t);
+    sc.steps.forEach(function (s, i) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "dstepnav" + (i < curStep ? " done" : "") + (i === curStep ? " on" : "");
+      b.innerHTML = "<i>" + (i + 1) + "</i>" + s.nav;
+      b.addEventListener("click", function () { curStep = i; render(); });
+      dnav.appendChild(b);
+    });
+    var bar = document.createElement("div");
+    bar.className = "dbar";
+    bar.innerHTML = '<div class="track"><i style="width:' + ((curStep + 1) / sc.steps.length * 100) + '%"></i></div><div class="cnt">步骤 ' + (curStep + 1) + ' / ' + sc.steps.length + '</div>';
+    dnav.appendChild(bar);
+
+    /* 中：对话流程 */
+    var st = sc.steps[curStep];
+    dmid.innerHTML = '<span class="tagline">' + st.tag + '</span><h3>' + st.title + '</h3>' + html(st.mid);
+
+    /* 右：结果面板 */
+    dside.innerHTML = '<div class="stitle">结果面板</div>' + html(st.side);
+
+    /* 底部按钮 */
+    btnPrev.disabled = curStep === 0;
+    btnPrev.style.opacity = curStep === 0 ? .45 : 1;
+    btnNext.textContent = curStep === sc.steps.length - 1 ? "完成 ✓" : "下一步 ›";
+    btnCase.style.display = curStep === sc.steps.length - 1 ? "inline-flex" : "none";
+    btnCase.textContent = sc.caseBtn;
+
+    /* 场景 B：绑定预置选项点击 */
+    if (curScene === "b" && curStep === 2) bindOpts();
+  }
+
+  function bindOpts() {
+    document.querySelectorAll(".optrow .opt").forEach(function (o) {
+      if (ctx[o.parentElement.getAttribute("data-kg")] === o.getAttribute("data-v")) o.classList.add("on");
+      o.addEventListener("click", function () {
+        ctx[o.parentElement.getAttribute("data-kg")] = o.getAttribute("data-v");
+        o.parentElement.querySelectorAll(".opt").forEach(function (x) { x.classList.remove("on"); });
+        o.classList.add("on");
+        var picked = [ctx.obj, ctx.goal, ctx.stage].filter(Boolean).length;
+        var c = document.getElementById("optCnt");
+        if (c) c.textContent = picked + " / 3";
+        renderSideOnly();
+      });
+    });
+  }
+  /* 只刷新右侧面板（不打断中栏点击） */
+  function renderSideOnly() {
+    var st = SCENES[curScene].steps[curStep];
+    if (typeof st.side === "function") dside.innerHTML = '<div class="stitle">结果面板</div>' + st.side(ctx);
+  }
+
+  function switchScene(key) {
+    curScene = key; curStep = 0;
+    if (key !== "b") ctx = { obj: "", goal: "", stage: "" };
+    tabs.forEach(function (t) {
+      var on = t.getAttribute("data-scene") === key;
+      t.classList.toggle("on", on);
+      t.setAttribute("aria-selected", on ? "true" : "false");
+    });
+    render();
+  }
+
+  tabs.forEach(function (t) {
+    t.addEventListener("click", function () { switchScene(t.getAttribute("data-scene")); });
+  });
+  btnPrev.addEventListener("click", function () { if (curStep > 0) { curStep--; render(); } });
+  btnNext.addEventListener("click", function () {
+    var n = SCENES[curScene].steps.length;
+    if (curStep < n - 1) { curStep++; render(); }
+  });
+  document.querySelectorAll("[data-goto-scene]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      switchScene(b.getAttribute("data-goto-scene"));
+      document.getElementById("demo").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+  /* 侧面板与中栏的案例按钮 */
+  dside.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-case]");
+    if (b) openCase(b.getAttribute("data-case"));
+  });
+
+  render();
+
+  /* ---------- 案例详情弹窗 ---------- */
+  var CASE_MAP = { tm016: "case-tm016", dvt: "case-dvt", be007: "case-be007" };
+  function openCase(id) {
+    var dlg = document.getElementById(CASE_MAP[id]);
+    if (!dlg) return;
+    dlg.showModal();
+    dlg.querySelector(".cpaper").scrollTop = 0;
+  }
+  document.querySelectorAll(".cases [data-case]").forEach(function (b) {
+    b.addEventListener("click", function () { openCase(b.getAttribute("data-case")); });
+  });
+  btnCase.addEventListener("click", function () { openCase(SCENES[curScene].caseId); });
+  document.querySelectorAll(".casedialog .cclose").forEach(function (b) {
+    b.addEventListener("click", function () { b.closest("dialog").close(); });
+  });
+  document.querySelectorAll(".casedialog").forEach(function (dlg) {
+    dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });
+  });
+
+  /* ---------- 截图灯箱（dialog，覆盖在案例弹窗之上） ---------- */
+  var lb = document.getElementById("lb");
+  var lbImg = document.getElementById("lb-img");
+  var lbTxt = document.getElementById("lb-txt");
+  document.querySelectorAll(".shot").forEach(function (s) {
+    s.addEventListener("click", function () {
+      lbImg.src = s.getAttribute("data-full");
+      lbTxt.textContent = s.getAttribute("data-cap") || "";
+      lb.showModal();
+    });
+  });
+  function closeLb() { lb.close(); lbImg.src = ""; }
+  lb.addEventListener("click", function (e) { if (e.target === lb || e.target === lbImg) closeLb(); });
+  lb.addEventListener("cancel", function () { closeLb(); });
+
+  /* ---------- URL 参数直达：?scene=a|b|c&step=N&case=tm016|dvt|be007 ---------- */
+  try {
+    var q = new URLSearchParams(location.search);
+    var qs = q.get("scene"), qp = parseInt(q.get("step"), 10), qc = q.get("case");
+    if (qc && CASE_MAP[qc]) {
+      openCase(qc);
+    } else if (qs && SCENES[qs]) {
+      switchScene(qs);
+      var n = SCENES[qs].steps.length;
+      if (!isNaN(qp)) { curStep = Math.max(0, Math.min(n - 1, qp - 1)); render(); }
+      document.getElementById("demo").scrollIntoView({ behavior: "auto", block: "start" });
+    }
+  } catch (e) { /* 参数异常时忽略，保持默认状态 */ }
+})();
+</script>
+</body>
+</html>
