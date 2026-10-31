@@ -217,7 +217,7 @@
       index: "03 / AI EVALUATION · PROJECT FILE", title: "AI Video Lab", subtitle: "AI 视频模型测评",
       origin: "从 AI 视频生成的实际观看体验出发，探索用一致的观察维度比较不同模型，记录能力与局限。",
       capabilities: ["对比多模型的视频生成效果", "观察角色外观与跨镜头一致性", "评测动作表现、连贯性与自然程度"],
-      note: "以上为项目探索方向"
+      href: "projects/AI_Video_Evaluation.html"
     }
   };
   var projectDialog = document.getElementById("project-file");
