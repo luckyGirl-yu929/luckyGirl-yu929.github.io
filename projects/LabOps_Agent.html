@@ -3,25 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LabOps Agent · AI 智能研发资源管理平台 | 曾雨作品集</title>
-<meta name="description" content="从车载硬件测试中的资源协调难题出发，探索如何用规则引擎与 Agent 工具调用改善实验室预约体验。">
+<title>LabOps Agent · 输入测试任务，生成多设备预约单 | 曾雨作品集</title>
+<meta name="description" content="LabOps Agent：多设备预约助手原型。工程师描述测试内容与时间，助手按预设任务规则匹配设备、校验预约条件并生成预约单，常规设备自动通过，特殊情形转人工审批。">
 <style>
   :root{
     --bg:#0b0812;
     --bg-2:#0f0b17;
     --panel:#151020;
-    --panel-2:#1b1429;
+    --panel-2:#1a1327;
     --line:rgba(167,139,250,.16);
-    --line-strong:rgba(167,139,250,.34);
+    --line-2:rgba(167,139,250,.28);
     --purple:#a78bfa;
     --purple-2:#8b5cf6;
     --purple-deep:#6d28d9;
     --gold:#e9c77e;
-    --text:#ece8f6;
-    --muted:#9c93b2;
-    --muted-2:#756d8a;
+    --gold-soft:#f2d9a6;
+    --text:#efeaf8;
+    --muted:#b4abc8;
+    --muted-2:#948aa9;
+    --faint:#8b82a3;
     --ok:#7fd1a8;
+    --ok-soft:#b9eed3;
     --warn:#e8b06a;
+    --danger:#e08c8c;
+    --ai:#78e0c6;
+    --radius:16px;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -29,230 +35,340 @@
     background:var(--bg);
     color:var(--text);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-    line-height:1.75;
+    font-size:16px;line-height:1.75;
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
   }
   body::before{
     content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
     background:
-      radial-gradient(900px 520px at 12% -8%, rgba(124,58,237,.28), transparent 62%),
-      radial-gradient(760px 420px at 96% 4%, rgba(233,199,126,.10), transparent 60%),
-      radial-gradient(900px 700px at 50% 108%, rgba(109,40,217,.20), transparent 65%);
+      radial-gradient(900px 540px at 10% -8%,rgba(124,58,237,.30),transparent 62%),
+      radial-gradient(760px 440px at 96% 2%,rgba(233,199,126,.10),transparent 62%),
+      radial-gradient(1000px 760px at 50% 108%,rgba(109,40,217,.22),transparent 66%);
   }
   a{color:var(--purple);text-decoration:none}
-  .wrap{max-width:1080px;margin:0 auto;padding:0 28px;position:relative;z-index:1}
+  img{max-width:100%;display:block}
+  button{font:inherit}
+  ::selection{background:rgba(167,139,250,.35);color:#fff}
+  .wrap{width:100%;max-width:1180px;margin:0 auto;padding:0 28px;position:relative;z-index:1}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}
 
   /* ---------- 顶栏 ---------- */
-  .topbar{
-    position:sticky;top:0;z-index:50;
-    backdrop-filter:blur(14px);
-    background:rgba(11,8,18,.78);
-    border-bottom:1px solid var(--line);
-  }
-  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:58px}
-  .brand{display:flex;align-items:center;gap:10px;font-size:14px;letter-spacing:.06em}
-  .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold)}
-  .brand b{font-weight:600}
+  .topbar{position:sticky;top:0;z-index:60;background:rgba(11,8,18,.82);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:18px}
+  .brand{display:flex;align-items:center;gap:10px;font-size:14px;letter-spacing:.05em;white-space:nowrap}
+  .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 14px var(--gold)}
+  .brand b{font-weight:650}
   .brand span{color:var(--muted-2)}
-  .topnav{display:flex;gap:22px;font-size:13px;color:var(--muted)}
-  .topnav a{color:var(--muted)}
+  .topnav{display:flex;gap:20px;font-size:13px;color:var(--muted);overflow:hidden}
+  .topnav a{color:var(--muted);white-space:nowrap;transition:color .18s}
   .topnav a:hover{color:var(--purple)}
 
   /* ---------- Hero ---------- */
-  .hero{padding:76px 0 54px}
+  .hero{padding:78px 0 46px}
   .kicker{
     display:inline-flex;align-items:center;gap:8px;
-    font-size:12px;letter-spacing:.14em;text-transform:uppercase;
-    color:var(--gold);border:1px solid rgba(233,199,126,.30);
-    background:rgba(233,199,126,.06);
-    padding:5px 13px;border-radius:999px;margin-bottom:22px;
+    font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--gold);border:1px solid rgba(233,199,126,.32);
+    background:rgba(233,199,126,.07);padding:6px 13px;border-radius:999px;margin-bottom:22px;
   }
-  h1{font-size:clamp(30px,4.4vw,50px);line-height:1.22;letter-spacing:-.02em;font-weight:700;max-width:100%;overflow-wrap:anywhere}
-  h1 em{
-    font-style:normal;
-    background:linear-gradient(96deg,var(--purple) 0%,var(--gold) 96%);
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  .hero-sub{margin-top:20px;font-size:17px;color:var(--muted);max-width:720px}
-  .hero-sub b{color:var(--text);font-weight:600}
+  h1{font-size:clamp(32px,4.8vw,56px);line-height:1.16;letter-spacing:-.025em;font-weight:750;max-width:15em}
+  h1 em{font-style:normal;color:var(--gold);position:relative;z-index:0}
+  h1 em::after{content:"";position:absolute;left:0;right:0;bottom:.04em;height:.18em;background:rgba(233,199,126,.20);z-index:-1;border-radius:3px}
+  .hero-sub{margin-top:22px;font-size:17px;line-height:1.85;color:var(--muted);max-width:710px}
+  .hero-sub b{color:var(--text);font-weight:650}
+  .hero-sub .hl{color:var(--gold-soft);font-weight:650}
+  .hero-grid{display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);gap:52px;align-items:center}
   .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
-  .tag{
-    font-size:12.5px;padding:5px 12px;border-radius:8px;
-    border:1px solid var(--line);background:rgba(255,255,255,.03);
-    color:var(--muted);
-  }
-  .tag.hl{border-color:var(--line-strong);color:var(--purple);background:rgba(139,92,246,.10)}
-  .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px;align-items:center}
-  .btn{
-    display:inline-flex;align-items:center;gap:8px;
-    padding:12px 22px;border-radius:11px;font-size:15px;font-weight:600;
-    transition:.18s;border:1px solid transparent;
-  }
-  .btn-p{background:linear-gradient(120deg,var(--purple-2),var(--purple-deep));color:#fff;box-shadow:0 8px 26px rgba(109,40,217,.34)}
-  .btn-p:hover{filter:brightness(1.1);transform:translateY(-1px)}
-  .btn-g{border-color:var(--line-strong);color:var(--text);background:rgba(255,255,255,.02)}
+  .tag{font-size:12.5px;padding:5px 11px;border-radius:8px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--muted)}
+  .tag.hl{border-color:rgba(233,199,126,.38);color:var(--gold-soft);background:rgba(233,199,126,.08)}
+  .tag.ai{border-color:rgba(120,224,198,.30);color:var(--ai);background:rgba(120,224,198,.07)}
+  .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px;align-items:center}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 22px;border-radius:11px;font-size:14.5px;font-weight:650;transition:.18s;border:1px solid transparent;cursor:pointer}
+  .btn-p{background:linear-gradient(120deg,var(--purple-2),var(--purple-deep));color:#fff;box-shadow:0 10px 28px rgba(109,40,217,.36)}
+  .btn-p:hover{filter:brightness(1.08);transform:translateY(-1px)}
+  .btn-g{border-color:var(--line-2);color:var(--text);background:rgba(255,255,255,.02)}
   .btn-g:hover{background:rgba(167,139,250,.10);border-color:var(--purple)}
-  .btn:disabled{cursor:not-allowed;opacity:.65;transform:none;filter:none;box-shadow:none}
-  .btn-g:disabled{background:rgba(255,255,255,.02);border-color:var(--line-strong)}
-  .coldhint{font-size:13px;color:var(--muted)}
-  .coldhint b{color:#f2d29a;font-weight:600;background:none}
+  .btn:disabled{cursor:not-allowed;opacity:.6;transform:none;filter:none;box-shadow:none}
+  .coldhint{font-size:12.5px;color:var(--faint);flex-basis:100%}
+  .coldhint b{color:var(--gold-soft);font-weight:600}
 
-  /* ---------- 数据条 ---------- */
-  .stats{
-    display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
-    margin:46px 0 0;padding:26px;
-    border:1px solid var(--line);border-radius:18px;
-    background:linear-gradient(180deg,rgba(27,20,41,.72),rgba(21,16,32,.5));
+  /* ---------- Hero 右侧：对话示意 ---------- */
+  .ai-demo{
+    position:relative;border:1px solid var(--line-2);border-radius:20px;padding:18px;
+    background:linear-gradient(180deg,rgba(33,24,52,.88),rgba(18,13,29,.94));
+    box-shadow:0 26px 70px rgba(0,0,0,.45);
   }
-  .stat .n{font-size:19px;font-weight:650;letter-spacing:-.01em;color:var(--text);line-height:1.4}
-  .stat .l{font-size:13px;color:var(--muted);margin-top:9px;line-height:1.7}
-  .stat{padding:6px 2px}
+  .ai-demo::before{
+    content:"";position:absolute;inset:-1px;border-radius:20px;padding:1px;pointer-events:none;
+    background:linear-gradient(135deg,rgba(120,224,198,.32),rgba(167,139,250,.20),transparent 62%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;
+  }
+  .ai-demo-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+  .ai-title{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:650}
+  .ai-title .spark{color:var(--ai);font-size:16px}
+  .badge{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;letter-spacing:.06em;padding:3px 8px;border-radius:999px;border:1px solid rgba(233,199,126,.34);color:var(--gold-soft);background:rgba(233,199,126,.08);white-space:nowrap}
+  .badge.mock{border-color:rgba(232,176,106,.30);color:var(--warn);background:rgba(232,176,106,.08)}
+  .chat{display:grid;gap:10px}
+  .bubble-user{
+    justify-self:end;max-width:92%;font-size:13.5px;line-height:1.7;color:#fff;
+    background:linear-gradient(120deg,rgba(139,92,246,.72),rgba(109,40,217,.72));
+    border:1px solid rgba(167,139,250,.34);border-radius:14px 14px 4px 14px;padding:10px 13px;
+  }
+  .bubble-ai{
+    justify-self:start;max-width:96%;font-size:12.8px;line-height:1.7;color:var(--muted);
+    background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:14px 14px 14px 4px;padding:11px 13px;
+  }
+  .bubble-ai b{color:var(--text);font-weight:650}
+  .suggest{
+    margin-top:4px;border:1px solid rgba(120,224,198,.26);border-radius:12px;padding:12px 13px;
+    background:linear-gradient(180deg,rgba(120,224,198,.08),rgba(120,224,198,.03));
+  }
+  .suggest-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ai)}
+  .suggest-head span{color:var(--faint);letter-spacing:0;text-transform:none;font-size:11px}
+  .sug-line{display:flex;align-items:center;gap:8px;font-size:12.4px;color:var(--muted);padding:4px 0}
+  .sug-line .nm{color:var(--text);font-weight:600}
+  .sug-line .st{margin-left:auto;font-size:10.5px;padding:2px 7px;border-radius:999px;border:1px solid rgba(127,209,168,.28);color:var(--ok-soft);background:rgba(127,209,168,.09);white-space:nowrap}
+  .sug-tail{margin-top:6px;font-size:11.6px;color:var(--muted-2);line-height:1.55}
+  .demo-note{margin-top:12px;font-size:11px;color:var(--faint);line-height:1.6}
 
-  /* ---------- 区块 ---------- */
-  section{padding:62px 0;border-top:1px solid var(--line);position:relative;scroll-margin-top:70px}
-  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:26px}
-  .sec-num{
-    font-size:12px;letter-spacing:.18em;color:var(--purple);
-    border:1px solid var(--line-strong);border-radius:6px;padding:2px 8px;
-    transform:translateY(-3px);
-  }
-  h2{font-size:clamp(21px,2.4vw,27px);font-weight:650;letter-spacing:-.01em}
-  .lead{color:var(--muted);max-width:760px;font-size:15.5px}
-  .lead + .lead{margin-top:14px}
-  .lead b{color:var(--text);font-weight:600}
-  .lead strong{color:var(--gold);font-weight:600}
+  /* ---------- 首屏能力卡 ---------- */
+  .caps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:44px}
+  .cap{border:1px solid var(--line);border-radius:14px;padding:18px;background:linear-gradient(180deg,rgba(27,20,41,.76),rgba(21,16,32,.54));min-width:0}
+  .cap .ci{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:13px;margin-bottom:10px;border:1px solid rgba(233,199,126,.28);background:rgba(233,199,126,.08);color:var(--gold);font-weight:700}
+  .cap h4{font-size:14.5px;font-weight:680;margin-bottom:5px}
+  .cap p{font-size:12.6px;color:var(--muted);line-height:1.6}
+  /* ---------- 实现规模条（04 章） ---------- */
+  .scale{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:20px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:rgba(15,11,23,.45)}
+  .scale div{padding:16px 18px;border-right:1px solid var(--line);min-width:0}
+  .scale div:last-child{border-right:none}
+  .scale b{display:block;font-size:clamp(20px,2.4vw,26px);font-weight:750;color:var(--gold);line-height:1.2}
+  .scale span{font-size:12.4px;color:var(--text);font-weight:600}
+  .scale small{display:block;font-size:11.2px;color:var(--faint);line-height:1.55;margin-top:4px}
 
-  /* ---------- 问题 → 方案 ---------- */
-  .split{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:26px}
-  .pane{
-    border:1px solid var(--line);border-radius:14px;padding:22px 22px 20px;
-    background:var(--panel);
-  }
-  .pane.bad{border-color:rgba(232,176,106,.24);background:linear-gradient(180deg,rgba(232,176,106,.06),rgba(21,16,32,.6))}
-  .pane.good{border-color:rgba(127,209,168,.22);background:linear-gradient(180deg,rgba(127,209,168,.06),rgba(21,16,32,.6))}
-  .pane h3{font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
-  .pane.bad h3{color:var(--warn)}
-  .pane.good h3{color:var(--ok)}
-  .pane ul{list-style:none;display:grid;gap:10px}
-  .pane li{font-size:14.5px;color:var(--muted);padding-left:18px;position:relative}
-  .pane li::before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:50%;background:var(--muted-2)}
-  .pane li b{color:var(--text);font-weight:600}
+  /* ---------- 区块通用 ---------- */
+  section{padding:72px 0;border-top:1px solid var(--line);position:relative;scroll-margin-top:72px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:14px}
+  .sec-num{font-size:11.5px;letter-spacing:.18em;color:var(--purple);border:1px solid var(--line-2);border-radius:6px;padding:2px 8px;transform:translateY(-3px);white-space:nowrap}
+  h2{font-size:clamp(24px,3.2vw,34px);font-weight:720;letter-spacing:-.02em;line-height:1.3}
+  h2 em{font-style:normal;color:var(--gold)}
+  .lead{color:var(--muted);max-width:820px;font-size:15.5px;line-height:1.8}
+  .lead + .lead{margin-top:12px}
+  .lead b,.lead strong{color:var(--text);font-weight:650}
+  .lead .gold{color:var(--gold-soft);font-weight:650}
+  .sec-note{font-size:12px;color:var(--faint);margin-top:14px;line-height:1.7}
 
-  /* ---------- 决策卡 ---------- */
-  .decisions{display:grid;gap:16px;margin-top:26px}
-  .dec{
-    border:1px solid var(--line);border-radius:16px;padding:24px;
-    background:linear-gradient(180deg,rgba(27,20,41,.7),rgba(21,16,32,.5));
-    display:grid;grid-template-columns:44px 1fr;gap:18px;
+  /* ---------- 通用卡片 ---------- */
+  .grid{display:grid;gap:14px;margin-top:26px}
+  .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .card{
+    border:1px solid var(--line);border-radius:var(--radius);padding:22px;
+    background:linear-gradient(180deg,rgba(27,20,41,.74),rgba(21,16,32,.56));
+    min-width:0;
   }
-  .dec .idx{
-    width:34px;height:34px;border-radius:10px;display:grid;place-items:center;
-    font-size:14px;font-weight:700;color:var(--gold);
-    border:1px solid rgba(233,199,126,.28);background:rgba(233,199,126,.08);
-  }
-  .dec h3{font-size:16.5px;margin-bottom:8px;font-weight:650}
-  .dec p{font-size:14.5px;color:var(--muted)}
-  .dec p + p{margin-top:10px}
-  .dec .why{
-    margin-top:12px;font-size:13.5px;color:var(--muted);
-    border-left:2px solid var(--line-strong);padding-left:14px;
-  }
-  .dec .why b{color:var(--purple);font-weight:600}
-  code{
-    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-    font-size:12.5px;color:var(--purple);
-    background:rgba(139,92,246,.10);padding:1.5px 6px;border-radius:5px;
-    border:1px solid rgba(139,92,246,.16);
-  }
+  .card h3{font-size:16.5px;font-weight:680;line-height:1.45;margin-bottom:8px}
+  .card p{font-size:13.8px;color:var(--muted);line-height:1.75}
+  .card p b{color:var(--text);font-weight:620}
+  .card .k{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--purple);margin-bottom:8px}
+  .card .k.gold{color:var(--gold)}
+  .card .k.ai{color:var(--ai)}
+  .card .k.ok{color:var(--ok)}
+  .card .k.warn{color:var(--warn)}
+  .card ul{list-style:none;display:grid;gap:7px;margin-top:4px}
+  .card li{font-size:13.2px;color:var(--muted);padding-left:15px;position:relative;line-height:1.65}
+  .card li::before{content:"·";position:absolute;left:3px;color:var(--gold)}
+  .card li b{color:var(--text);font-weight:620}
+  .mini{font-size:12px;color:var(--faint);margin-top:10px;line-height:1.65}
+  .mini b{color:var(--muted);font-weight:600}
+  .icon-badge{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:15px;font-weight:700;margin-bottom:12px;border:1px solid var(--line-2);background:rgba(167,139,250,.08);color:var(--purple)}
+  .icon-badge.gold{color:var(--gold);border-color:rgba(233,199,126,.30);background:rgba(233,199,126,.08)}
+  .icon-badge.ai{color:var(--ai);border-color:rgba(120,224,198,.28);background:rgba(120,224,198,.08)}
+  .icon-badge.ok{color:var(--ok);border-color:rgba(127,209,168,.28);background:rgba(127,209,168,.08)}
 
-  /* ---------- 缺陷修复时间线 ---------- */
-  .story{
-    margin-top:26px;border:1px solid var(--line);border-radius:16px;
-    padding:26px;background:var(--panel);
-  }
-  .story-q{
-    font-size:15px;color:var(--text);background:rgba(232,176,106,.08);
-    border:1px dashed rgba(232,176,106,.30);border-radius:10px;padding:14px 16px;
-    margin-bottom:22px;
-  }
-  .story-q b{color:var(--warn)}
-  .steps{display:grid;gap:0;position:relative}
-  .st{display:grid;grid-template-columns:26px 1fr;gap:16px;padding-bottom:22px;position:relative}
-  .st:last-child{padding-bottom:0}
-  .st::before{
-    content:"";position:absolute;left:12px;top:22px;bottom:0;width:1px;background:var(--line);
-  }
-  .st:last-child::before{display:none}
-  .st .b{
-    width:25px;height:25px;border-radius:50%;display:grid;place-items:center;
-    font-size:11px;font-weight:700;color:var(--bg);background:var(--purple);
-    position:relative;z-index:1;
-  }
-  .st.done .b{background:var(--ok)}
-  .st h4{font-size:14.5px;margin-bottom:6px;font-weight:650}
-  .st p{font-size:14px;color:var(--muted)}
-  .st p b{color:var(--text);font-weight:600}
+  /* ---------- 场景卡 ---------- */
+  .scene-band{margin-top:26px;border:1px solid rgba(120,224,198,.22);border-radius:18px;padding:24px;background:linear-gradient(160deg,rgba(120,224,198,.06),rgba(21,16,32,.6));display:grid;grid-template-columns:minmax(0,1fr) auto;gap:22px;align-items:center}
+  .scene-band h3{font-size:17px;font-weight:680;margin-bottom:6px}
+  .scene-band p{font-size:13.8px;color:var(--muted);line-height:1.75;max-width:640px}
+  .scene-band p b{color:var(--text);font-weight:620}
+  .scene-combo{display:flex;flex-direction:column;gap:8px}
+  .scene-combo .dev{display:flex;align-items:center;gap:9px;font-size:12.8px;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:8px 13px;background:rgba(255,255,255,.03);white-space:nowrap}
+  .scene-combo .dev i{width:7px;height:7px;border-radius:50%;background:var(--ai);flex:none}
+  .scene-combo .dev small{color:var(--faint);font-size:11px;margin-left:auto}
+
+  /* ---------- 对比表 ---------- */
+  .table-wrap{position:relative;margin-top:24px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:rgba(15,11,23,.5)}
+  .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .scroll-hint{display:none;padding:8px 14px;font-size:11px;color:var(--faint);border-top:1px solid var(--line);background:rgba(255,255,255,.02)}
+  .cmp{width:100%;border-collapse:collapse;min-width:620px;font-size:13.8px}
+  .cmp th,.cmp td{padding:14px 18px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+  .cmp th{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);background:rgba(255,255,255,.025);font-weight:600;white-space:nowrap}
+  .cmp tr:last-child td{border-bottom:none}
+  .cmp td:first-child{font-weight:650;color:var(--text);white-space:nowrap}
+  .cmp .old{color:var(--muted-2)}
+  .cmp .new{color:var(--text)}
+  .cmp .new b{color:var(--gold-soft);font-weight:650}
+  .cmp .row-em td{background:rgba(233,199,126,.035)}
+
+  /* ---------- 主流程步骤 ---------- */
+  .flow-shell{margin-top:26px;border:1px solid var(--line);border-radius:18px;padding:24px;background:linear-gradient(180deg,rgba(26,19,39,.8),rgba(17,12,27,.6))}
+  .flow-k{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+  .flow-k .t{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--purple)}
+  .flow-k .sub{font-size:11.5px;color:var(--faint)}
+  .flowline{display:flex;align-items:stretch;gap:0;min-width:0}
+  .fstep{flex:1 1 0;min-width:0;border:1px solid var(--line);border-radius:12px;padding:14px 13px;background:rgba(255,255,255,.025)}
+  .fstep .fnum{font-size:10.5px;letter-spacing:.1em;color:var(--faint);margin-bottom:5px}
+  .fstep .ft{font-size:13.6px;font-weight:650;line-height:1.45}
+  .fstep .fd{font-size:11.8px;color:var(--muted);line-height:1.6;margin-top:4px}
+  .fstep.ai{border-color:rgba(120,224,198,.26);background:rgba(120,224,198,.045)}
+  .fstep.rule{border-color:rgba(167,139,250,.26);background:rgba(167,139,250,.05)}
+  .fstep.user{border-color:rgba(233,199,126,.24);background:rgba(233,199,126,.045)}
+  .farrow{flex:0 0 22px;display:grid;place-items:center;color:var(--faint);font-size:13px;align-self:center}
+
+  /* ---------- 真实示例 ---------- */
+  .example{margin-top:26px;border:1px solid var(--line);border-radius:18px;padding:24px;background:linear-gradient(180deg,rgba(26,19,39,.82),rgba(17,12,27,.62))}
+  .example .ex-input{font-size:14px;color:var(--text);border:1px solid rgba(167,139,250,.30);border-radius:12px;padding:12px 16px;background:rgba(139,92,246,.10);line-height:1.7}
+  .example .ex-input b{color:var(--gold-soft);font-weight:650}
+  .exec{display:grid;gap:9px;margin-top:16px}
+  .exec-row{display:grid;grid-template-columns:28px minmax(0,1fr);gap:12px;align-items:start;font-size:13.2px;color:var(--muted);line-height:1.65}
+  .exec-row .n{flex:none;width:24px;height:24px;border-radius:8px;display:grid;place-items:center;font-size:11px;font-weight:750;color:var(--gold);border:1px solid rgba(233,199,126,.28);background:rgba(233,199,126,.07)}
+  .exec-row b{color:var(--text);font-weight:620}
+
+  /* ---------- 审批三分支 ---------- */
+  .fork{margin-top:26px;border:1px solid var(--line);border-radius:18px;padding:24px;background:linear-gradient(180deg,rgba(26,19,39,.82),rgba(17,12,27,.62))}
+  .fork-branches{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+  .branch{border:1px solid var(--line);border-radius:13px;padding:16px;background:rgba(255,255,255,.022);min-width:0}
+  .branch .bh{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+  .branch .bt{font-size:14px;font-weight:680}
+  .branch .bx{font-size:11px;padding:2px 8px;border-radius:999px;white-space:nowrap}
+  .branch.block{border-color:rgba(224,140,140,.24);background:rgba(224,140,140,.045)}
+  .branch.block .bt{color:#f0b3b3}.branch.block .bx{border:1px solid rgba(224,140,140,.30);color:#f0b3b3;background:rgba(224,140,140,.10)}
+  .branch.manual{border-color:rgba(232,176,106,.24);background:rgba(232,176,106,.045)}
+  .branch.manual .bt{color:var(--warn)}.branch.manual .bx{border:1px solid rgba(232,176,106,.30);color:var(--warn);background:rgba(232,176,106,.10)}
+  .branch.auto{border-color:rgba(127,209,168,.24);background:rgba(127,209,168,.045)}
+  .branch.auto .bt{color:var(--ok-soft)}.branch.auto .bx{border:1px solid rgba(127,209,168,.30);color:var(--ok-soft);background:rgba(127,209,168,.10)}
+  .branch p{font-size:12.5px;color:var(--muted);line-height:1.65}
+  .branch .out{margin-top:10px;font-size:11.5px;color:var(--faint);border-top:1px dashed var(--line);padding-top:8px}
+  .branch .out b{color:var(--text);font-weight:600}
+
+  /* ---------- 设计决策 ---------- */
+  .decision{display:grid;grid-template-columns:42px minmax(0,1fr);gap:18px;border:1px solid var(--line);border-radius:16px;padding:24px;background:linear-gradient(180deg,rgba(27,20,41,.76),rgba(21,16,32,.54));min-width:0}
+  .decision .idx{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;font-size:13px;font-weight:750;color:var(--gold);border:1px solid rgba(233,199,126,.30);background:rgba(233,199,126,.08)}
+  .decision h3{font-size:17px;font-weight:680;margin-bottom:7px;line-height:1.45}
+  .decision p{font-size:13.8px;color:var(--muted);line-height:1.75}
+  .decision p b{color:var(--text);font-weight:620}
+  .decision .why{margin-top:11px;font-size:12.8px;color:var(--muted);border-left:2px solid var(--line-2);padding-left:13px;line-height:1.7}
+  .decision .why b{color:var(--gold-soft);font-weight:600}
+  .decisions{display:grid;gap:12px;margin-top:26px}
+
+  /* ---------- 技术 ---------- */
+  .tech-stack{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+  .tech-chip{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.025);color:var(--text)}
+  .arch-v{display:grid;gap:10px;margin-top:26px}
+  .layer{display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px;border:1px solid var(--line);border-radius:14px;padding:18px 20px;background:linear-gradient(180deg,rgba(27,20,41,.7),rgba(21,16,32,.5));align-items:start}
+  .layer .ln{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-size:12px;font-weight:750;color:var(--ai);border:1px solid rgba(120,224,198,.28);background:rgba(120,224,198,.07)}
+  .layer h4{font-size:14.8px;font-weight:680;margin-bottom:3px}
+  .layer p{font-size:12.8px;color:var(--muted);line-height:1.65}
+  .layer p b{color:var(--text);font-weight:620}
+
+  /* ---------- 能力边界（可折叠） ---------- */
+  .bounds{margin-top:26px;border:1px dashed var(--line-2);border-radius:14px;background:rgba(15,11,23,.4)}
+  .bounds summary{cursor:pointer;list-style:none;padding:14px 18px;font-size:13px;color:var(--muted-2);display:flex;align-items:center;gap:8px;user-select:none}
+  .bounds summary::-webkit-details-marker{display:none}
+  .bounds summary::before{content:"+";flex:none;width:18px;height:18px;border-radius:6px;display:grid;place-items:center;font-size:12px;border:1px solid var(--line-2);color:var(--faint)}
+  .bounds[open] summary::before{content:"–"}
+  .bounds summary b{color:var(--text);font-weight:620}
+  .bounds .bd{padding:0 18px 16px}
+  .boundary-list{list-style:none;display:grid;gap:9px}
+  .boundary-list li{display:flex;gap:9px;font-size:12.6px;color:var(--muted);line-height:1.65}
+  .boundary-list li .b-dot{flex:none;width:6px;height:6px;border-radius:50%;margin-top:8px;background:var(--warn)}
+  .boundary-list li b{color:var(--text);font-weight:600}
 
   /* ---------- 截图 ---------- */
-  .shots{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:26px}
-  .shot{
-    border:1px solid var(--line);border-radius:14px;overflow:hidden;
-    background:var(--panel);cursor:zoom-in;transition:.2s;
-  }
-  .shot:hover{border-color:var(--line-strong);transform:translateY(-2px);box-shadow:0 16px 40px rgba(0,0,0,.42)}
-  .shot .img{display:block;width:100%;height:auto;background:#f4f6f1}
-  .shot .cap{padding:12px 15px;font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
-  .shot .cap b{display:block;color:var(--text);font-size:13.5px;font-weight:600;margin-bottom:2px}
+  .shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:26px}
+  .shot{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel);cursor:zoom-in;transition:.2s;min-width:0}
+  .shot:hover{border-color:var(--line-2);transform:translateY(-2px);box-shadow:0 16px 40px rgba(0,0,0,.42)}
+  .shot .img{display:block;width:100%;height:auto;background:#f4f6f1;aspect-ratio:16/10;object-fit:cover;object-position:top}
+  .shot .cap{padding:12px 15px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);line-height:1.6}
+  .shot .cap b{display:block;color:var(--text);font-size:13px;font-weight:650;margin-bottom:2px}
+  .shot .cap .tiny{font-size:10.5px;color:var(--faint)}
+  .shot.feature{grid-column:1 / -1}
+  .shot.feature .img{aspect-ratio:16/9}
+  .shot.feature .cap{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}
+  .shot.feature .cap .txt b{display:block;color:var(--text);font-size:14px;font-weight:650;margin-bottom:2px}
 
-  /* ---------- 指标设计 ---------- */
-  .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:26px}
-  .metric{
-    border:1px solid var(--line);border-radius:14px;padding:20px;background:var(--panel);
-  }
-  .metric .k{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--purple);margin-bottom:8px}
-  .metric h4{font-size:15px;margin-bottom:6px;font-weight:650}
-  .metric p{font-size:13.5px;color:var(--muted)}
-
-  /* ---------- Roadmap ---------- */
-  .road{display:grid;gap:12px;margin-top:26px}
-  .road-it{
-    display:grid;grid-template-columns:110px 1fr;gap:18px;align-items:start;
-    border:1px solid var(--line);border-radius:12px;padding:18px 20px;background:var(--panel);
-  }
-  .road-it .ph{font-size:12px;letter-spacing:.1em;color:var(--gold);text-transform:uppercase;padding-top:2px}
-  .road-it h4{font-size:14.5px;font-weight:650;margin-bottom:4px}
-  .road-it p{font-size:13.5px;color:var(--muted)}
-
-  /* ---------- 结尾 ---------- */
-  .cta{
-    margin:10px 0 0;padding:34px;border-radius:18px;text-align:center;
-    border:1px solid var(--line-strong);
-    background:linear-gradient(150deg,rgba(124,58,237,.20),rgba(21,16,32,.7) 62%);
-  }
-  .cta h3{font-size:20px;margin-bottom:10px}
-  .cta p{color:var(--muted);font-size:14.5px;margin-bottom:22px}
-  footer{padding:44px 0 64px;text-align:center;color:var(--muted-2);font-size:13px;border-top:1px solid var(--line)}
-  footer a{color:var(--muted)}
+  /* ---------- CTA / 页脚 ---------- */
+  .cta{margin-top:8px;padding:34px 32px;border-radius:20px;text-align:center;border:1px solid rgba(233,199,126,.28);background:linear-gradient(150deg,rgba(124,58,237,.22),rgba(21,16,32,.74) 62%)}
+  .cta h3{font-size:22px;font-weight:700;margin-bottom:8px}
+  .cta p{color:var(--muted);font-size:13.5px;margin-bottom:20px;line-height:1.75}
+  .cta .actions{justify-content:center;margin-top:0}
+  .cta .demo-line{margin:16px 0 0;font-size:11.5px;color:var(--faint);line-height:1.7}
+  .cta .demo-line b{color:var(--gold-soft);font-weight:600}
+  footer{padding:42px 0 58px;text-align:center;color:var(--faint);font-size:12.5px;border-top:1px solid var(--line)}
+  footer p + p{margin-top:6px}
+  footer a{color:var(--muted-2)}
   footer a:hover{color:var(--purple)}
 
   /* ---------- 灯箱 ---------- */
-  .lb{
-    position:fixed;inset:0;z-index:100;display:none;
-    background:rgba(6,4,10,.94);backdrop-filter:blur(6px);
-    padding:40px;cursor:zoom-out;
-  }
+  .lb{position:fixed;inset:0;z-index:120;display:none;background:rgba(6,4,10,.95);backdrop-filter:blur(8px);padding:34px;cursor:zoom-out}
   .lb.on{display:grid;place-items:center}
-  .lb img{max-width:100%;max-height:88vh;border-radius:10px;border:1px solid var(--line-strong);box-shadow:0 30px 80px rgba(0,0,0,.6)}
-  .lb .txt{position:absolute;bottom:18px;left:0;right:0;text-align:center;font-size:13px;color:var(--muted)}
+  .lb img{max-width:100%;max-height:86vh;border-radius:10px;border:1px solid var(--line-2);box-shadow:0 30px 80px rgba(0,0,0,.6);width:auto}
+  .lb .txt{position:absolute;bottom:16px;left:0;right:0;text-align:center;font-size:12px;color:var(--muted);padding:0 20px}
 
-  @media (max-width:860px){
-    .stats{grid-template-columns:1fr 1fr}
-    .split,.shots,.metrics{grid-template-columns:1fr}
+  /* ---------- 响应式 ---------- */
+  @media (max-width:1040px){
+    .hero-grid{grid-template-columns:1fr;gap:34px}
+    .hero{padding:56px 0 40px}
+    h1{max-width:100%}
+    .ai-demo{max-width:620px}
     .topnav{display:none}
-    .dec{grid-template-columns:1fr;gap:12px}
-    .road-it{grid-template-columns:1fr;gap:6px}
-    .hero{padding:52px 0 34px}
+    .caps{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .scale{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .scale div:nth-child(2){border-right:none}
+    .scale div:nth-child(1),.scale div:nth-child(2){border-bottom:1px solid var(--line)}
+    .scene-band{grid-template-columns:1fr}
+    .scene-combo{flex-direction:row;flex-wrap:wrap}
+    .grid-3{grid-template-columns:repeat(2,minmax(0,1fr))}
+  }
+  @media (max-width:820px){
+    .wrap{padding:0 20px}
+    section{padding:42px 0}
+    .hero{padding:34px 0 28px}
+    .hero-sub{font-size:15.5px}
+    .lead{font-size:14.5px}
+    .grid{gap:11px;margin-top:18px}
+    .card{padding:18px}
+    .flowline{flex-direction:column;gap:0}
+    .farrow{flex:0 0 20px;width:100%;transform:rotate(90deg)}
+    .fstep{width:100%}
+    .flow-shell{padding:16px}
+    .fork{padding:16px}
+    .fork-branches{grid-template-columns:1fr}
+    .decision{grid-template-columns:1fr;gap:10px;padding:16px}
+    .example{padding:18px}
+    .layer{grid-template-columns:36px minmax(0,1fr);gap:12px;padding:14px 16px}
+    .shots{grid-template-columns:1fr;gap:12px}
+    .shot.feature{grid-column:auto}
+    .scroll-hint{display:block}
+    .table-wrap::after{content:"";position:absolute;top:0;right:0;width:34px;height:calc(100% - 28px);background:linear-gradient(90deg,rgba(11,8,18,0),rgba(11,8,18,.92));pointer-events:none}
+    .grid-2,.grid-3{grid-template-columns:1fr}
+  }
+  @media (max-width:520px){
+    .wrap{padding:0 16px}
+    h1{font-size:clamp(28px,8vw,36px)}
+    .kicker{font-size:10px;padding:5px 10px}
+    .caps{grid-template-columns:1fr}
+    .scale{grid-template-columns:1fr}
+    .scale div{border-right:none;border-bottom:1px solid var(--line)}
+    .scale div:last-child{border-bottom:none}
+    .cta{padding:26px 18px}
+    .cta h3{font-size:19px}
+    .shot .img{aspect-ratio:auto}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+    html{scroll-behavior:auto}
   }
 </style>
 </head>
@@ -260,158 +376,373 @@
 
 <div class="topbar">
   <div class="wrap">
-    <div class="brand"><span class="dot"></span><b>LabOps Agent</b><span>· 作品集</span></div>
-    <nav class="topnav">
-      <a href="#problem">起点</a>
-      <a href="#decisions">方案</a>
-      <a href="#story">迭代</a>
-      <a href="#ui">界面</a>
-      <a href="#metrics">价值</a>
-      <a href="#next">下一步</a>
+    <div class="brand"><span class="dot"></span><b>LabOps Agent</b><span>· 产品档案</span></div>
+    <nav class="topnav" aria-label="页面导航">
+      <a href="#scene">场景</a>
+      <a href="#solution">方案</a>
+      <a href="#decision">决策</a>
+      <a href="#impl">实现</a>
+      <a href="#me">复盘</a>
     </nav>
   </div>
 </div>
 
 <header class="hero">
   <div class="wrap">
-    <span class="kicker">个人作品集 · AI 产品经理方向 · 真实业务场景驱动</span>
-    <h1>从真实工程痛点出发，<br><em>重新设计实验室预约体验。</em></h1>
-    <p class="hero-sub">在汽车电子 Tier 1 供应商担任<b>电子工程师</b>期间，我从实验室硬件搭建逐步接触到车载摄像头与雷达测试，也发现测试之外的资源协调同样耗时：<b>跨部门找设备、逐项预约、等待审批</b>。<br><br>因此，我设计了 <b>LabOps Agent</b> 原型：探索让工程师描述测试任务，由系统辅助推荐资源、校验预约规则，并在人工确认后完成提交与状态追踪。</p>
-    <div class="meta">
-      <span class="tag hl">从工作痛点到产品方案</span>
-      <span class="tag">AI Agent 应用探索</span>
-      <span class="tag">预约与审批工作流</span>
-      <span class="tag">原型实现 · 测试迭代</span>
-      <span class="tag">Mock 演示数据</span>
-    </div>
-    <div class="actions">
-      <a class="btn btn-p" id="btn-demo" href="https://labops-agent-0qn5.onrender.com/index.html" target="_blank" rel="noopener noreferrer">打开在线 Demo ↗</a>
-      <button class="btn btn-g" id="btn-repo" type="button" disabled title="源码仓库暂未开放公开访问">源码暂未开放</button>
-      <span class="coldhint">免费服务首次唤醒可能需要约一分钟，请稍候。</span>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="kicker">个人作品集原型 · 对话式多设备预约（规则模拟，未接入大模型）</span>
+        <h1>输入测试任务，<em>生成一张多设备预约单。</em></h1>
+        <p class="hero-sub">工程师只需描述测试内容与预约时间，预约助手便会根据预设任务规则匹配所需设备，检查设备可用性与预约条件，并汇总成一张预约单。用户确认后提交，<span class="hl">常规设备自动通过，特殊情形转人工审批。</span></p>
+        <div class="meta">
+          <span class="tag hl">LabOps Agent</span>
+          <span class="tag ai">多设备预约助手原型</span>
+          <span class="tag">Mock 规则模拟</span>
+        </div>
+        <div class="actions">
+          <a class="btn btn-p" href="https://labops-agent-0qn5.onrender.com/index.html" target="_blank" rel="noopener noreferrer">打开在线 Demo ↗</a>
+          <button class="btn btn-g" type="button" disabled title="源码仓库暂未开放公开访问">源码暂未开放</button>
+          <span class="coldhint">免费实例首次唤醒可能需要约一分钟；登录页可一键体验工程师沙箱账号（仅操作本人数据），<b>管理员账号不对公网开放</b>。</span>
+        </div>
+      </div>
+
+      <div class="ai-demo" aria-label="预约助手对话示意">
+        <div class="ai-demo-top">
+          <div class="ai-title"><span class="spark">✦</span> 预约助手</div>
+          <span class="badge mock">Mock · 规则模拟</span>
+        </div>
+        <div class="chat">
+          <div class="bubble-user">明天下午我要做摄像头 PMIC 纹波测试。</div>
+          <div class="bubble-ai">根据预设的 PMIC 纹波测试模板，初步匹配测试台、示波器和可编程直流电源。具体设备及供电条件仍需结合测试要求确认：</div>
+          <div class="suggest">
+            <div class="suggest-head">预约单草稿 <span>待你确认</span></div>
+            <div class="sug-line"><span class="nm">A01 测试台</span><span class="st">常规 · 自动通过</span></div>
+            <div class="sug-line"><span class="nm">OSC06 示波器</span><span class="st">常规 · 自动通过</span></div>
+            <div class="sug-line"><span class="nm">PSU03 可编程直流电源</span><span class="st">常规 · 自动通过</span></div>
+            <div class="sug-tail">已按该场景识别；如果还要用温箱 / 电子负载，直接告诉我加上。</div>
+          </div>
+        </div>
+        <p class="demo-note">界面示意：按预约助手的交互结构绘制，设备与审批状态为演示数据。实际为 Mock 规则模拟，未接入大模型。</p>
+      </div>
     </div>
 
-    <div class="stats" aria-label="项目价值概览">
-      <div class="stat"><div class="n">痛点来自一线</div><div class="l">源于电子工程师的实验室搭建与汽车电子测试经历</div></div>
-      <div class="stat"><div class="n">自然语言提出需求</div><div class="l">尝试把「我要测什么」转化为可确认的预约建议</div></div>
-      <div class="stat"><div class="n">规则负责兜底</div><div class="l">冲突、资质、校准、配额和审批不交给模型猜测</div></div>
-      <div class="stat"><div class="n">全流程可追踪</div><div class="l">从推荐、确认、预约到修改、审批和取消都有明确反馈</div></div>
+    <div class="caps" aria-label="产品能力">
+      <div class="cap"><div class="ci">1</div><h4>任务驱动</h4><p>用自然语言描述测试需求，不用先查设备名录</p></div>
+      <div class="cap"><div class="ci">2</div><h4>多设备匹配</h4><p>按预设任务规则自动匹配所需设备组合</p></div>
+      <div class="cap"><div class="ci">3</div><h4>统一预约</h4><p>多台设备、多个时段汇总成一张预约单</p></div>
+      <div class="cap"><div class="ci">4</div><h4>分级审批</h4><p>自动通过 · 人工审批 · 直接阻断</p></div>
     </div>
   </div>
 </header>
 
-<section id="problem"><div class="wrap"><div class="sec-head"><span class="sec-num">01</span><h2>起点：从实验室搭建，到发现预约流程中的问题</h2></div>
-<p class="lead">刚进入汽车电子行业时，我作为<b>电子工程师参与实验室硬件搭建</b>，开始了解测试台、仪器设备与实验环境。之后在车载摄像头和雷达相关测试工作中，我逐渐接触到设备使用与跨部门借用的实际流程。</p>
-<p class="lead">当一项测试需要多台仪器配合时，工程师不仅要明确测试方案，还要<b>自行查找所需设备、逐项核对空闲时间并提交预约</b>；部分跨部门设备还需要等待管理员审批。如果其中一项无法使用，就得重新协调。</p>
-<p class="lead">我想解决的不是「预约按钮太难点」，而是<b>工程师已经知道要做什么测试，却仍需要反复拼凑设备、时间与审批流程</b>。实验室搭建是我理解业务的起点，资源协调才是这个产品重点解决的问题。</p>
-<div class="split"><div class="pane bad"><h3>原来的工作方式</h3><ul><li>先根据测试任务自行判断需要哪些设备</li><li>分别查找台架、示波器、电源的可用时间</li><li>再核对设备状态、校准、使用资质等条件</li><li>跨部门借用设备时等待管理员审批；冲突时重新协调</li><li>预约后还要自己追踪审批和变更</li></ul></div><div class="pane good"><h3>希望得到的体验</h3><ul><li>用一句话描述测试任务和时间需求</li><li>系统给出<b>设备组合与可用时段建议</b></li><li>提前说明不可预约的原因与替代方案</li><li>用户确认后才真正提交，重要规则由后端校验</li><li>预约、审批、修改、取消都能查询和追溯</li></ul></div></div></div></section>
-
-<section id="decisions"><div class="wrap"><div class="sec-head"><span class="sec-num">02</span><h2>我的方案：让 Agent 做协调，让规则引擎做判断</h2></div><p class="lead">从原有预约流程出发，我把产品方案拆成三个部分：需求表达、规则校验与预约执行，而不是简单增加一个聊天窗口。</p>
-<div class="decisions"><div class="dec"><div class="idx">01</div><div><h3>先理解任务，再推荐资源</h3><p>工程师说「想做 PMIC 纹波和启动时序测试」，系统需要帮助整理用途、时间和候选设备，而不只是搜索一个设备名称。<b>建议是候选方案，不等于自动获得预约权限。</b></p><div class="why"><b>产品思考：</b>把用户的测试目标转化为可执行的资源需求，减少反复查找和沟通。</div></div></div>
-<div class="dec"><div class="idx">02</div><div><h3>关键规则交给确定性工具</h3><p>设备占用、校准有效期、使用资质、时段冲突、周配额和特殊设备审批都应由后端查询和校验。对于不可预约的情况，系统应解释原因，并支持修改时段或更换同类型设备。</p><div class="why"><b>产品思考：</b>AI 可以辅助理解和编排，但不能凭语言生成的结果绕过安全与业务约束。</div></div></div>
-<div class="dec"><div class="idx">03</div><div><h3>提交前确认，提交后可追踪</h3><p>从单设备预约扩展到多设备、多时段的确认单；对需要人工审批的申请展示原因；支持修改、取消和查看操作时间线。把用户真正关心的「到底约上没有」放在流程中心。</p><div class="why"><b>当前边界：</b>已实现规则驱动的演示流程与 Agent 工具接口；尚未配置大模型 API，不能宣称具备完整的 LLM 自主规划能力。</div></div></div></div></div></section>
-
-<section id="story"><div class="wrap"><div class="sec-head"><span class="sec-num">03</span><h2>从 MVP 到可用流程：我如何一步步迭代</h2></div><p class="lead">我负责从业务场景出发梳理需求、设计流程，借助 AI 编程工具实现原型，并通过实际操作验收推动修复。我逐渐发现，「功能能跑」和「用户真正能用」是两回事。</p>
-<div class="story"><div class="steps"><div class="st done"><div class="b">1</div><div><h4>先做基础预约：验证业务闭环</h4><p>搭建资源列表、时段选择、预约记录等基础功能，让实验室资源从分散信息变成可查询的系统。</p></div></div>
-<div class="st done"><div class="b">2</div><div><h4>补上权限、资质、审批和规则</h4><p>发现「空闲」不等于「能约」：设备校准、人员资质、配额、特殊设备与夜间申请都需要明确的判定逻辑。</p></div></div>
-<div class="st done"><div class="b">3</div><div><h4>让 Agent 辅助完成多设备预约</h4><p>围绕 PMIC 测试等场景，尝试由需求描述生成资源建议，再通过确认单和后端工具完成预约；对缺少的信息要求用户确认。</p></div></div>
-<div class="st done"><div class="b">4</div><div><h4>从手动验收中发现新问题</h4><p>我发现设备时段只能逐个预约、修改入口不完整，于是加入多时段选择、统一确认、预约修改和状态时间线。</p></div></div>
-<div class="st done"><div class="b">5</div><div><h4>自动化测试通过，浏览器却报 Not Found</h4><p>实际验收发现修改与多时段提交失败。排查后发现服务仍加载旧路由；更新运行服务后重新验证成功。这让我意识到，自动化测试通过仍需真实用户路径验收。</p></div></div></div></div></div></section>
-
-<section id="ui">
+<section id="scene">
   <div class="wrap">
-    <div class="sec-head"><span class="sec-num">04</span><h2>产品演示：从预约到审批的完整体验</h2></div>
-    <p class="lead">以下为当前版本的完整流程截图（点击可放大）：从登录、首页看板、测试台与设备预约，到我的预约、消息通知、审批中心与 AI 助手。全部基于 Mock 演示数据，不代表已连接真实实验室。</p>
+    <div class="sec-head"><span class="sec-num">01</span><h2>业务场景与产品机会</h2></div>
+    <p class="lead">实验室预约涉及多台设备、时段、设备状态与人员资质。原部门已有独立的实验室预约系统，但工程师仍要逐台查设备、分别提交、分别等待审批；跨部门共享的设备还需要额外沟通协调。这些动作琐碎、重复，却直接决定测试能不能按时开始。</p>
+    <p class="sec-note">真实业务背景来自本人在汽车电子实验室（车载摄像头、雷达测试）的工作经历；设备台账、任务模板、预约规则、审批阈值与设备数量均为个人原型的模拟配置，不代表原公司真实制度。</p>
+
+    <div class="grid grid-3">
+      <div class="card"><div class="k warn">痛点一</div><h3>资源查找繁琐</h3><p>设备分散在不同名录里，状态、位置、归属各不相同；约一次测试要在多个页面之间来回切换、逐台比对。</p></div>
+      <div class="card"><div class="k warn">痛点二</div><h3>规则核对复杂</h3><p>资质、校准有效期、周配额、开放时段都有约束；靠记忆和经验核对，往往提交后才发现不满足，只能重来。</p></div>
+      <div class="card"><div class="k warn">痛点三</div><h3>预约协调成本高</h3><p>一次测试通常要同时约好几台设备、对齐同一个时段；任何一台约不上，整次测试就要重新协调。</p></div>
+    </div>
+
+    <div class="scene-band">
+      <div>
+        <h3>贯穿案例 · 摄像头 PMIC 纹波测试</h3>
+        <p>一次测试不是预约一台设备，而是协调多项资源：要有工位（测试台）、测量仪器（示波器）、供电（可编程直流电源），还要对齐同一个下午和工程师的资质与配额。<b>任何一项不满足，整次测试停摆。</b></p>
+      </div>
+      <div class="scene-combo">
+        <div class="dev"><i></i>A01 大功率测试台<small>工位</small></div>
+        <div class="dev"><i></i>OSC06 示波器<small>测量</small></div>
+        <div class="dev"><i></i>PSU03 可编程直流电源<small>供电</small></div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <div class="table-scroll">
+        <table class="cmp">
+          <thead><tr><th>维度</th><th>传统方式</th><th>LabOps Agent</th></tr></thead>
+          <tbody>
+            <tr><td>需求输入</td><td class="old">工程师自己拆解需要哪些设备，逐项查条件</td><td class="new">只描述测试内容与时间，<b>助手按预设任务规则转成资源需求</b></td></tr>
+            <tr><td>资源查找</td><td class="old">在设备名录里逐台搜索、比对状态与时段</td><td class="new">按场景一次匹配测试台、示波器、电源的组合</td></tr>
+            <tr class="row-em"><td>规则校验</td><td class="old">靠记忆与经验核对，提交后才发现问题</td><td class="new"><b>提交前统一校验</b>：冲突、资质、校准等硬约束，以及配额等可协商条件，一次查完</td></tr>
+            <tr><td>预约提交</td><td class="old">每台设备、每个时段分别提交、分别等待</td><td class="new">汇总成<b>一张预约单</b>，用户确认后一次提交</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="scroll-hint">← 左右滑动查看完整对比 →</div>
+    </div>
+    <p class="sec-note">对比口径来自当前产品交互推导，未做真实工时测量，不含效率百分比。</p>
+  </div>
+</section>
+
+<section id="solution">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">02</span><h2>产品方案与核心体验</h2></div>
+    <p class="lead">核心体验是一条短链路：工程师说任务，系统做完查找与核对，人只在一处做决定。下面按当前原型的交互拆成五步，并用原型界面截图佐证。</p>
+
+    <div class="flow-shell">
+      <div class="flow-k"><span class="t">主流程 · 五步</span><span class="sub">确认前不写任何数据，提交按钮始终留给用户</span></div>
+      <div class="flowline">
+        <div class="fstep user"><div class="fnum">STEP 1 · 人</div><div class="ft">输入测试任务</div><div class="fd">说清要做什么测试、什么时候用，不用列设备</div></div>
+        <div class="farrow">→</div>
+        <div class="fstep ai"><div class="fnum">STEP 2 · 助手</div><div class="ft">匹配设备</div><div class="fd">按预设任务规则解析出所需设备组合</div></div>
+        <div class="farrow">→</div>
+        <div class="fstep rule"><div class="fnum">STEP 3 · 规则</div><div class="ft">规则校验</div><div class="fd">7 类硬约束逐项检查，配额等可协商条件单独判断</div></div>
+        <div class="farrow">→</div>
+        <div class="fstep ai"><div class="fnum">STEP 4 · 助手</div><div class="ft">生成预约单</div><div class="fd">设备、时段、校验结果汇总成一张单，可调整</div></div>
+        <div class="farrow">→</div>
+        <div class="fstep user"><div class="fnum">STEP 5 · 人</div><div class="ft">用户确认</div><div class="fd">确认后才真正提交；确认前零写入</div></div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="ex-input"><b>场景输入示例：</b>「明天下午进行 PMIC 纹波测试，帮我预约所需设备。」</div>
+      <div class="exec">
+        <div class="exec-row"><span class="n">1</span><span><b>解析预设任务</b>：命中「PMIC 纹波与启动时序」任务模板，初步匹配测试台、示波器与可编程直流电源；具体供电条件待结合测试参数确认。</span></div>
+        <div class="exec-row"><span class="n">2</span><span><b>匹配设备</b>：选出 A01 测试台、OSC06 示波器、PSU03 可编程直流电源（双路），并给出备选。</span></div>
+        <div class="exec-row"><span class="n">3</span><span><b>查询可用时段</b>：对齐三台设备明天下午的共同空闲窗口。</span></div>
+        <div class="exec-row"><span class="n">4</span><span><b>检查预约条件</b>：资质、校准有效期、时段冲突等硬约束逐项通过；本周配额按阈值判断是否需要转人工。</span></div>
+        <div class="exec-row"><span class="n">5</span><span><b>生成统一预约单</b>：任务名、设备清单、各设备时段与校验结果汇总展示，等用户确认。</span></div>
+      </div>
+      <p class="sec-note" style="margin-top:14px">若参数不明确（如输入电压范围、测量带宽），助手会先弹出参数表单追问，不凭测试名称做设备或安全判断；用户可勾选「不确定，需要指导」查看取值说明。当前只覆盖预设任务的少数参数字段。</p>
+    </div>
 
     <div class="shots">
-      <div class="shot" data-full="shots/01-login.png" data-cap="登录页：演示账号一键填充">
-        <img class="img" src="shots/01-login.png" alt="登录页" loading="lazy">
-        <div class="cap"><b>登录</b>会话 + CSRF + 登录失败限流，不是假登录</div>
+      <div class="shot feature" data-cap="我的预约：PMIC 纹波任务下的多台设备归为一组，时段与状态一目了然">
+        <img class="img" src="shots/05-mine.png" alt="我的预约：一次 PMIC 纹波测试任务下的多设备预约单" loading="lazy">
+        <div class="cap"><div class="txt"><b>一张预约单 · 原型界面（「我的预约」页）</b>一次 PMIC 纹波测试任务下，OSC06 示波器、PSU03 可编程直流电源、A01 测试台归为一组：每台设备有时段、校验与审批状态；可整组取消，也可单独取消一台。<div class="tiny">线上 Demo 截图 · Mock 数据</div></div><span class="badge">点击放大</span></div>
       </div>
-      <div class="shot" data-full="shots/02-home.png" data-cap="首页看板：资源统计、热门资源、巡检整改、公告与我的预约">
-        <img class="img" src="shots/02-home.png" alt="首页看板" loading="lazy">
-        <div class="cap"><b>首页看板</b>把「还剩多少资源、有什么待办、最近整改项」放在一屏</div>
+      <div class="shot" data-cap="预约助手对话：说「明天下午」这类模糊时间时，先弹时间确认表单，确认后才查设备">
+        <img class="img" src="shots/07-agent.png" alt="预约助手对话与时间确认界面截图" loading="lazy">
+        <div class="cap"><b>预约助手对话</b>模糊时间（如「明天下午」）不会擅自替你定，而是先弹时间确认表单，确认后才查设备。<div class="tiny">线上 Demo 截图 · Mock 数据</div></div>
       </div>
-      <div class="shot" data-full="shots/03-bench-today.png" data-cap="同一天上午：09:00–13:00 已显示「已开始」且不可点">
-        <img class="img" src="shots/03-bench-today.png" alt="测试台预约-今天" loading="lazy">
-        <div class="cap"><b>测试台预约（今天上午）</b>过去的时段变灰标注「已开始」，不再误报「已被占用」</div>
+      <div class="shot" data-cap="特殊设备预约：高压源等特殊设备提交后进入人工审批">
+        <img class="img" src="shots/08-admin.png" alt="审批中心界面截图" loading="lazy">
+        <div class="cap"><b>审批中心 · 管理员视角</b>特殊设备（HV01–HV06 高压源）的申请进入人工审批，审批依据与复核结果集中展示。<div class="tiny">线上 Demo 截图 · Mock 数据</div></div>
       </div>
-      <div class="shot" data-full="shots/04-bench-tomorrow.png" data-cap="未来日期：三个时段分别是「可直接预约 / 可直接预约 / 需人工审批」">
-        <img class="img" src="shots/04-bench-tomorrow.png" alt="测试台预约-未来日期" loading="lazy">
-        <div class="cap"><b>测试台预约（未来日期）</b>绿色可直接约、橙色需审批，图例把四种状态分开解释</div>
+    </div>
+
+    <p class="sec-note">取消支持整组取消与单台取消。单独取消关键设备后，当前原型不会提示「资源组合不完整」，可能留下无法执行的测试任务；该提示与二次确认尚未实现。</p>
+
+    <div class="fork">
+      <div class="fork-branches">
+        <div class="branch auto">
+          <div class="bh"><span class="bt">自动通过</span><span class="bx">常规设备</span></div>
+          <p>常规设备、开放时段、配额内、无冲突：用户确认后提交即可生效，不占用管理员时间。</p>
+          <div class="out">结果：<b>确认后直接生效</b>，进入「我的预约」</div>
+        </div>
+        <div class="branch manual">
+          <div class="bh"><span class="bt">人工审批</span><span class="bx">特殊情形</span></div>
+          <p>特殊设备（HV01–HV06 高压源）、夜间时段（18:00 后）、阈值内超周配额：转管理员判断。</p>
+          <div class="out">结果：<b>待审批</b>，管理员复核硬约束后通过或驳回</div>
+        </div>
+        <div class="branch block">
+          <div class="bh"><span class="bt">直接阻断</span><span class="bx">硬约束不满足</span></div>
+          <p>设备运行状态、非开放窗口、时段已过、校准过期、资质不足、安全红线、时段冲突：不能提交。</p>
+          <div class="out">结果：<b>不可提交</b>，管理员也不能绕过</div>
+        </div>
       </div>
-      <div class="shot" data-full="shots/09-dev-multi.png" data-cap="设备预约：一次勾选多个时段（同天或跨天），底部实时显示已选数量与总时长">
-        <img class="img" src="shots/09-dev-multi.png" alt="设备预约-多时段选择" loading="lazy">
-        <div class="cap"><b>设备预约 · 多时段选择</b>一次勾选多个时段，底部显示已选数量与总时长，统一确认后提交</div>
+      <p class="sec-note" style="margin-top:16px">7 类硬约束（设备运行状态、开放窗口、时段有效性、校准有效期、操作资质、安全条件、设备与时间冲突）不可绕过；配额、特殊设备、夜间时段属于可协商条件，可转人工判断（本周配额 20 小时，超出后在 min(4h, 配额×20%) 以内转人工，超过则直接拒绝）。注意：<b style="color:var(--gold-soft)">自动通过 ≠ 跳过用户确认</b>——任何设备都要等用户在预约单上点击确认后才提交，自动通过只指「确认后无需再等人工审批」。</p>
+    </div>
+  </div>
+</section>
+
+<section id="decision">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">03</span><h2>关键产品决策</h2></div>
+    <p class="lead">三个决策决定了这个助手是「可用的工具」还是「不可控的黑盒」：什么交给系统判断，什么必须留给人。</p>
+
+    <div class="decisions">
+      <div class="decision">
+        <div class="idx">01</div>
+        <div class="body">
+          <h3>预检前置</h3>
+          <p>做法：在生成预约单之前，就把 7 类硬约束与配额等可协商条件逐项查完，不能约的当场说明原因。</p>
+          <div class="why"><b>目的：</b>把「提交后被打回」的返工，消灭在确认之前。</div>
+        </div>
       </div>
-      <div class="shot" data-full="shots/05-mine.png" data-cap="我的预约：历史记录与审批状态完整保留">
-        <img class="img" src="shots/05-mine.png" alt="我的预约" loading="lazy">
-        <div class="cap"><b>我的预约</b>时段结束后记录与审批结果仍保留，不被改写为取消/失败</div>
+      <div class="decision">
+        <div class="idx">02</div>
+        <div class="body">
+          <h3>AI 建议与实际提交分离</h3>
+          <p>做法：助手只负责解析、匹配和生成预约单草稿，预览阶段零写入；只有用户点击确认，服务端才重新校验并写入。</p>
+          <div class="why"><b>目的：</b>助手的建议可能不全或不准，确认权留在用户手里，责任边界清晰。</div>
+        </div>
       </div>
-      <div class="shot" data-full="shots/06-msg.png" data-cap="消息通知：按未读/待审批筛选，消息分级">
-        <img class="img" src="shots/06-msg.png" alt="消息通知" loading="lazy">
-        <div class="cap"><b>消息通知</b>成功/失败/警告/提示分级，避免「全是红点等于没有红点」</div>
+      <div class="decision">
+        <div class="idx">03</div>
+        <div class="body">
+          <h3>审批分级</h3>
+          <p>做法：常规设备自动通过，特殊设备、夜间时段、阈值内超配额才转人工，硬约束不满足直接阻断。</p>
+          <div class="why"><b>目的：</b>管理员的注意力只花在真正需要判断的例外上，常规预约不再排队。</div>
+        </div>
       </div>
-      <div class="shot" data-full="shots/08-admin.png" data-cap="审批中心（管理员视角）">
-        <img class="img" src="shots/08-admin.png" alt="审批中心" loading="lazy">
-        <div class="cap"><b>审批中心</b>审批时重新校验资质/校准/冲突/配额，而不是信任提交时的结论</div>
+    </div>
+
+    <div class="grid grid-3">
+      <div class="card"><div class="k gold">工程师</div><h3>发起与管理本人预约</h3><p>描述任务、确认预约单；在预约管理页修改或取消自己的预约，只能看到自己的数据。</p></div>
+      <div class="card"><div class="k ai">管理员</div><h3>处理特殊审批与资源治理</h3><p>只处理转人工的例外申请；查看全量预约用于协调资源，审批时系统重新复核硬约束。</p></div>
+      <div class="card"><div class="k ok">系统</div><h3>服务端统一校验</h3><p>所有校验在服务端完成，任何角色——包括管理员——都不能绕过 7 类硬约束。</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="impl">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">04</span><h2>实现方式与验证</h2></div>
+    <p class="lead">方案落地上有一个刻意取舍：AI 负责需求解析、设备推荐与预约单生成，<b>确定性规则引擎负责全部业务约束校验</b>。当前 AI 位置为 Mock Planner（关键词 + 正则 + 状态机），未接入真实大模型。</p>
+
+    <div class="arch-v">
+      <div class="layer"><span class="ln">L1</span><div><h4>用户交互层</h4><p>对话与表单共用同一套界面，用户描述任务、查看预约单并确认。</p></div></div>
+      <div class="layer"><span class="ln">L2</span><div><h4>Agent 编排层</h4><p><b>Mock Planner</b>（关键词 + 正则 + 状态机）按预设任务规则拆解需求，调用只读工具查询资源、时段与配额，只生成建议，不直接写入；当前未接入真实大模型。</p></div></div>
+      <div class="layer"><span class="ln">L3</span><div><h4>确定性规则引擎</h4><p>7 类硬约束与配额、夜间、特殊设备等可协商条件逐项校验，结果可复现、可解释；这部分能力与是否接入大模型无关。</p></div></div>
+      <div class="layer"><span class="ln">L4</span><div><h4>预约服务与数据层</h4><p>Preview 不写库；用户确认后整单重新校验再提交，失败条目补偿回滚。</p></div></div>
+    </div>
+
+    <div class="tech-stack">
+      <span class="tech-chip">Node.js</span>
+      <span class="tech-chip">Express</span>
+      <span class="tech-chip">SQLite</span>
+      <span class="tech-chip">Agent Tool Registry</span>
+      <span class="tech-chip">Mock Planner</span>
+    </div>
+
+    <div class="scale" aria-label="原型规模">
+      <div><b>9</b><span>业务模块</span><small>首页 / 测试台 / 设备 / 物料 / 预约 / 消息 / 个人中心 / 审批 / 助手</small></div>
+      <div><b>78 台</b><span>演示仪器</span><small>含可预约、随主机借用、库存领用三类管理方式</small></div>
+      <div><b>7 类</b><span>硬约束</span><small>运行状态 / 开放窗口 / 时段有效性 / 校准 / 资质 / 安全 / 冲突</small></div>
+      <div><b>3 类</b><span>可协商转人工</span><small>特殊设备 / 夜间时段 / 阈值内超配额</small></div>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card"><div class="k ok">已实现能力</div><h3>当前原型可以做什么</h3>
+        <ul>
+          <li>按<b>8 类预设任务</b>识别测试需求并匹配设备组合</li>
+          <li>多设备汇总成一张预约单，预览阶段不写任何数据</li>
+          <li>提交前统一校验 7 类硬约束，并标注配额等可协商条件</li>
+          <li>按设备类型与预约条件分流：自动通过 / 人工审批 / 阻断</li>
+          <li>在预约管理页修改、取消预约，记录操作时间线</li>
+        </ul>
       </div>
-      <div class="shot" data-full="shots/07-agent.png" data-cap="AI Agent 助手：规则引擎驱动的工具调用">
-        <img class="img" src="shots/07-agent.png" alt="AI Agent 助手" loading="lazy">
-        <div class="cap"><b>Agent 助手（规则驱动演示）</b>根据输入整理预约需求并调用业务工具，尚未接入大模型 API</div>
+      <div class="card"><div class="k gold">设计取舍</div><h3>为什么这样实现</h3>
+        <ul>
+          <li><b>规则判断不交给概率模型：</b>预约合规必须可复现、可解释，所以交给确定性规则引擎</li>
+          <li><b>写入与建议分离：</b>预览零写入、确认后整单重校验，助手出错也不会污染数据</li>
+          <li><b>工具注册表统一收口：</b>Mock Planner 与未来真实大模型调用同一套只读工具，替换时不动业务规则</li>
+        </ul>
+      </div>
+    </div>
+
+    <details class="bounds">
+      <summary><b>能力边界</b>（如实标注，点击展开）</summary>
+      <div class="bd">
+        <ul class="boundary-list">
+          <li><span class="b-dot"></span><span><b>未接入真实大模型：</b>当前为 Mock Planner（关键词 + 正则 + 状态机），只支持 8 类预设任务，不支持开放域理解与多轮指代；对预设任务的关键参数会以表单追问，但只覆盖少数参数键，不具备通用语义追问能力。</span></li>
+          <li><span class="b-dot"></span><span><b>无全局最优排程：</b>只做条件校验与候选匹配，不做跨设备、跨时段的联合最优调度。</span></li>
+          <li><span class="b-dot"></span><span><b>对话内不能修改预约：</b>修改与取消在预约管理页完成，对话只负责创建。</span></li>
+          <li><span class="b-dot"></span><span><b>多设备确认单是补偿回滚，不是单事务：</b>整单逐条校验，失败条目补偿撤销；与「单设备多时段」是两回事。</span></li>
+          <li><span class="b-dot"></span><span><b>78 台演示仪器并非全部可独立预约：</b>含可预约、随主机借用、库存领用三种管理方式；全部为演示数据，不连接真实实验室。</span></li>
+          <li><span class="b-dot"></span><span><b>无真实效率数据：</b>本页所有提效表述均为流程步骤推导，不含百分比；未做真实用户可用性测试。</span></li>
+        </ul>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section id="me">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">05</span><h2>我的工作：把实验室预约问题转化为产品方案</h2></div>
+    <p class="lead">在汽车电子实验室的工作经历里，我反复看到同一类摩擦：协调多台设备、时段与资质的重复操作，消耗了工程师大量时间。这个项目以「测试任务」为入口重新设计预约流程，把这类现场问题翻译成可落地的产品方案。</p>
+    <p class="sec-note" style="margin-bottom:26px">本项目为个人独立作品集项目：基于过往汽车电子实验室（车载摄像头、雷达测试）工作经历提炼需求，独立完成产品分析、方案设计与交互设计，并借助 AI 编程工具完成原型开发与迭代。未在原公司正式上线。</p>
+
+    <div class="grid grid-3">
+      <div class="card"><div class="icon-badge gold">1</div><h3>需求分析与产品设计</h3><p>从实验室现场问题提炼约束（设备状态、资质、配额、审批），定义「输入任务 → 生成预约单」的核心流程与功能边界。</p></div>
+      <div class="card"><div class="icon-badge ai">2</div><h3>规则与交互设计</h3><p>把约束拆成 7 类不可绕过的硬约束，并把配额、特殊设备、夜间时段作为可协商条件，设计预检前置、确认权保留与审批分级的交互。</p></div>
+      <div class="card"><div class="icon-badge ok">3</div><h3>原型实现与验收</h3><p>借助 AI 编程工具完成前后端原型，按端到端用户路径做验收，覆盖冲突、空态与移动端。</p></div>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card"><div class="k warn">复盘 · 一次真实的验收教训</div><h3>接口测试通过，浏览器却 404</h3><p>P3.1 阶段，规则与后端链路测试全部通过，但打开 Agent 页面仍返回 404。原因是页面请求的路由没有注册——<b>测试覆盖了服务层，却没走用户真实入口</b>。补上路由注册和端到端冒烟后，才算真正验收。</p><p class="mini">结论：接口通过不代表用户路径可用，每个功能都要按用户路径端到端验收。</p></div>
+      <div class="card"><div class="k ok">后续优化</div><h3>从原型走向真实验证</h3>
+        <ul>
+          <li>接入真实大模型，并为 8 类任务建立识别准确率评测集</li>
+          <li>邀请真实工程师做可用性测试，验证预约单是否降低理解成本</li>
+          <li>取消关键设备时提示资源组合不完整，并要求二次确认（当前原型仅支持整组取消与单台取消，未做完整性校验）</li>
+          <li>完善多设备排程能力与企业级权限（SSO、多级审批）</li>
+        </ul>
       </div>
     </div>
   </div>
 </section>
 
-<section id="metrics"><div class="wrap"><div class="sec-head"><span class="sec-num">05</span><h2>它能带来什么价值？我会如何验证</h2></div><p class="lead">目前使用的是 <b>Mock 演示数据</b>，没有真实上线或用户行为数据。以下是产品假设与未来验证指标，<strong>不是已经实现的业务提升结果</strong>。</p><div class="metrics">
-<div class="metric"><div class="k">工程师效率</div><h4>减少寻找与协调设备的时间</h4><p>衡量从提出测试需求到获得可执行预约方案的耗时，以及每次任务需要的人工沟通次数。</p></div>
-<div class="metric"><div class="k">预约质量</div><h4>降低冲突与无效提交</h4><p>观察提交前规则拦截的原因、改期次数、预约失败率与人工介入比例。</p></div>
-<div class="metric"><div class="k">流程透明度</div><h4>让审批和变更有据可查</h4><p>观察审批处理时长、状态查询次数，以及用户能否快速理解驳回或修改原因。</p></div></div></div></section>
-
-<section id="next"><div class="wrap"><div class="sec-head"><span class="sec-num">06</span><h2>项目边界与下一步思考</h2></div><p class="lead">这一版的重点是证明：<b>真实业务问题可以被拆成明确规则、可调用工具和可验证的交互流程。</b> 我把未完成的能力也清楚标出来。</p><div class="road">
-<div class="road-it"><div class="ph">当前已实现</div><div><h4>规则驱动的预约演示闭环</h4><p>资源查询、规则校验、预约与审批、多时段提交、修改取消、状态追踪，以及面向 Agent 的业务工具接口。</p></div></div>
-<div class="road-it"><div class="ph">待验证</div><div><h4>接入大模型后的需求理解与多步规划</h4><p>需要评估模型对含糊需求、缺失参数、工具调用错误和不确定信息的处理效果，而不是只看能否生成一段自然语言回复。</p></div></div>
-<div class="road-it"><div class="ph">真实落地前</div><div><h4>连接真实设备数据与用户验证</h4><p>当前设备、审批和配额均为模拟场景；还需要真实实验室系统对接、权限与安全评估，以及工程师和管理员的可用性测试。</p></div></div></div></div></section>
-
-<section style="border-top:none;padding-top:20px">
+<section id="cta" style="border-top:none;padding-top:10px">
   <div class="wrap">
     <div class="cta">
-      <h3>进一步了解项目</h3>
-      <p>项目基于模拟设备与预约数据，可在线体验登录、预约与审批流程。</p>
-      <div class="actions" style="justify-content:center">
-        <a class="btn btn-p" id="btn-demo2" href="https://labops-agent-0qn5.onrender.com/index.html" target="_blank" rel="noopener noreferrer">打开在线 Demo ↗</a>
-        <button class="btn btn-g" id="btn-repo2" type="button" disabled title="源码仓库暂未开放公开访问">源码暂未开放</button>
+      <h3>想亲手走一遍「说任务 → 看预约单 → 确认」？</h3>
+      <p>在线 Demo 可体验预约助手、测试台预约与审批中心。首次唤醒免费实例可能需要约一分钟。</p>
+      <div class="actions">
+        <a class="btn btn-p" href="https://labops-agent-0qn5.onrender.com/index.html" target="_blank" rel="noopener noreferrer">打开在线 Demo ↗</a>
+        <a class="btn btn-g" href="../index.html">返回个人站首页</a>
       </div>
-      <p style="margin-top:18px;margin-bottom:0;font-size:12.5px;color:var(--muted-2)">
-        使用共享 Mock 演示数据，不连接真实实验室；免费实例休眠或重新部署后，演示数据可能重置。
-      </p>
+      <p class="demo-line">登录页可一键体验<b>工程师沙箱账号</b>（仅操作本人数据）&nbsp;·&nbsp; 管理员账号不对公网开放</p>
     </div>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    <p>LabOps Agent · 产品设计与实现 ｜ 源码暂未公开 ｜ <a href="../index.html">← 返回个人主页</a></p>
+    <p><b>LabOps Agent</b> · 曾雨作品集 · AI 产品经理方向</p>
+    <p>页面信息取自项目开发记录与验收材料；线上 Demo 为 Mock 规则模拟，不连接真实实验室。</p>
+    <p><a href="../index.html">返回首页</a> · <a href="https://luckygirl-yu929.github.io/" target="_blank" rel="noopener noreferrer">线上个人站 ↗</a></p>
   </div>
 </footer>
 
-<div class="lb" id="lb"><img id="lb-img" alt=""><div class="txt" id="lb-txt"></div></div>
+<div class="lb" id="lb" aria-hidden="true">
+  <img id="lb-img" src="" alt="">
+  <div class="txt" id="lb-txt"></div>
+</div>
 
 <script>
-  // 灯箱
+(function(){
+  var shots = Array.prototype.slice.call(document.querySelectorAll('.shot'));
   var lb = document.getElementById('lb');
   var lbImg = document.getElementById('lb-img');
   var lbTxt = document.getElementById('lb-txt');
-  document.querySelectorAll('.shot').forEach(function(s){
-    s.addEventListener('click', function(){
-      lbImg.src = s.getAttribute('data-full');
-      lbTxt.textContent = s.getAttribute('data-cap') || '';
-      lb.classList.add('on');
+
+  function close(){
+    lb.classList.remove('on');
+    lb.setAttribute('aria-hidden','true');
+    lbImg.removeAttribute('src');
+  }
+  function open(shot){
+    var img = shot.querySelector('img');
+    lbImg.src = img.getAttribute('src');
+    lbImg.alt = img.getAttribute('alt') || '';
+    lbTxt.textContent = shot.getAttribute('data-cap') || '';
+    lb.classList.add('on');
+    lb.setAttribute('aria-hidden','false');
+  }
+
+  shots.forEach(function(shot){
+    shot.tabIndex = 0;
+    shot.setAttribute('role','button');
+    shot.setAttribute('aria-label','放大概览：' + (shot.getAttribute('data-cap') || ''));
+    shot.addEventListener('click', function(){ open(shot); });
+    shot.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        open(shot);
+      }
     });
   });
-  function closeLb(){ lb.classList.remove('on'); lbImg.src=''; }
-  lb.addEventListener('click', closeLb);
-  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeLb(); });
+
+  lb.addEventListener('click', close);
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && lb.classList.contains('on')) close();
+  });
+})();
 </script>
 </body>
 </html>
