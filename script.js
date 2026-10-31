@@ -217,7 +217,6 @@
         "可信知识管理：保留原始来源、适用条件和审核状态，设置人工确认机制。"
       ],
       result: "基于 WorkBuddy 完成复合型 Skill MVP，验证经验沉淀、测试方法查询和 Bug 辅助排查三个场景。",
-      cta: "查看项目详情",
       href: "/projects/Knowledge_Skill.html",
       doc: {
         title: "从真实业务场景出发：AI如何重构工程研发工作流",
