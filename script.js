@@ -218,13 +218,21 @@
       ],
       result: "基于 WorkBuddy 完成复合型 Skill MVP，验证经验沉淀、测试方法查询和 Bug 辅助排查三个场景。",
       cta: "查看完整项目详情",
-      href: "/projects/Knowledge_Skill.html"
+      href: "/projects/Knowledge_Skill.html",
+      doc: {
+        title: "从真实业务场景出发：AI如何重构工程研发工作流",
+        url: "https://my.feishu.cn/docx/FKG7dKhXZoEUgBxpROdcCsYhnnd"
+      }
     },
     video: {
       index: "03 / AI EVALUATION · PROJECT FILE", title: "AI Video Lab", subtitle: "AI 视频模型测评",
       origin: "从 AI 视频生成的实际观看体验出发，探索用一致的观察维度比较不同模型，记录能力与局限。",
       capabilities: ["对比多模型的视频生成效果", "观察角色外观与跨镜头一致性", "评测动作表现、连贯性与自然程度"],
-      href: "projects/AI_Video_Evaluation.html"
+      href: "projects/AI_Video_Evaluation.html",
+      doc: {
+        title: "打破“原厂迷信”：AI短剧视频模型横评与场景化选型策略",
+        url: "https://my.feishu.cn/docx/YMxcdAJDqovGMUxukpfcGykEnwb"
+      }
     }
   };
   var projectDialog = document.getElementById("project-file");
@@ -259,6 +267,19 @@
         resultSection.hidden = false;
       } else {
         resultSection.hidden = true;
+      }
+      // 飞书文档入口（可选区块：仅配置 doc 的项目显示，LabOps Agent 无文档入口）
+      var docLink = document.getElementById("project-file-doc");
+      if (data.doc && data.doc.url) {
+        document.getElementById("project-file-doc-title").textContent = data.doc.title;
+        docLink.setAttribute("href", data.doc.url);
+        docLink.setAttribute("aria-label", "在新标签页打开飞书文档：" + data.doc.title);
+        docLink.hidden = false;
+      } else {
+        document.getElementById("project-file-doc-title").textContent = "";
+        docLink.removeAttribute("href");
+        docLink.removeAttribute("aria-label");
+        docLink.hidden = true;
       }
       var link = projectDialog.querySelector(".project-file__link");
       link.hidden = !data.href;

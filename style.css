@@ -634,6 +634,17 @@ html.project-modal-open, html.project-modal-open body { overflow: hidden; }
 #project-file .project-file__link:hover { background: #DCC4ED; }
 #project-file .project-file__pending { padding: 8px 14px; border: 1px dashed #C5A4EA; background: #F4EAF9; border-radius: 9px; font-size: 13px; }
 #project-file .project-file__note { color: #816691; font: 10px/1.5 var(--font-en); letter-spacing: .04em; }
+/* 飞书文档入口：单行紧凑行，非大型卡片 */
+#project-file .project-file__doc {
+  display: flex; align-items: center; gap: 10px; margin-top: 18px;
+  padding: 9px 12px; border: 1px dashed #C5A4EA; border-radius: 10px;
+  background: #FBF6FE; text-decoration: none; color: #3B2A47;
+}
+#project-file .project-file__doc:hover { background: #F4EAF9; border-color: #B77CA9; }
+#project-file .project-file__doc-icon { flex: none; display: inline-flex; color: #8955B8; }
+#project-file .project-file__doc-title { flex: 1 1 auto; min-width: 0; font-size: 13px; font-weight: 600; line-height: 1.45; }
+#project-file .project-file__doc-cta { flex: none; font-size: 12px; font-weight: 700; color: #8955B8; letter-spacing: .04em; white-space: nowrap; }
+#project-file .project-file__doc[hidden] { display: none; }
 #project-file [hidden] { display: none; }
 @keyframes project-file-enter { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: scale(1); } }
 @keyframes project-file-exit { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(.97); } }
