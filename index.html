@@ -287,63 +287,83 @@
     <div class="hint">SCROLL<i class="hint__arrow">▾</i></div>
   </section>
 
-  <!-- ============ 屏 5 · 04 技能特长（整页浅色章节图 + 右侧三张错落场景卡） ============ -->
+  <!-- ============ 屏 5 · 04 技能特长（1:1 复刻参考设计：整版底图 + 三张动图拍立得卡覆盖） ============ -->
   <section class="screen vsection screen--skills is-light-screen" id="screen-04" data-index="4">
-    <div class="page page--light" style="--page-ratio: 1920/1072">
-      <img class="page__fill" src="assets/section-04-skills.png" alt="" aria-hidden="true" />
+    <div class="page page--light" style="--page-ratio: 1705/960">
+      <img class="page__fill" src="assets/section-04-skills-collage.png" alt="" aria-hidden="true" />
       <div class="page__frame">
-        <img class="page__media" src="assets/section-04-skills.png" alt="" aria-hidden="true" />
+        <!-- 整版底图 = 用户提供的参考图原图：紫色纹理 / 左上角 BYME /
+             左侧便签纸 / 04 技能特长 SKILLS & HOBBIES 徽章 /
+             THE END 收尾纸 / 全部涂鸦 —— 与参考图逐像素一致 -->
+        <img class="page__media" src="assets/section-04-skills-collage.png"
+             alt="04 技能特长 SKILLS & HOBBIES：人生体验派 × 保持好奇心 —— 路边滑板 / HipHop / 潮流插画" />
+
+        <!-- 三张拍立得卡：坐标对齐底图原卡位并完整覆盖，内部放真实动图 -->
+        <div class="sk4-cards">
+          <figure class="sk4-card sk4-card--1">
+            <i class="sk4-tape" aria-hidden="true"></i>
+            <div class="sk4-photo">
+              <video src="assets/skills-01-skate-scene.mp4" poster="assets/skills-01-skate-scene.jpg"
+                     loop muted playsinline preload="none" disablepictureinpicture
+                     aria-label="路边滑板：傍晚的城市路边"></video>
+            </div>
+            <figcaption class="sk4-cap">
+              <i class="sk4-star" aria-hidden="true">★</i>
+              <span class="sk4-captext">
+                <b class="sk4-cn">路边滑板</b>
+                <span class="sk4-en">SKATEBOARDING</span>
+              </span>
+            </figcaption>
+          </figure>
+
+          <figure class="sk4-card sk4-card--2">
+            <i class="sk4-tape" aria-hidden="true"></i>
+            <div class="sk4-photo">
+              <video src="assets/skills-02-dance-scene.mp4" poster="assets/skills-02-dance-scene.jpg"
+                     loop muted playsinline preload="none" disablepictureinpicture
+                     aria-label="HipHop：涂鸦墙前"></video>
+            </div>
+            <figcaption class="sk4-cap">
+              <i class="sk4-star" aria-hidden="true">★</i>
+              <span class="sk4-captext">
+                <b class="sk4-cn">HipHop</b>
+                <span class="sk4-en">HIPHOP</span>
+              </span>
+            </figcaption>
+          </figure>
+
+          <figure class="sk4-card sk4-card--3">
+            <i class="sk4-tape" aria-hidden="true"></i>
+            <div class="sk4-photo">
+              <video src="assets/skills-03-draw-scene.mp4" poster="assets/skills-03-draw-scene.jpg"
+                     loop muted playsinline preload="none" disablepictureinpicture
+                     aria-label="潮流插画：户外草地"></video>
+            </div>
+            <figcaption class="sk4-cap">
+              <i class="sk4-star" aria-hidden="true">★</i>
+              <span class="sk4-captext">
+                <b class="sk4-cn">潮流插画</b>
+                <span class="sk4-en">TRENDY ILLUSTRATION</span>
+              </span>
+            </figcaption>
+          </figure>
+
+          <span class="sk4-quote sk4-quote--1">Good vibes,<br />more side quests!</span>
+          <span class="sk4-quote sk4-quote--2">Dance like<br />nobody&#39;s watching!</span>
+          <span class="sk4-quote sk4-quote--4">Record tiny<br />beautiful moments.</span>
+        </div>
+
+        <!-- 底部两个按钮：覆盖底图原按钮位置，保证可点击 -->
+        <div class="sk4-actions">
+          <a class="sk4-btn sk4-btn--gh" href="https://github.com/luckyGirl-yu929" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 .8a11.2 11.2 0 0 0-3.54 21.83c.56.1.77-.24.77-.54v-1.92c-3.13.68-3.79-1.5-3.79-1.5-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.68.08-.68 1.13.08 1.73 1.16 1.73 1.16 1 1.72 2.63 1.22 3.27.93.1-.72.39-1.22.71-1.5-2.5-.29-5.13-1.25-5.13-5.56 0-1.23.44-2.06 1.16-2.79-.12-.28-.5-1.42.11-2.96 0 0 .94-.3 3.08 1.15a10.7 10.7 0 0 1 5.61 0c2.14-1.45 3.08-1.15 3.08-1.15.61 1.54.23 2.68.11 2.96.72.73 1.16 1.56 1.16 2.79 0 4.32-2.64 5.26-5.15 5.54.4.35.76 1.04.76 2.09v3.1c0 .3.2.65.78.54A11.2 11.2 0 0 0 12 .8Z"/></svg>
+            GitHub <span aria-hidden="true">↗</span>
+          </a>
+          <a class="sk4-btn sk4-btn--mail" href="mailto:18520884784@163.com">
+            <span aria-hidden="true">✉</span> 18520884784@163.com
+          </a>
+        </div>
       </div>
-    </div>
-
-    <!--
-      ⬇ 左栏留白（约 45%）—— 待写文字直接放这里。
-      已备好样式类 .skills__text：垂直居中、max-width 36vw、深紫字。
-      示例：
-      <div class="skills__text">
-        <h3>会的东西</h3>
-        <ul><li>需求分析</li><li>PRD</li></ul>
-      </div>
-    -->
-
-    <!-- 右侧：三张场景卡（4:3 横版，右缘锁在视口 90% 以内）卡下只放中文 + 英文两行 -->
-    <div class="skills">
-      <figure class="skill">
-        <video class="skill__video" src="assets/skills-01-skate-scene.mp4"
-               poster="assets/skills-01-skate-scene.jpg"
-               loop muted playsinline preload="none" disablepictureinpicture
-               aria-label="滑板：傍晚的城市路边"></video>
-        <figcaption class="skill__cap">
-          <b class="skill__cn">路边滑板</b>
-          <span class="skill__en">SKATEBOARDING</span>
-        </figcaption>
-      </figure>
-      <figure class="skill">
-        <video class="skill__video" src="assets/skills-02-dance-scene.mp4"
-               poster="assets/skills-02-dance-scene.jpg"
-               loop muted playsinline preload="none" disablepictureinpicture
-               aria-label="街舞：涂鸦墙前"></video>
-        <figcaption class="skill__cap">
-          <b class="skill__cn">街头街舞</b>
-          <span class="skill__en">STREET DANCE</span>
-        </figcaption>
-      </figure>
-      <figure class="skill">
-        <video class="skill__video" src="assets/skills-03-draw-scene.mp4"
-               poster="assets/skills-03-draw-scene.jpg"
-               loop muted playsinline preload="none" disablepictureinpicture
-               aria-label="插画：户外草地"></video>
-        <figcaption class="skill__cap">
-          <b class="skill__cn">户外写生</b>
-          <span class="skill__en">SKETCHING</span>
-        </figcaption>
-      </figure>
-    </div>
-
-    <div class="outro">
-      <a class="btn" href="https://github.com/luckyGirl-yu929" target="_blank" rel="noopener">GitHub ↗</a>
-      <a class="btn btn--ghost" href="mailto:2474110961@qq.com">✉ 2474110961@qq.com</a>
-      <p class="outro__note">BYME © 2026 · Be Yourself.</p>
     </div>
   </section>
 

@@ -1185,3 +1185,205 @@ html.story-lock, html.story-lock body { overflow: hidden; }
   .story-modal__panel, .story-modal__backdrop { transition: none !important; }
   .sc-tag, .story-card:hover, .story-card:active, .story-modal__close:hover { transform: rotate(var(--tilt, 0deg)); }
 }
+
+
+/* ============================================================
+   屏 5 · 04 技能特长：1:1 复刻参考设计（2026-10-31）
+   ------------------------------------------------------------
+   底图 = assets/section-04-skills-collage.png（1705×960），即用户提供的参考图。
+   紫色纹理 / 左上角 BYME / 左侧便签纸 / 04 技能特长 SKILLS & HOBBIES 徽章 /
+   THE END 收尾纸 / 全部涂鸦 —— 都来自底图，与参考图逐像素一致。
+   前景只用 DOM 画三类东西，用来「盖住」底图上对应的静态元素：
+     ① 三张拍立得卡（内嵌 mp4 动图，可 hover）
+     ② 四张便签短句
+     ③ 底部 GitHub / 邮箱按钮
+   坐标单位 cqw / cqh，容器 = .page__frame（1705×960）。
+   ============================================================ */
+.screen--skills {
+  --sk4-yellow: #ffd257;
+  --sk4-hand: "Ma Shan Zheng", "Zhi Mang Xing", "Noto Sans SC", cursive;
+}
+
+/* ---------- 卡片层 ---------- */
+#screen-04 .sk4-cards { position: absolute; inset: 0; z-index: 9; pointer-events: none; }
+#screen-04 .sk4-cards > * { pointer-events: auto; }
+
+#screen-04 .sk4-card {
+  position: absolute; margin: 0;
+  display: flex; flex-direction: column;
+  padding: 1.2cqw 1.2cqw 1.6cqw;
+  background: linear-gradient(168deg, #fffefb 0%, #f9f5fb 100%);
+  border-radius: .5cqw;
+  box-shadow: .42cqw .62cqw 0 rgb(151 108 195 / .3),
+              0 1.1cqw 2.4cqw rgb(63 43 92 / .28);
+  transform: rotate(var(--t, 6deg));
+  transition: transform 300ms cubic-bezier(.2, .8, .3, 1), box-shadow 300ms ease;
+}
+#screen-04 .sk4-card:hover {
+  transform: rotate(var(--t, 6deg)) translateY(-.55cqw) scale(1.02);
+  box-shadow: .55cqw .85cqw 0 rgb(151 108 195 / .34),
+              0 1.7cqw 3.4cqw rgb(63 43 92 / .32);
+  z-index: 14;
+}
+/* 三张卡：位置 / 尺寸 / 角度按底图原卡位实测值对齐 */
+#screen-04 .sk4-card--1 { left: 37.8%; top: 10.3%; width: 20.3cqw; height: 23.2cqw; --t: -7deg;   z-index: 5; }
+#screen-04 .sk4-card--2 { left: 54.5%; top: 24.1%; width: 20.2cqw; height: 22.3cqw; --t: 13.5deg; z-index: 6; }
+#screen-04 .sk4-card--3 { left: 73.7%; top: 12.3%; width: 20.9cqw; height: 23.5cqw; --t: 8.5deg;  z-index: 7; }
+
+/* 顶部紫色胶带 */
+#screen-04 .sk4-tape {
+  position: absolute; top: -.85cqw; left: 27%;
+  width: 5.2cqw; height: 1.5cqw;
+  background: linear-gradient(180deg, rgb(190 155 235 / .82), rgb(158 118 214 / .62));
+  border-left: 1px dashed rgb(255 255 255 / .45);
+  border-right: 1px dashed rgb(255 255 255 / .45);
+  box-shadow: 0 .08cqw .2cqw rgb(60 30 90 / .16);
+  transform: rotate(-3deg);
+  pointer-events: none;
+}
+
+/* 照片区：填满卡片剩余空间，动图 cover 不变形 */
+#screen-04 .sk4-photo {
+  position: relative; flex: 1 1 auto; min-height: 0;
+  overflow: hidden;
+  border-radius: .28cqw;
+  border: .09cqw solid rgb(90 50 127 / .32);
+  background: #241631;
+}
+#screen-04 .sk4-photo video { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* 底部黑色标签条 */
+#screen-04 .sk4-cap {
+  flex: 0 0 auto; margin-top: .9cqw;
+  display: flex; align-items: center; gap: .45cqw;
+  padding: .55cqw .75cqw .5cqw;
+  border-radius: .34cqw;
+  background: linear-gradient(135deg, #37214d, #1b1026);
+  color: #fffaf5;
+  min-width: 0;
+}
+#screen-04 .sk4-star {
+  flex: 0 0 auto; font-style: normal;
+  font-size: clamp(8px, 1.15cqw, 21px); line-height: 1;
+  color: var(--sk4-yellow);
+}
+#screen-04 .sk4-captext { display: flex; flex-direction: column; min-width: 0; }
+#screen-04 .sk4-cn {
+  font-family: var(--font-cn);
+  font-size: clamp(11px, 1.5cqw, 27px);
+  font-weight: 900; letter-spacing: .03em; line-height: 1.12;
+  white-space: nowrap;
+}
+#screen-04 .sk4-en {
+  margin-top: .06cqw;
+  font-family: var(--font-en);
+  font-size: clamp(7px, .78cqw, 14px);
+  font-weight: 700; letter-spacing: .14em; line-height: 1.2;
+  color: #e9d6ff;
+  white-space: nowrap;
+}
+
+/* ---------- 便签短句：米白小纸片 + 手写体 ---------- */
+#screen-04 .sk4-quote {
+  position: absolute; z-index: 10;
+  padding: .62cqw .8cqw .52cqw;
+  font-family: var(--sk4-hand);
+  font-size: clamp(9px, .92cqw, 17px);
+  line-height: 1.32;
+  color: #4e2a72;
+  transform: rotate(var(--q, 3deg));
+  pointer-events: none;
+}
+#screen-04 .sk4-quote::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(170deg, #fffdf5 0%, #fdf4e2 58%, #f8ecd6 100%);
+  clip-path: polygon(
+    .6% 3%, 13% .5%, 27% 2.4%, 41% .4%, 56% 2.2%, 71% .6%, 86% 2%, 99.4% .8%,
+    100% 24%, 99.1% 50%, 100% 76%, 98.6% 96.6%, 84% 99.8%, 68% 98.2%,
+    52% 99.9%, 36% 98.4%, 20% 99.7%, 6% 98.6%, .4% 96%, 1.2% 72%,
+    .2% 48%, 1.1% 24%
+  );
+  filter: drop-shadow(.07cqw .12cqw .14cqw rgb(70 40 100 / .22));
+}
+#screen-04 .sk4-quote--1 { left: 55.8%; top: 6.2%;  width: 8.8cqw; --q: 4deg; }
+#screen-04 .sk4-quote--2 { left: 39.6%; top: 50%;   width: 9.6cqw; --q: -4deg; }
+#screen-04 .sk4-quote--4 { left: 79.6%; top: 51.6%; width: 9.8cqw; --q: 3.5deg; }
+
+/* ---------- 底部按钮：覆盖底图原按钮 ---------- */
+#screen-04 .sk4-actions {
+  position: absolute; z-index: 11;
+  left: 54.4%; top: 88.7%; width: 31.2%; height: 8.6%;
+  display: flex; align-items: center; gap: 1cqw;
+}
+#screen-04 .sk4-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .45em;
+  height: 100%; padding: 0 .8cqw;
+  border-radius: 999px;
+  font-family: var(--font-en);
+  font-size: clamp(9px, .88cqw, 16px);
+  font-weight: 700; letter-spacing: .02em;
+  white-space: nowrap; overflow: hidden;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+#screen-04 .sk4-btn:hover { transform: translateY(-.18cqw); }
+#screen-04 .sk4-btn svg { width: 1.12em; height: 1.12em; flex: 0 0 auto; }
+#screen-04 .sk4-btn--gh {
+  flex: 0 0 41%;
+  background: linear-gradient(135deg, #6b40a0, #4a2a6e);
+  color: #fffaf5;
+  box-shadow: .22cqw .3cqw 0 rgb(151 108 195 / .36);
+}
+#screen-04 .sk4-btn--gh:hover { box-shadow: .28cqw .42cqw 0 rgb(151 108 195 / .44); }
+/* 邮箱按钮：与 GitHub 按钮完全统一 —— 深紫渐变底 + 白字 */
+#screen-04 .sk4-btn--mail {
+  flex: 1 1 auto;
+  background: linear-gradient(135deg, #6b40a0, #4a2a6e);
+  border: 0;
+  color: #fffaf5;
+  box-shadow: .22cqw .3cqw 0 rgb(151 108 195 / .36);
+}
+#screen-04 .sk4-btn--mail:hover { box-shadow: .28cqw .42cqw 0 rgb(151 108 195 / .44); }
+
+/* ---------- 入场：轻微上浮淡入（沿用 .is-active） ---------- */
+#screen-04 .sk4-cards,
+#screen-04 .sk4-actions {
+  opacity: 0; translate: 0 1.4cqh;
+  transition: opacity 620ms var(--snap-ease), translate 620ms var(--snap-ease);
+}
+#screen-04.is-active .sk4-cards   { opacity: 1; translate: 0 0; transition-delay: 90ms; }
+#screen-04.is-active .sk4-actions { opacity: 1; translate: 0 0; transition-delay: 180ms; }
+
+/* ---------- 窄屏：整版设计等比缩放，卡片坐标不变；便签短句隐藏 ---------- */
+@media (max-width: 720px), (max-aspect-ratio: 1 / 1) {
+  #screen-04 { height: auto; min-height: 100svh; overflow: visible; background: #e4d7f2; }
+  #screen-04 .page { position: relative; inset: auto; overflow: hidden; background: #e2d3f2; }
+  #screen-04 .page__fill { display: none; }
+  #screen-04 .page__frame {
+    position: relative; left: auto; top: auto; translate: none;
+    width: 100%; height: auto; aspect-ratio: 1705 / 960;
+    container-type: inline-size;
+    overflow: visible; background: transparent; box-shadow: none;
+  }
+  #screen-04 .page__media {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: center top;
+  }
+  #screen-04 .sk4-card { border-radius: 6px; }
+  #screen-04 .sk4-photo { border-radius: 4px; }
+  #screen-04 .sk4-cap { padding: .5cqw .7cqw .45cqw; border-radius: 5px; }
+  #screen-04 .sk4-cn { font-size: clamp(11px, 1.55cqw, 27px); }
+  #screen-04 .sk4-en { font-size: clamp(7px, .8cqw, 14px); }
+  #screen-04 .sk4-tape { width: 5.4cqw; height: 1.6cqw; top: -.9cqw; }
+  #screen-04 .sk4-quote { display: none; }
+  #screen-04 .sk4-actions { gap: 1.2cqw; }
+  #screen-04 .sk4-btn { font-size: clamp(9px, .95cqw, 16px); }
+  #screen-04 .sk4-cards,
+  #screen-04 .sk4-actions { opacity: 1; translate: none; transition: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #screen-04 .sk4-cards,
+  #screen-04 .sk4-actions { opacity: 1; translate: none; transition: none; }
+  #screen-04 .sk4-card,
+  #screen-04 .sk4-btn { transition: none; }
+}
