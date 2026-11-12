@@ -202,7 +202,7 @@
   // 03 项目档案：原生 dialog 提供 top layer 与背景 inert，焦点返回触发卡片。
   var projectFiles = {
     agent: {
-      index: "01 / AI AGENT · PROJECT FILE", title: "LabOps Agent", subtitle: "智能实验室预约 Agent",
+      index: "04 / AI AGENT · PROJECT FILE", title: "LabOps Agent", subtitle: "智能实验室预约 Agent",
       origin: "从电子工程师实际经历的实验室资源预约问题出发，探索用自然语言和业务规则简化设备预约流程。",
       capabilities: ["自然语言描述测试需求", "自动推荐匹配设备", "检查时间冲突、配套关系与使用限制", "生成预约确认单并追踪预约状态"],
       href: "/projects/LabOps_Agent.html"
@@ -234,7 +234,7 @@
       }
     },
     selection: {
-      index: "04 / AI PRODUCT · LAZADA · PROJECT FILE", title: "电商选品 Agent", subtitle: "把运营经验，变成可执行的选品规则",
+      index: "01 / AI PRODUCT · LAZADA · PROJECT FILE", title: "电商选品 Agent", subtitle: "把运营经验，变成可执行的选品规则",
       origin: "面向 Lazada 大促商品池配置，选品经验分散在运营口径、人工试筛与历史案例中，存在规则不统一、复用效率低的问题。项目尝试将经验沉淀为可检索、可调用、可验证的知识与规则，支持 Agent 辅助选品。",
       capabilities: [
         "需求拆解： 将“爆品、低价、库存充足”等业务表达，抽象为可执行的判断条件。",
