@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="lKVOoHmVs8VdfuFYU9A1hn">
+<head data-page-node-id="W83cvujsagj9Klu1YbfjmD">
+<meta charset="UTF-8" data-page-node-id="FJxMrGF5amGzSLpVacJl8f" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" data-page-node-id="gBOKCknWHGHvH3FVmX6hBU" />
+<title>跨境电商选品中心</title>
+<style>
+  :root{
+    --primary:#2f54eb; --primary-soft:#e8edff; --primary-deep:#1d39c4;
+    --bg:#f4f6fb; --card:#ffffff; --line:#e6e9f0; --text:#1f2533; --muted:#8a93a6;
+    --red:#e23b3b; --green:#16a34a; --orange:#f57c00; --radius:14px;
+    --shadow:0 4px 18px rgba(31,37,51,.06);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg); color:var(--text); font-size:14px; line-height:1.55; -webkit-text-size-adjust:100%;
+  }
+  button{font-family:inherit; cursor:pointer;}
+  input,select,textarea{font-family:inherit; font-size:16px;}
+  .app{min-height:100vh; display:flex; flex-direction:column;}
+  /* top bar */
+  .topbar{background:var(--card); border-bottom:1px solid var(--line); padding:0 22px; height:60px; display:flex; align-items:center; gap:14px; position:sticky; top:0; z-index:30;}
+  .logo{display:flex; align-items:center; gap:10px; font-weight:700; font-size:17px;}
+  .logo .mark{width:30px;height:30px;border-radius:8px;background:var(--primary);display:flex;align-items:center;justify-content:center;}
+  .spacer{flex:1;}
+  .reset-btn{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:7px 12px;font-size:13px;}
+  .reset-btn:hover{color:var(--primary);border-color:var(--primary);}
+  /* nav tabs */
+  .nav{display:flex; gap:6px; background:var(--card); border-bottom:1px solid var(--line); padding:0 22px;}
+  .nav .tab{padding:13px 18px; font-size:15px; color:var(--muted); border-bottom:3px solid transparent; background:none; border-top:none;border-left:none;border-right:none; font-weight:600;}
+  .nav .tab.active{color:var(--primary); border-bottom-color:var(--primary);}
+  .content{flex:1; padding:22px; max-width:1240px; width:100%; margin:0 auto;}
+  /* cards */
+  .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow);}
+  .stat-row{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:18px;}
+  .stat{padding:16px 18px;}
+  .stat .k{color:var(--muted); font-size:13px;}
+  .stat .v{font-size:26px; font-weight:700; margin-top:4px;}
+  /* toolbar */
+  .toolbar{display:flex; align-items:center; gap:12px; margin-bottom:16px; flex-wrap:wrap;}
+  .toolbar .title{font-size:18px; font-weight:700; margin-right:auto;}
+  .btn{background:var(--primary); color:#fff; border:none; border-radius:10px; padding:10px 16px; font-size:14px; font-weight:600; display:inline-flex; align-items:center; gap:7px;}
+  .btn:hover{background:var(--primary-deep);}
+  .btn.ghost{background:#fff; color:var(--primary); border:1px solid var(--primary);}
+  .btn.ghost:hover{background:var(--primary-soft);}
+  .btn.sm{padding:7px 12px; font-size:13px;}
+  .btn.light{background:var(--primary-soft); color:var(--primary);}
+  .btn:disabled{opacity:.5; cursor:not-allowed;}
+  /* table */
+  table{width:100%; border-collapse:collapse;}
+  th,td{text-align:left; padding:13px 16px; border-bottom:1px solid var(--line); font-size:13.5px;}
+  th{color:var(--muted); font-weight:600; background:#fafbfe;}
+  tbody tr:hover{background:#fafbff;}
+  .tag{display:inline-block; background:var(--primary-soft); color:var(--primary); border-radius:6px; padding:2px 9px; font-size:12px; margin:2px 4px 2px 0;}
+  .tag.gray{background:#f0f2f7; color:var(--muted);}
+  .muted{color:var(--muted);}
+  .pill{font-size:12px; padding:3px 10px; border-radius:20px; background:#eef1f7; color:var(--muted);}
+  /* MCP 商品池（Skill 调用 MCP 生成的结果） */
+  .badge-mcp{display:inline-block;font-size:11px;font-weight:700;line-height:1;padding:3px 7px;border-radius:5px;
+    background:#e6f4ff;color:#0958d9;border:1px solid #91caff;margin-left:6px;vertical-align:middle;}
+  .mcp-status{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);}
+  .mcp-status .dot{width:8px;height:8px;border-radius:50%;background:#c9cfdb;display:inline-block;}
+  .mcp-status.on .dot{background:var(--green);}
+  .mcp-status.off .dot{background:var(--red);}
+  .src-tag{font-size:11.5px;color:var(--primary);background:var(--primary-soft);border-radius:5px;padding:1px 6px;}
+  .rule-row{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);flex-wrap:wrap;}
+  .rule-row:last-child{border-bottom:none;}
+  .rule-nm{font-weight:600;min-width:120px;}
+  .rule-op{color:var(--text);}
+  .lock{font-size:11px;color:var(--red);border:1px solid #ffccc7;background:#fff2f0;border-radius:5px;padding:1px 6px;}
+  .fbar{height:8px;border-radius:5px;background:#eef1f7;overflow:hidden;min-width:90px;flex:1;}
+  .fbar i{display:block;height:100%;background:var(--primary);border-radius:5px;}
+  .fbar i.warn{background:var(--orange);}
+  .cf-item{border:1px solid var(--line);border-left:3px solid var(--orange);border-radius:10px;padding:10px 14px;margin-bottom:10px;background:#fffdf7;}
+  .cf-item .t{font-weight:700;font-size:13.5px;}
+  .cf-item .f{font-size:13px;margin-top:4px;}
+  .cf-item .a{font-size:12.5px;color:var(--muted);margin-top:3px;}
+  .note{font-size:12.5px;color:var(--muted);border-left:3px solid var(--line);padding-left:10px;margin-top:12px;}
+  @media(max-width:768px){
+    .rule-nm{min-width:auto;}
+    .fbar{min-width:60px;}
+  }
+  /* create page */
+  .form-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:18px; padding:20px;}
+  .field{display:flex; flex-direction:column; gap:6px;}
+  .field.full{grid-column:1/-1;}
+  .field label{font-size:13px; font-weight:600; color:#46506a;}
+  .field input,.field textarea,.field select{border:1px solid var(--line); border-radius:9px; padding:10px 12px; background:#fff; color:var(--text); width:100%;}
+  .field textarea{resize:vertical; min-height:64px;}
+  .section-title{font-size:16px; font-weight:700; padding:18px 20px 6px; display:flex; align-items:center; gap:8px;}
+  .section-title .num{background:var(--primary); color:#fff; width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;}
+  .group{margin:14px 20px; border:1px dashed var(--line); border-radius:12px; padding:14px; background:#fcfdff;}
+  .group-head{display:flex; align-items:center; gap:10px; margin-bottom:10px;}
+  .group-badge{font-size:12px; font-weight:700; color:var(--primary); background:var(--primary-soft); padding:3px 10px; border-radius:20px;}
+  .cond{border:1px solid var(--line); border-radius:10px; padding:11px 13px; margin-bottom:9px; background:#fff; display:flex; align-items:flex-start; gap:10px;}
+  .cond .meta{flex:1; min-width:0;}
+  .cond .name{font-weight:600;}
+  .cond .cfg{color:var(--muted); font-size:12.5px; margin-top:3px; word-break:break-all;}
+  .cond .ops{display:flex; gap:6px; align-items:center;}
+  .icon-btn{background:#fff; border:1px solid var(--line); border-radius:8px; width:34px;height:34px;display:flex;align-items:center;justify-content:center; color:var(--muted);}
+  .icon-btn:hover{color:var(--primary); border-color:var(--primary);}
+  .rule-box{margin-top:9px; padding:10px 11px; background:#fafbff; border:1px dashed #dde3ef; border-radius:9px;}
+  .rule-box .cfg-ctrl{margin-top:0;}
+  .not-toggle{font-size:12px; border:1px solid var(--line); border-radius:8px; padding:6px 10px; background:#fff; color:var(--muted);}
+  .not-toggle.on{background:var(--red); color:#fff; border-color:var(--red);}
+  .or-divider{text-align:center; color:var(--orange); font-weight:700; margin:6px 0; font-size:13px; letter-spacing:2px;}
+  .preview{padding:18px 20px;}
+  .preview .count{font-size:22px; font-weight:700; color:var(--primary);}
+  .scroll{max-height:340px; overflow:auto; border:1px solid var(--line); border-radius:10px; margin-top:12px;}
+  /* modal */
+  .modal-mask{position:fixed; inset:0; background:rgba(20,26,40,.45); display:none; align-items:center; justify-content:center; z-index:50; padding:18px;}
+  .modal-mask.open{display:flex;}
+  .modal{background:#fff; border-radius:16px; width:min(960px,100%); max-height:88vh; display:flex; flex-direction:column; overflow:hidden;}
+  .modal-head{padding:16px 20px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:10px; font-weight:700; font-size:16px;}
+  .modal-body{display:grid; grid-template-columns:200px 1fr 320px; gap:0; flex:1; min-height:0;}
+  .col{border-right:1px solid var(--line); overflow:auto; padding:14px;}
+  .col:last-child{border-right:none; background:#fafbff;}
+  .col h4{margin:0 0 8px; font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:1px;}
+  .l1-item{padding:10px 12px; border-radius:9px; cursor:pointer; font-size:14px; display:flex; align-items:center; gap:8px; margin-bottom:4px;}
+  .l1-item:hover{background:var(--primary-soft);}
+  .l1-item.active{background:var(--primary); color:#fff;}
+  .l2-group{margin-bottom:10px;}
+  .l2-title{font-weight:700; font-size:13px; color:#46506a; margin:8px 0 5px;}
+  .leaf{padding:8px 10px; border-radius:8px; cursor:pointer; font-size:13.5px; border:1px solid transparent; display:flex; align-items:center; gap:7px;}
+  .leaf:hover{border-color:var(--primary); background:#fff;}
+  .leaf.picked{background:var(--primary-soft); color:var(--primary); border-color:var(--primary);}
+  .leaf .dot{width:8px;height:8px;border-radius:50%;background:var(--muted);}
+  .leaf.picked .dot{background:var(--primary);}
+  .sel-item{border:1px solid var(--line); border-radius:10px; padding:11px; margin-bottom:10px; background:#fff;}
+  .sel-item .top{display:flex; align-items:center; justify-content:space-between; gap:8px;}
+  .sel-item .nm{font-weight:600; font-size:13.5px;}
+  .cfg-ctrl{margin-top:8px; display:flex; flex-wrap:wrap; gap:7px; align-items:center;}
+  .cfg-ctrl input[type=number]{width:84px; border:1px solid var(--line); border-radius:7px; padding:6px 8px; font-size:14px;}
+  .chk{display:inline-flex; align-items:center; gap:5px; font-size:12.5px; border:1px solid var(--line); border-radius:7px; padding:4px 8px; background:#fff; cursor:pointer;}
+  .chk.on{background:var(--primary-soft); border-color:var(--primary); color:var(--primary);}
+  .chk input{display:none;}
+  .radio-pill{font-size:12.5px; border:1px solid var(--line); border-radius:7px; padding:5px 11px; background:#fff; cursor:pointer;}
+  .radio-pill.on{background:var(--primary); color:#fff; border-color:var(--primary);}
+  .modal-foot{padding:13px 20px; border-top:1px solid var(--line); display:flex; gap:10px; justify-content:flex-end;}
+  .empty{padding:40px; text-align:center; color:var(--muted);}
+  /* smart agent */
+  .chat-card{padding:0; overflow:hidden; display:flex; flex-direction:column; height:calc(100vh - 190px); min-height:440px;}
+  .chat-head{padding:14px 20px; border-bottom:1px solid var(--line); font-weight:700; display:flex; align-items:center; gap:9px;}
+  .chat-body{flex:1; overflow:auto; padding:18px; display:flex; flex-direction:column; gap:14px;}
+  .msg{max-width:82%; padding:12px 15px; border-radius:14px; font-size:14px; line-height:1.6;}
+  .msg.user{align-self:flex-end; background:var(--primary); color:#fff; border-bottom-right-radius:4px;}
+  .msg.bot{align-self:flex-start; background:#fff; border:1px solid var(--line); border-bottom-left-radius:4px;}
+  .msg.bot.thinking{background:#fbfcff;}
+  .step{display:flex; gap:10px; align-items:flex-start; margin-bottom:8px;}
+  .step .dot{width:20px;height:20px;border-radius:50%;background:var(--primary-soft);color:var(--primary);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+  .step .txt{font-size:13.5px;}
+  .step .txt b{color:var(--primary-deep);}
+  .chip{display:inline-block; background:var(--primary-soft); color:var(--primary); border-radius:6px; padding:2px 9px; font-size:12px; margin:2px 4px 2px 0;}
+  .result-card{margin-top:6px; border:1px solid var(--line); border-radius:12px; padding:14px; background:#fff;}
+  .result-card .rc-title{font-weight:700; margin-bottom:8px; display:flex; align-items:center; gap:8px;}
+  .chat-input{border-top:1px solid var(--line); padding:13px 16px; display:flex; gap:10px; align-items:flex-end; background:#fff;}
+  .chat-input textarea{flex:1; border:1px solid var(--line); border-radius:11px; padding:11px 13px; resize:none; min-height:46px; max-height:120px;}
+  .suggestions{display:flex; gap:8px; flex-wrap:wrap; padding:0 20px 14px;}
+  .suggestions .sg{font-size:12.5px; border:1px solid var(--line); border-radius:18px; padding:6px 13px; background:#fff; color:var(--muted);}
+  .suggestions .sg:hover{border-color:var(--primary); color:var(--primary);}
+  .back-link{color:var(--muted); font-size:13px; cursor:pointer; display:inline-flex; align-items:center; gap:5px; margin-bottom:14px;}
+  .back-link:hover{color:var(--primary);}
+  .toast{position:fixed; bottom:26px; left:50%; transform:translateX(-50%); background:#1f2533; color:#fff; padding:11px 20px; border-radius:10px; font-size:14px; z-index:80; opacity:0; transition:opacity .25s; pointer-events:none;}
+  .toast.show{opacity:1;}
+  @media (max-width:860px){
+    .stat-row{grid-template-columns:repeat(2,1fr);}
+    .form-grid{grid-template-columns:1fr;}
+    .modal-body{grid-template-columns:1fr; max-height:80vh;}
+    .col{border-right:none; border-bottom:1px solid var(--line); max-height:38vh;}
+    .content{padding:14px;}
+    th,td{padding:10px 10px; font-size:12.5px;}
+    .nav{padding:0 12px; overflow-x:auto;}
+  }
+</style>
+<style>.portfolio-demo-notice{padding:12px 20px;background:#241a35;color:#fff;font-size:13px;line-height:1.8}.portfolio-demo-notice a{color:#dfc8ff}@media(max-width:720px){.card{overflow-x:auto}.toolbar{flex-wrap:wrap}body{min-width:0}table{min-width:700px}}</style></head>
+<body data-page-node-id="H5qWDhySGAvuBD2FGcMyu0"><div class="portfolio-demo-notice">BYME 项目演示 · 500 条模拟商品 · 智能选品为本地规则解析，非真实大模型。商品池含 Python 引擎复跑快照。 <a href="../Selection_Agent.html">返回项目介绍 ↗</a></div>
+<div class="app" data-page-node-id="DNRIiZfBIr5p8n5PNdV1l5">
+  <div class="topbar" data-page-node-id="sJwp5KbqbGDiiV31x47Lpw">
+    <div class="logo" data-page-node-id="VBS7NUR6iuj8Cgeuden56y">
+      <span class="mark" data-page-node-id="wuPlqUz8czgaS8gE5lNBDb">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" data-page-node-id="5TGoIiNhMsTg1U1zwj1w78"><path d="M3 7l9-4 9 4-9 4-9-4z" data-page-node-id="Og4BZXImAqsCaq06g5QCxi"/><path d="M3 12l9 4 9-4" data-page-node-id="9SFYYddZ6Sy815SF5XjjS1"/><path d="M3 17l9 4 9-4" data-page-node-id="WpXE6a8ncAYmUZt5H7SzrO"/></svg>
+      </span>
+      跨境电商 · 选品中心
+    </div>
+    <div class="spacer" data-page-node-id="rcoGOgVtd7xwoo2EdQzJU1"></div>
+    <button class="reset-btn" onclick="resetData()" data-page-node-id="jUY7gCPz4aYCRZB9GJP6Wz">重置演示数据</button>
+  </div>
+  <div class="nav" data-page-node-id="uLqJLw47uU4KfJWh2aLOC5">
+    <button class="tab active" id="tab-center" onclick="navTo('center')" data-page-node-id="DyCGt7zb7wJWW34Li70PzG">选品中心</button>
+    <button class="tab" id="tab-smart" onclick="navTo('smart')" data-page-node-id="U1AX3DNfMpIM7FzWtP7vXb">智能选品</button>
+  </div>
+  <div class="content" id="content" data-page-node-id="mZXDbiIroWYW4VjTZPXV1A"></div>
+</div>
+
+<!-- Indicator Library Modal -->
+<div class="modal-mask" id="modal" data-page-node-id="DzBZ2XI683zeVh8XcsvFne">
+  <div class="modal" data-page-node-id="wBS6z2SNQMI8rjyRavjD97">
+    <div class="modal-head" data-page-node-id="Pgl672tI9Ea3XJch22qQsS">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2f54eb" stroke-width="2" data-page-node-id="GyJGC4RHIIwzspLBEUkr0Q"><path d="M3 4h18v4H3zM3 10h18v4H3zM3 16h18v4H3z" data-page-node-id="Pz32ZmMVyenEHpfHdBN75L"/></svg>
+      指标库 · 选取筛选指标
+    </div>
+    <div style="padding:0 20px 12px;color:#8a93a6;font-size:12.5px">本弹窗仅用于「选取指标」。各指标的具体取值规则，请在选品集的条件卡片「指标规则」中配置。</div>
+    <div class="modal-body" data-page-node-id="goqSFq0byP3jizDBAHhV1t">
+      <div class="col" id="modalL1" data-page-node-id="0U9H4iN9F8SbFSgQ0eCIO3"><h4 data-page-node-id="1taYxdvMHRMJXFteMgSE36">一级指标</h4></div>
+      <div class="col" id="modalMid" data-page-node-id="A5CLgmEPsgyJiiXmGN6UoH"><h4 data-page-node-id="JgzwiwcExKF3TeJkcTjdBY">可选指标</h4><div class="muted" style="font-size:13px" data-page-node-id="UnXDYIAhubGAOU79J8mXgk">← 请选择左侧一级指标</div></div>
+      <div class="col" id="modalRight"><h4>已选指标（待配置规则）</h4><div id="modalSel" data-page-node-id="P60dGFxMeJF9juuK8XpHTg"></div></div>
+    </div>
+    <div class="modal-foot" data-page-node-id="IwBbFV9ItlBzljJY0WvPRS">
+      <button class="btn ghost" onclick="closeModal()" data-page-node-id="WRojB0P2Gk4LvWEKV1jTLf">取消</button>
+      <button class="btn" onclick="confirmModal()" data-page-node-id="k9wk2fBqdnuQBSne3L6flR">确定添加</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" data-page-node-id="Jzl2MpOetJC4ERUxSfIZDI"></div>
+
+<script>
+/* ============================================================
+   选品中心 — 单文件应用
+   数据层：指标树 / 500 商品 / 10 选品集（localStorage 持久化）
+   渲染层：center / create / detail / smart，统一由 refreshAll() 调度
+   ============================================================ */
+
+/* ---------- 基础常量 ---------- */
+const COUNTRIES = ['美国','英国','德国','法国','日本','加拿大','澳大利亚','意大利','西班牙','墨西哥','巴西','新加坡'];
+const CATS = [
+  {name:'3C数码', subs:['手机配件','电脑外设','智能穿戴','影音设备']},
+  {name:'服饰鞋包', subs:['女装','男装','鞋靴','箱包']},
+  {name:'家居家纺', subs:['床上用品','厨房用品','收纳整理','装饰摆件']},
+  {name:'美妆个护', subs:['口红','护肤','香水','美发']},
+  {name:'户外运动', subs:['帐篷','登山装备','骑行','健身器材']},
+  {name:'母婴玩具', subs:['积木','毛绒玩具','婴童用品','益智玩具']},
+  {name:'汽车配件', subs:['车载电子','车饰','维修工具','美容养护']},
+  {name:'宠物用品', subs:['猫粮','狗粮','宠物玩具','清洁用品']},
+];
+function catSubs(name){ const c=CATS.find(x=>x.name===name); return c?c.subs:[]; }
+
+/* 指标树（三级）。叶子 => 可被选中的筛选指标，带 type 决定配置 UI */
+const INDICATOR_TREE = [
+  {name:'商品基础属性', children:[
+    {key:'cat', name:'商品类目', type:'category'},
+    {key:'price_band', name:'价格带', type:'range', unit:'¥', min:0, max:1000},
+    {key:'weight', name:'商品重量', type:'range', unit:'kg', min:0, max:50},
+    {key:'size', name:'商品尺寸', type:'range', unit:'cm', min:0, max:200},
+    {key:'brand_type', name:'品牌类型', type:'enum', options:['品牌','白牌','OEM']},
+  ]},
+  {name:'物流与履约', children:[
+    {key:'ship_country', name:'可运达国家', type:'country'},
+    {key:'ship_time', name:'发货时效', type:'enum', options:['24小时内','48小时内','72小时内','7天内']},
+    {key:'logistics', name:'物流方式', type:'enum', options:['空运','海运','国际快递','专线']},
+    {key:'overseas_wh', name:'海外仓', type:'bool'},
+  ]},
+  {name:'销售表现', children:[
+    {key:'daily_sales', name:'日销量', type:'range', unit:'单', min:0, max:3000},
+    {key:'monthly_sales', name:'月销量', type:'range', unit:'单', min:0, max:100000},
+    {key:'cvr', name:'转化率', type:'range', unit:'%', min:0, max:50},
+    {key:'return_rate', name:'退货率', type:'range', unit:'%', min:0, max:50},
+    {key:'repurchase', name:'复购率', type:'range', unit:'%', min:0, max:100},
+  ]},
+  {name:'市场竞争力', children:[
+    {key:'competition', name:'竞争强度', type:'enum', options:['高','中','低']},
+    {key:'cat_rank', name:'类目排名', type:'range', unit:'名', min:1, max:8000},
+    {key:'new_ratio', name:'新品占比', type:'range', unit:'%', min:0, max:100},
+  ]},
+  {name:'评价口碑', children:[
+    {key:'rating', name:'评分', type:'range', unit:'分', min:0, max:5},
+    {key:'review_count', name:'评论数', type:'range', unit:'条', min:0, max:50000},
+    {key:'neg_rate', name:'差评率', type:'range', unit:'%', min:0, max:50},
+  ]},
+  {name:'利润成本', children:[
+    {key:'gross_margin', name:'毛利率', type:'range', unit:'%', min:0, max:100},
+    {key:'aov', name:'客单价', type:'range', unit:'¥', min:0, max:2000},
+    {key:'acos', name:'广告ACOS', type:'range', unit:'%', min:0, max:100},
+  ]},
+  {name:'趋势热度', children:[
+    {key:'search_heat', name:'搜索热度', type:'range', unit:'', min:0, max:100},
+    {key:'growth', name:'增长趋势', type:'enum', options:['上升','平稳','下降']},
+    {key:'social', name:'社媒声量', type:'range', unit:'', min:0, max:80000},
+    {key:'season', name:'季节因素', type:'enum', options:['旺季','平季','淡季']},
+  ]},
+  {name:'合规风险', children:[
+    {key:'ip_risk', name:'知识产权风险', type:'bool'},
+    {key:'cert', name:'认证要求', type:'enum', options:['CE','FCC','RoHS','CPC','无要求']},
+    {key:'prohibited', name:'禁限售', type:'bool'},
+  ]},
+];
+
+/* 扁平化指标表 key->def */
+const IND_MAP = {};
+(function buildMap(){
+  for(const l1 of INDICATOR_TREE){
+    for(const l2 of l1.children){
+      if(l2.children){ for(const l3 of l2.children){ IND_MAP[l3.key]=Object.assign({l1:l1.name,l2:l2.name},l3); } }
+      else { IND_MAP[l2.key]=Object.assign({l1:l1.name},l2); }
+    }
+  }
+})();
+const IND_COUNT = Object.keys(IND_MAP).length; // 30
+
+/* ---------- 商品生成（确定性随机，500 条） ---------- */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const rng = mulberry32(20260905);
+const rand=(a,b)=>a+rng()*(b-a);
+const ri=(a,b)=>Math.floor(rand(a,b+1));
+const pick=arr=>arr[Math.floor(rng()*arr.length)];
+function pickN(arr,n){const c=arr.slice();const o=[];n=Math.min(n,c.length);for(let i=0;i<n;i++){o.push(c.splice(Math.floor(rng()*c.length),1)[0]);}return o;}
+
+const SKU_COUNT = 500;                                        // 演示商品库规模（改这里即可，全库联动）
+function genProducts(){
+  const list=[];
+  for(let i=1;i<=SKU_COUNT;i++){
+    const cat=pick(CATS);
+    const sub=pick(cat.subs);
+    const daily=ri(0,2800);
+    const c=rng();
+    list.push({
+      id:'P'+String(i).padStart(4,'0'),
+      name:cat.name+'·'+sub+' '+pick(['Pro','Max','Lite','Plus','Mini','Air','Ultra','Neo'])+' '+ri(1,99),
+      cat_l1:cat.name, cat_l2:sub,
+      price_band:Math.round(rand(5,820)*100)/100,
+      weight:Math.round(rand(0.05,28)*100)/100,
+      size:ri(3,160),
+      brand_type:pick(['品牌','白牌','OEM']),
+      ship_country:pickN(COUNTRIES,ri(2,8)),
+      ship_time:pick(['24小时内','48小时内','72小时内','7天内']),
+      logistics:pick(['空运','海运','国际快递','专线']),
+      overseas_wh:rng()<0.4,
+      daily_sales:daily,
+      monthly_sales:daily*ri(15,30)+ri(0,400),
+      cvr:Math.round(rand(1,28)*10)/10,
+      return_rate:Math.round(rand(1,24)*10)/10,
+      competition:pick(['高','中','低']),
+      cat_rank:ri(1,7900),
+      new_ratio:ri(0,82),
+      rating:Math.round(rand(3.0,5.0)*10)/10,
+      review_count:ri(0,42000),
+      neg_rate:Math.round(rand(0,14)*10)/10,
+      gross_margin:Math.round(rand(5,76)*10)/10,
+      aov:Math.round(rand(8,640)*100)/100,
+      acos:Math.round(rand(5,62)*10)/10,
+      search_heat:ri(0,100),
+      growth:pick(['上升','平稳','下降']),
+      social:ri(0,78000),
+      season:pick(['旺季','平季','淡季']),
+      ip_risk:rng()<0.18,
+      cert:rng()<0.5?pickN(['CE','FCC','RoHS','CPC','无要求'],ri(1,3)):['无要求'],
+      prohibited:rng()<0.08,
+    });
+  }
+  // ↓↓↓ 第二遍独立遍历：追加给 Skill/MCP 使用的机器可读标签字段。
+  //     必须与第一遍分离——否则会污染后续商品的随机序列，导致整份数据漂移。
+  //     这些字段不进入运营侧指标库：标签体系（机器用）⊇ 指标库（运营手动筛选用）
+  for(const p of list){
+    p.stock_available=ri(0,5000);                            // 可售库存
+    p.delivery_days=ri(2,20);                                // 预计送达天数
+    // 履约成功率：右偏分布——多数卖家履约良好，少数拉胯（贴合真实平台分布）
+    p.fulfillment_rate=Math.round((rng()<0.6?rand(0.97,1.0):rand(0.88,0.99))*1000)/1000;
+    p.sellable_days=ri(0,200);                               // 可售天数
+    p.listing_age=ri(1,720);                                 // 上架天数
+    p.add_to_cart=Math.round(rand(0.5,15)*10)/10;            // 加购率 %
+    p.promo_depth=Math.round(rand(0,60)*10)/10;              // 折扣力度 %
+    p.stock_age=ri(1,400);                                   // 库龄（天）
+    p.sell_through=Math.round(rand(5,95)*10)/10;             // 动销率 %
+    p.new_item_support=rng()<0.3;                            // 是否参与新品扶持
+  }
+  // ↓↓↓ 第三遍独立遍历：主题 / 风格 / 本地发货 / 美元售价。
+  //     服务于「节日主题会场」「本地小商品速递」等场景，同样必须独立成遍。
+  // 节日主题：按类目亲和度加权，而非全库均匀随机。
+  // 否则「万圣节装饰会场」会圈进维修工具、登山装备等不相关类目，mock 数据失去说服力。
+  const THEME_HI = ['家居家纺|装饰摆件','家居家纺|厨房用品','家居家纺|收纳整理','母婴玩具|毛绒玩具','美妆个护|口红','服饰鞋包|女装','宠物用品|宠物玩具'];
+  const THEME_MID= ['服饰鞋包|男装','美妆个护|香水','母婴玩具|益智玩具','家居家纺|床上用品','美妆个护|美发','母婴玩具|积木'];
+  function weightedPick(pairs){                               // pairs: [[值,权重],...]，权重之和需为 1
+    let r=rng(), acc=0;
+    for(const [v,w] of pairs){ acc+=w; if(r<acc) return v; }
+    return pairs[pairs.length-1][0];
+  }
+  function themeOf(p){
+    const k=p.cat_l1+'|'+p.cat_l2;
+    if(THEME_HI.indexOf(k)>=0)  return weightedPick([['halloween',0.50],['christmas',0.14],['easter',0.05],['none',0.31]]);
+    if(THEME_MID.indexOf(k)>=0) return weightedPick([['halloween',0.20],['christmas',0.20],['easter',0.08],['none',0.52]]);
+    return weightedPick([['halloween',0.05],['christmas',0.05],['easter',0.03],['none',0.87]]);
+  }
+  // 风格调性：与节日主题联动（哥特 ↔ 万圣节、萌系/复古 ↔ 圣诞）
+  function styleOf(theme){
+    if(theme==='halloween') return weightedPick([['gothic',0.46],['cute',0.14],['retro',0.14],['minimal',0.10],['none',0.16]]);
+    if(theme==='christmas') return weightedPick([['cute',0.30],['retro',0.28],['minimal',0.20],['gothic',0.06],['none',0.16]]);
+    if(theme==='easter')    return weightedPick([['cute',0.44],['minimal',0.22],['retro',0.14],['gothic',0.03],['none',0.17]]);
+    return weightedPick([['minimal',0.30],['retro',0.22],['cute',0.16],['gothic',0.06],['none',0.26]]);
+  }
+  for(const p of list){
+    p.theme=themeOf(p);                                      // 节日主题属性（万圣节/圣诞/复活节/无）
+    p.style=styleOf(p.theme);                                // 风格调性（哥特/极简/复古/萌系/无）
+    // 本地仓可发国家：约 60% 的商品在部分可运达国有本地仓
+    p.local_wh = rng()<0.6 ? pickN(p.ship_country, ri(1,3)) : [];
+    // 美元售价：与人民币价格带按 7.2 汇率折算，保留两位
+    p.price_usd=Math.round((p.price_band/7.2)*100)/100;
+  }
+  return list;
+}
+const PRODUCTS = genProducts();
+
+/* ---------- 筛选引擎 ---------- */
+function isConfigured(cond){
+  const ind=IND_MAP[cond.key]; const v=cond.value; if(!ind||!v) return false;
+  if(ind.type==='range') return v.min!=null||v.max!=null;
+  if(ind.type==='enum'||ind.type==='country') return (v.values&&v.values.length)>0;
+  if(ind.type==='category') return ((v.l2&&v.l2.length)>0);
+  if(ind.type==='bool') return v.value!==undefined && v.value!==null;
+  return false;
+}
+function evalCondition(p, cond){
+  const ind = IND_MAP[cond.key]; if(!ind) return false;
+  if(!isConfigured(cond)) return true; // 未配置取值的条件不生效，避免误杀结果
+  const pv = p[cond.key];
+  let res=false;
+  if(ind.type==='range'){
+    const mn=cond.value.min, mx=cond.value.max;
+    res=(mn==null||pv>=mn)&&(mx==null||pv<=mx);
+  } else if(ind.type==='enum'){
+    if(ind.key==='cert'){ res=Array.isArray(pv)?pv.some(v=>cond.value.values.includes(v)):cond.value.values.includes(pv); }
+    else { res=cond.value.values.includes(pv); }
+  } else if(ind.type==='country'){
+    // 可运达国家：商品可运达所选国家中的“任一”即可（覆盖目标市场之一）
+    res=cond.value.values.some(c=>pv.includes(c));
+  } else if(ind.type==='category'){
+    const v=cond.value;
+    res = (v.l2&&v.l2.length)? v.l2.includes(p.cat_l2) : true;
+  } else if(ind.type==='bool'){
+    res=(pv===cond.value.value);
+  }
+  return cond.not? !res : res;
+}
+function matchesGroups(p, groups){
+  if(!groups || groups.length===0) return false;
+  return groups.some(g=> g.length>0 && g.every(c=>evalCondition(p,c)));
+}
+function filterProducts(groups){ return PRODUCTS.filter(p=>matchesGroups(p,groups)); }
+
+/* ---------- 种子选品集（10 个） ---------- */
+function c(key,value,not){ return {key, value, not:!!not}; }
+const SEED_DEFS = [
+  {name:'欧美高客单3C配件', creator:'张运营', desc:'面向欧美的 3C 数码配件，客单价高、有海外仓支撑时效', eff:['2026-08-01','2026-12-31'],
+    groups:[[ c('cat',{l2:catSubs('3C数码')}), c('price_band',{min:300}), c('ship_country',{values:['美国','英国','德国']}) ]]},
+  {name:'低退货白牌服饰', creator:'李选品', desc:'白牌服饰，控制退货率与评分门槛，降低售后成本', eff:['2026-07-15','2026-11-30'],
+    groups:[[ c('cat',{l2:catSubs('服饰鞋包')}), c('brand_type',{values:['白牌']}), c('return_rate',{max:20}), c('rating',{min:4.0}) ]]},
+  {name:'高毛利美妆个护', creator:'王数据', desc:'美妆个护高毛利选品，规避高竞争类目', eff:['2026-08-10','2027-01-31'],
+    groups:[[ c('cat',{l2:catSubs('美妆个护')}), c('gross_margin',{min:40}), c('competition',{values:['低']}) ]]},
+  {name:'爆款户外装备', creator:'张运营', desc:'户外运动上升趋势、搜索热度高的潜力爆款', eff:['2026-09-01','2026-12-15'],
+    groups:[[ c('cat',{l2:catSubs('户外运动')}), c('growth',{values:['上升']}), c('search_heat',{min:60}) ]]},
+  {name:'日本市场小件', creator:'陈跨境', desc:'日本可运达、轻小件、低客单的引流款', eff:['2026-08-20','2026-10-31'],
+    groups:[[ c('ship_country',{values:['日本']}), c('weight',{max:2}), c('price_band',{max:100}) ]]},
+  {name:'母婴玩具新品', creator:'李选品', desc:'母婴玩具高新品占比、高评分、无侵权风险', eff:['2026-07-01','2026-12-31'],
+    groups:[[ c('cat',{l2:catSubs('母婴玩具')}), c('new_ratio',{min:40}), c('rating',{min:4.5}), c('ip_risk',{value:false}) ]]},
+  {name:'高转化宠物用品', creator:'王数据', desc:'宠物用品高转化、稳定月销的常青款', eff:['2026-08-05','2027-02-28'],
+    groups:[[ c('cat',{l2:catSubs('宠物用品')}), c('cvr',{min:8}), c('monthly_sales',{min:500}) ]]},
+  {name:'欧洲认证齐全', creator:'陈跨境', desc:'德国法国可运达、具备 CE 认证、非禁限售', eff:['2026-09-10','2027-03-31'],
+    groups:[[ c('ship_country',{values:['德国','法国']}), c('cert',{values:['CE']}), c('prohibited',{value:false}) ]]},
+  {name:'低价引流款', creator:'张运营', desc:'低客单、稳定日销、低竞争的引流选品', eff:['2026-07-20','2026-11-20'],
+    groups:[[ c('price_band',{max:30}), c('daily_sales',{min:50}), c('competition',{values:['低']}) ]]},
+  {name:'品牌出海旗舰', creator:'李选品', desc:'品牌商品、高客单高毛利、无知识产权风险', eff:['2026-08-15','2027-06-30'],
+    groups:[[ c('brand_type',{values:['品牌']}), c('aov',{min:200}), c('gross_margin',{min:30}), c('ip_risk',{value:false}) ]]},
+];
+function buildSeedSets(){
+  const base=new Date('2026-06-01').getTime();
+  return SEED_DEFS.map((d,idx)=>{
+    const matched=filterProducts(d.groups);
+    const dt=new Date(base + (idx*5+2)*86400000);
+    const ymd=dt.toISOString().slice(0,10);
+    return {
+      id:'PS'+String(2600+idx),
+      name:d.name, creator:d.creator, desc:d.desc,
+      createTime:ymd, effStart:d.eff[0], effEnd:d.eff[1],
+      groups:d.groups,
+      productIds:matched.map(p=>p.id),
+      productCount:matched.length,
+    };
+  });
+}
+
+/* ---------- 状态与存储 ---------- */
+const LS_KEY='byme_selection_portfolio_v1'; // v3：演示商品库由 200 扩至 500，种子集命中数已变，旧缓存不再适用
+const LS_MCP='xp_mcp_base';
+let MCP_BASE=(function(){ try{ return localStorage.getItem(LS_MCP)||'http://127.0.0.1:8765'; }catch(e){ return 'http://127.0.0.1:8765'; } })();
+let state = { view:'center', sets:[], draft:null, modal:null, preview:[], detailId:null, smart:[], mcp:false };
+
+function loadSets(){
+  try{ const raw=localStorage.getItem(LS_KEY); if(raw){ const a=JSON.parse(raw); if(Array.isArray(a)&&a.length) return a; } }catch(e){}
+  const seed=buildSeedSets(); localStorage.setItem(LS_KEY, JSON.stringify(seed)); return seed;
+}
+// MCP 商品池来自服务端，不写入本地存储，避免与本地选品集混淆
+function saveSets(){ localStorage.setItem(LS_KEY, JSON.stringify(state.sets.filter(s=>s.source!=='mcp'))); }
+
+/* ---------- MCP 商品池同步（Skill -> MCP -> 本页） ---------- */
+const MC = {
+  market:{US:'美国',UK:'英国',DE:'德国',FR:'法国',JP:'日本',CA:'加拿大',AU:'澳大利亚',ES:'西班牙',IT:'意大利',BR:'巴西',MX:'墨西哥',SA:'沙特'},
+  poolType:{hot_selling:'爆品池',low_price:'低价引流池',high_stock:'高库存清仓池',new_arrival:'新品池',custom:'自定义池'},
+  activity:{back_to_school:'返校季',black_friday:'黑五',christmas:'圣诞',summer:'夏季促销',spring:'春季新品',clearance:'清仓',none:'常规'},
+  op:{gte:'≥',lte:'≤',gt:'>',lt:'<',eq:'=',neq:'≠',deliverable:'可运达',cat_scope:'类目范围',
+      category_top_percent:'类目前 x%',above_category_median:'高于类目中位数',below_category_median:'低于类目中位数',
+      in:'属于',not_in:'不属于',between:'介于'},
+};
+function mcText(map,k){ return (map&&map[k])||k||'—'; }
+function mcValue(v){
+  if(v===null||v===undefined) return '—';
+  if(typeof v==='boolean') return v?'是':'否';
+  if(Array.isArray(v)) return v.join(' / ');
+  if(typeof v==='object') return [].concat(v.cat_l1||[], v.cat_l2||[]).join(' / ') || '—';
+  return String(v);
+}
+function mcpPoolToSet(p){
+  const rules=p.rules_with_source||[], funnel=p.funnel||[], conflicts=p.conflicts||[];
+  return {
+    id:p.pool_id, name:p.name||p.pool_id,
+    creator:p.created_by||'规则引擎复跑',
+    desc:[mcText(MC.activity,p.activity), mcText(MC.market,p.market), mcText(MC.poolType,p.product_pool_type)].join(' · '),
+    createTime:(p.saved_at||'').slice(0,10) || new Date().toISOString().slice(0,10),
+    effStart:'', effEnd:'',
+    groups:[], // MCP 规则不走指标库模型，用 mcpRules 单独渲染
+    productIds:p.product_ids||[], productCount:p.actual_count!=null?p.actual_count:(p.product_ids||[]).length,
+    source:'mcp',
+    mcp:{ raw:p, rules, funnel, conflicts,
+      activity:p.activity, market:p.market, poolType:p.product_pool_type,
+      target:p.target_sku_count, publish:p.publish_status },
+  };
+}
+function syncFromMCP(silent){const pools=[{"pool_id":"POOL_20261112135925_002","name":"pool_mx_local_small_express_2026","activity":"none","market":"MX","product_pool_type":"local_express","target_sku_count":8,"actual_count":11,"product_ids":["P0056","P0185","P0186","P0192","P0254","P0293","P0353","P0367","P0406","P0410","P0497"],"rules_with_source":[{"tag_id":"BASE_DELIVERABLE","name_cn":"可运达目标国","operator":"deliverable","value":["墨西哥"],"source_id":"base_constraints","never_relax":true},{"tag_id":"TAG_RISK_FLAG_009","name_cn":"禁限售/风险排除","operator":"eq","value":false,"source_id":"base_constraints","never_relax":true},{"tag_id":"TAG_LOCAL_WH_022","name_cn":"本地发货国","operator":"local_wh","value":"墨西哥","source_id":"TPL_MX_LOCAL_SMALL_v1.0","never_relax":false},{"tag_id":"TAG_PRICE_USD_023","name_cn":"美元售价","operator":"lte","value":100,"source_id":"TPL_MX_LOCAL_SMALL_v1.0","never_relax":false},{"tag_id":"TAG_DELIVERY_DAYS_006","name_cn":"预计送达天数","operator":"lte","value":12,"source_id":"TPL_MX_LOCAL_SMALL_v1.0","never_relax":false},{"tag_id":"TAG_FULFILL_RATE_007","name_cn":"履约成功率","operator":"gte","value":0.98,"source_id":"TPL_MX_LOCAL_SMALL_v1.0","never_relax":true},{"tag_id":"TAG_STOCK_AVAILABLE_005","name_cn":"可售库存","operator":"gte","value":200,"source_id":"TPL_MX_LOCAL_SMALL_v1.0","never_relax":false}],"funnel":[{"step":0,"condition":"商品库全量","remaining":500,"filtered":0,"ratio":0},{"step":1,"condition":"可运达目标国（deliverable ['墨西哥']）","remaining":211,"filtered":289,"ratio":57.8},{"step":2,"condition":"禁限售/风险排除（eq False）","remaining":160,"filtered":51,"ratio":24.2},{"step":3,"condition":"本地发货国（local_wh 墨西哥）","remaining":40,"filtered":120,"ratio":75},{"step":4,"condition":"美元售价（lte 100）","remaining":32,"filtered":8,"ratio":20},{"step":5,"condition":"预计送达天数（lte 12）","remaining":21,"filtered":11,"ratio":34.4},{"step":6,"condition":"履约成功率（gte 0.98）","remaining":11,"filtered":10,"ratio":47.6},{"step":7,"condition":"可售库存（gte 200）","remaining":11,"filtered":0,"ratio":0}],"conflicts":[],"created_by":"规则引擎复跑","publish_status":"not_published","saved_at":"2026-11-12 13:59:25"},{"pool_id":"POOL_20261112135925_001","name":"pool_us_halloween_decor_ctr_2026","activity":"halloween","market":"US","product_pool_type":"theme","target_sku_count":12,"actual_count":6,"product_ids":["P0069","P0117","P0138","P0145","P0317","P0492"],"rules_with_source":[{"tag_id":"BASE_DELIVERABLE","name_cn":"可运达目标国","operator":"deliverable","value":["美国"],"source_id":"base_constraints","never_relax":true},{"tag_id":"TAG_RISK_FLAG_009","name_cn":"禁限售/风险排除","operator":"eq","value":false,"source_id":"base_constraints","never_relax":true},{"tag_id":"TAG_THEME_021","name_cn":"节日主题属性","operator":"in","value":["halloween"],"source_id":"TPL_US_HALLOWEEN_HOME_CTR_v1.1","never_relax":false},{"tag_id":"TAG_CTR_30D_004","name_cn":"点击率","operator":"above_category_median","value":null,"source_id":"TPL_US_HALLOWEEN_HOME_CTR_v1.1","never_relax":false},{"tag_id":"TAG_STOCK_AVAILABLE_005","name_cn":"可售库存","operator":"gte","value":300,"source_id":"TPL_US_HALLOWEEN_HOME_CTR_v1.1","never_relax":false},{"tag_id":"TAG_DELIVERY_DAYS_006","name_cn":"预计送达天数","operator":"lte","value":16,"source_id":"TPL_US_HALLOWEEN_HOME_CTR_v1.1","never_relax":false},{"tag_id":"TAG_FULFILL_RATE_007","name_cn":"履约成功率","operator":"gte","value":0.95,"source_id":"TPL_US_HALLOWEEN_HOME_CTR_v1.1","never_relax":true}],"funnel":[{"step":0,"condition":"商品库全量","remaining":500,"filtered":0,"ratio":0},{"step":1,"condition":"可运达目标国（deliverable ['美国']）","remaining":205,"filtered":295,"ratio":59},{"step":2,"condition":"禁限售/风险排除（eq False）","remaining":142,"filtered":63,"ratio":30.7},{"step":3,"condition":"节日主题属性（in ['halloween']）","remaining":24,"filtered":118,"ratio":83.1},{"step":4,"condition":"点击率（above_category_median None）","remaining":16,"filtered":8,"ratio":33.3},{"step":5,"condition":"可售库存（gte 300）","remaining":15,"filtered":1,"ratio":6.2},{"step":6,"condition":"预计送达天数（lte 16）","remaining":12,"filtered":3,"ratio":20},{"step":7,"condition":"履约成功率（gte 0.95）","remaining":6,"filtered":6,"ratio":50}],"conflicts":[],"created_by":"规则引擎复跑","publish_status":"not_published","saved_at":"2026-11-12 13:59:25"}];state.sets=pools.map(mcpPoolToSet).concat(state.sets.filter(s=>s.source!=='mcp'));state.mcp=true;refreshAll();if(!silent)toast('已载入两组本地引擎复跑结果；不是在线 MCP 连接');}
+function setMcpBase(){toast('公开演示使用内置结果，不连接访客的本机服务');}
+
+/* ---------- 工具 ---------- */
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
+function fmtCondValue(cond){
+  const ind=IND_MAP[cond.key]; if(!ind) return '';
+  const v=cond.value; let s='';
+  if(ind.type==='range'){
+    const mn=v.min==null?'':v.min, mx=v.max==null?'':v.max;
+    s = (mn&&mx)? `${mn}~${mx}${ind.unit}` : mn? `≥${mn}${ind.unit}` : mx? `≤${mx}${ind.unit}` : '（未配置）';
+  } else if(ind.type==='enum'){
+    s = v.values.length? v.values.join('/') : '（未选）';
+  } else if(ind.type==='country'){
+    s = v.values.length? ('可运达：'+v.values.join('/')) : '（未选）';
+  } else if(ind.type==='category'){
+    s = (v.l2&&v.l2.length)? ('类目明细：'+v.l2.join('/')) : '（未选）';
+  } else if(ind.type==='bool'){
+    s = v.value? '有' : '无';
+  }
+  return s;
+}
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),1800); }
+
+/* ============================================================
+   渲染层（单向：数据 -> 计算 -> 渲染，统一 refreshAll 调度）
+   ============================================================ */
+function refreshAll(){
+  // 更新导航高亮
+  document.getElementById('tab-center').classList.toggle('active', state.view==='center'||state.view==='create'||state.view==='detail');
+  document.getElementById('tab-smart').classList.toggle('active', state.view==='smart');
+  if(state.view==='center') renderCenter();
+  else if(state.view==='create') renderCreate();
+  else if(state.view==='detail') renderDetail();
+  else if(state.view==='smart') renderSmart();
+}
+function navTo(view){ if(view==='smart'){ state.smart=[]; } state.view=view; window.scrollTo(0,0); refreshAll(); }
+
+/* ---------- 选品中心列表 ---------- */
+function renderCenter(){
+  const totalProducts=PRODUCTS.length;
+  const today=new Date().toISOString().slice(0,10);
+  const todaySets=state.sets.filter(s=>s.createTime===today).length;
+  const totalItems=state.sets.reduce((a,s)=>a+s.productCount,0);
+  const html=`
+    <div class="stat-row">
+      <div class="card stat"><div class="k">选品集总数</div><div class="v">${state.sets.length}</div></div>
+      <div class="card stat"><div class="k">覆盖商品（去重前）</div><div class="v">${totalItems}</div></div>
+      <div class="card stat"><div class="k">商品数据库</div><div class="v">${totalProducts}</div></div>
+      <div class="card stat"><div class="k">今日新建</div><div class="v">${todaySets}</div></div>
+    </div>
+    <div class="toolbar">
+      <div class="title">历史选品集</div>
+      <div class="mcp-status ${state.mcp?'on':'off'}" id="mcpStatus" title="本地引擎复跑结果快照">
+        <span class="dot"></span>${state.mcp?'模拟结果已载入':'模拟结果待载入'}
+      </div>
+      <button class="btn ghost sm" onclick="setMcpBase()">演示说明</button>
+      <button class="btn light" onclick="syncFromMCP(false)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/></svg>
+        重新载入案例结果
+      </button>
+      <button class="btn" onclick="openCreate()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        创建选品集
+      </button>
+    </div>
+    <div class="card">
+      <table>
+        <thead><tr><th>选品集名称</th><th>选品ID</th><th>来源</th><th>创建人</th><th>创建时间</th><th>商品数</th><th>操作</th></tr></thead>
+        <tbody>
+          ${state.sets.map(s=>`
+            <tr>
+              <td><b>${esc(s.name)}</b>${s.source==='mcp'?'<span class="badge-mcp">MCP</span>':''}<div class="muted" style="font-size:12px">${esc(s.desc)}</div></td>
+              <td><span class="pill">${esc(s.id)}</span></td>
+              <td>${s.source==='mcp'?'<span class="tag">模拟案例圈选</span>':'<span class="tag gray">人工配置</span>'}</td>
+              <td>${esc(s.creator)}</td>
+              <td>${esc(s.createTime)}</td>
+              <td><b style="color:var(--primary)">${s.productCount}</b>${s.source==='mcp'&&s.mcp&&s.mcp.target?`<span class="muted" style="font-size:12px"> / 目标 ${s.mcp.target}</span>`:''}</td>
+              <td><button class="btn light sm" onclick="openDetail('${s.id}')">查看详情</button></td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>`;
+  document.getElementById('content').innerHTML=html;
+}
+
+/* ---------- 创建选品集 ---------- */
+function openCreate(){
+  state.draft={ name:'', effStart:'', effEnd:'', desc:'', groups:[[]], activeGroup:0 };
+  state.preview=[];
+  state.view='create'; refreshAll();
+}
+function cancelCreate(){ state.draft=null; state.preview=[]; state.view='center'; refreshAll(); }
+
+function renderCreate(){
+  const d=state.draft;
+  let groupsHtml='';
+  d.groups.forEach((grp,gi)=>{
+    if(gi>0) groupsHtml+=`<div class="or-divider">— 或 (OR) —</div>`;
+    groupsHtml+=`
+      <div class="group">
+        <div class="group-head">
+          <span class="group-badge">条件组 ${gi+1} · 组内「且(AND)」</span>
+          <span class="muted" style="font-size:12px">该组商品需同时满足以下全部条件</span>
+          <span style="flex:1"></span>
+          <button class="btn ghost sm" onclick="openModal(${gi})">+ 添加筛选条件</button>
+        </div>
+        ${grp.length? grp.map((cond,ci)=>condHtml(cond,gi,ci)).join('') : `<div class="muted" style="font-size:13px;padding:6px 2px">暂无条件，点击右上角添加</div>`}
+      </div>`;
+  });
+  const previewHtml = state.preview.length>=0 && state.previewLoaded ? previewBlock() : '';
+  const html=`
+    <div class="back-link" onclick="cancelCreate()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg> 返回选品中心
+    </div>
+    <div class="card">
+      <div class="section-title"><span class="num">1</span> 基础信息</div>
+      <div class="form-grid">
+        <div class="field"><label>选品集名称 *</label><input id="f-name" value="${esc(d.name)}" placeholder="例如：欧美高客单3C配件" oninput="draftVal('name',this.value)"></div>
+        <div class="field"><label>创建人</label><input id="f-creator" value="${esc(d.creator||'')}" placeholder="默认当前账号" oninput="draftVal('creator',this.value)"></div>
+        <div class="field"><label>生效开始时间</label><input type="date" id="f-effs" value="${esc(d.effStart)}" oninput="draftVal('effStart',this.value)"></div>
+        <div class="field"><label>生效结束时间</label><input type="date" id="f-effe" value="${esc(d.effEnd)}" oninput="draftVal('effEnd',this.value)"></div>
+        <div class="field full"><label>选品集描述</label><textarea id="f-desc" oninput="draftVal('desc',this.value)" placeholder="描述该选品集的目标市场、选品逻辑等">${esc(d.desc)}</textarea></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:18px">
+      <div class="section-title"><span class="num">2</span> 指标筛选（与 / 或 / 非）</div>
+      <div class="muted" style="padding:0 20px;font-size:12.5px">「且(AND)」= 同一条件组内全部满足；「或(OR)」= 多个条件组之间满足任一组即可；每个条件可切换「非(NOT)」取反。<br>点击「添加筛选条件」<b>仅选取指标</b>；每条条件下方展开「指标规则」用于配置具体取值（如价格区间、可运达国家、商品类目明细等）。</div>
+      ${groupsHtml}
+      <div style="padding:0 20px 18px"><button class="btn ghost sm" onclick="addGroup()">+ 新建条件组（或 OR）</button></div>
+    </div>
+
+    <div class="card" style="margin-top:18px">
+      <div class="section-title"><span class="num">3</span> 生成并预览</div>
+      <div class="preview">
+        <button class="btn" onclick="confirmCreate()">确认生成商品预览</button>
+        <span class="muted" style="margin-left:10px;font-size:13px">根据已配置指标，从 ${SKU_COUNT} 个商品数据库中实时筛选</span>
+        ${previewHtml}
+      </div>
+    </div>
+  `;
+  document.getElementById('content').innerHTML=html;
+}
+function condHtml(cond,gi,ci){
+  const ind=IND_MAP[cond.key]; if(!ind) return ''; // 兼容旧数据中的已下线指标
+  const configured=isConfigured(cond);
+  return `<div class="cond">
+    <div class="meta">
+      <div class="name">${esc(ind.name)} <span class="tag gray">${esc(ind.l1)}</span> ${cond.not?'<span class="tag" style="background:#fde8e8;color:var(--red)">非 NOT</span>':''}</div>
+      <div class="cfg">${configured? esc(fmtCondValue(cond)) : '<span style="color:var(--orange)">⚠ 未配置规则，该条件暂不生效</span>'}</div>
+      <div class="rule-box">${condConfigHtml(cond,gi,ci)}</div>
+    </div>
+    <div class="ops">
+      <button class="not-toggle ${cond.not?'on':''}" onclick="toggleNot(${gi},${ci})">非</button>
+      <button class="icon-btn" title="删除" onclick="removeCond(${gi},${ci})">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+      </button>
+    </div>
+  </div>`;
+}
+function condConfigHtml(cond,gi,ci){
+  const ind=IND_MAP[cond.key]; const v=cond.value;
+  if(ind.type==='range'){
+    return `<div class="cfg-ctrl" style="margin-top:8px">
+      最小值<input type="number" value="${v.min==null?'':v.min}" oninput="condSetRange(${gi},${ci},'min',this.value)" placeholder="最小">
+      最大值<input type="number" value="${v.max==null?'':v.max}" oninput="condSetRange(${gi},${ci},'max',this.value)" placeholder="最大"> ${esc(ind.unit||'')}
+      <span class="muted" style="font-size:12px">（留空表示不限）</span></div>`;
+  }
+  if(ind.type==='enum'){
+    return `<div class="cfg-ctrl" style="margin-top:8px">${ind.options.map(o=>`<label class="chk ${v.values.includes(o)?'on':''}" onclick="condToggleArr(${gi},${ci},'values','${esc(o)}')"><input type="checkbox" ${v.values.includes(o)?'checked':''}>${esc(o)}</label>`).join('')}</div>`;
+  }
+  if(ind.type==='country'){
+    return `<div class="cfg-ctrl" style="margin-top:8px;max-height:130px;overflow:auto">${COUNTRIES.map(o=>`<label class="chk ${v.values.includes(o)?'on':''}" onclick="condToggleArr(${gi},${ci},'values','${esc(o)}')"><input type="checkbox" ${v.values.includes(o)?'checked':''}>${esc(o)}</label>`).join('')}</div><div class="muted" style="font-size:11.5px;margin-top:3px">商品可运达所选国家中的“任一”即可（覆盖目标市场之一）</div>`;
+  }
+  if(ind.type==='bool'){
+    const val=v.value;
+    return `<div class="cfg-ctrl" style="margin-top:8px"><span class="radio-pill ${val===true?'on':''}" onclick="condSetBool(${gi},${ci},true)">有</span><span class="radio-pill ${val===false?'on':''}" onclick="condSetBool(${gi},${ci},false)">无</span></div>`;
+  }
+  if(ind.type==='category'){
+    let h='<div style="margin-top:8px">';
+    for(const cat of CATS){
+      const subs=cat.subs;
+      const allOn=subs.every(s=>(v.l2||[]).includes(s));
+      h+=`<div style="margin:7px 0"><label class="chk ${allOn?'on':''}" onclick="condToggleCatL1(${gi},${ci},'${esc(cat.name)}')"><input type="checkbox" ${allOn?'checked':''}>全选「${esc(cat.name)}」</label><div style="display:flex;flex-wrap:wrap;gap:5px;margin:5px 0 2px 18px">`;
+      for(const sub of subs){
+        const on=(v.l2||[]).includes(sub);
+        h+=`<label class="chk ${on?'on':''}" onclick="condToggleCatL2(${gi},${ci},'${esc(sub)}')"><input type="checkbox" ${on?'checked':''}>${esc(sub)}</label>`;
+      }
+      h+='</div></div>';
+    }
+    h+='</div>';
+    return h;
+  }
+  return '';
+}
+function draftVal(k,v){ state.draft[k]=v; }
+function addGroup(){ state.draft.groups.push([]); refreshAll(); }
+function removeCond(gi,ci){ state.draft.groups[gi].splice(ci,1); refreshAll(); }
+function toggleNot(gi,ci){ state.draft.groups[gi][ci].not=!state.draft.groups[gi][ci].not; refreshAll(); }
+/* 指标规则配置（作用于选品集里的条件，而非指标库弹窗） */
+function condSetRange(gi,ci,edge,val){ const c=state.draft.groups[gi][ci]; c.value[edge]= (val==='')?null:Number(val); } // 不重渲染，保留输入焦点
+function condToggleArr(gi,ci,field,opt){ const arr=state.draft.groups[gi][ci].value[field]; const i=arr.indexOf(opt); if(i>=0) arr.splice(i,1); else arr.push(opt); refreshAll(); }
+function condSetBool(gi,ci,val){ state.draft.groups[gi][ci].value.value=val; refreshAll(); }
+function condToggleCatL2(gi,ci,sub){ const v=state.draft.groups[gi][ci].value; (v.l2=v.l2||[]); const i=v.l2.indexOf(sub); if(i>=0) v.l2.splice(i,1); else v.l2.push(sub); refreshAll(); }
+function condToggleCatL1(gi,ci,catName){ const v=state.draft.groups[gi][ci].value; (v.l2=v.l2||[]); const subs=catSubs(catName); const allOn=subs.every(s=>v.l2.includes(s)); if(allOn){ subs.forEach(s=>{const i=v.l2.indexOf(s); if(i>=0) v.l2.splice(i,1);}); } else { subs.forEach(s=>{ if(!v.l2.includes(s)) v.l2.push(s); }); } refreshAll(); }
+
+function confirmCreate(){
+  const d=state.draft;
+  const matched=filterProducts(d.groups);
+  state.preview=matched; state.previewLoaded=true;
+  refreshAll();
+  toast('筛选出 '+matched.length+' 个商品');
+}
+function previewBlock(){
+  const list=state.preview.slice(0,12);
+  const saveDisabled = state.preview.length===0 || !state.draft.name.trim();
+  return `
+    <div style="margin-top:16px">
+      <div>命中商品 <span class="count">${state.preview.length}</span> 个</div>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>商品ID</th><th>名称</th><th>类目</th><th>价格(¥)</th><th>可运达国家</th><th>月销</th><th>评分</th></tr></thead>
+          <tbody>
+            ${list.map(p=>`<tr><td><span class="pill">${esc(p.id)}</span></td><td>${esc(p.name)}</td><td>${esc(p.cat_l1)}/${esc(p.cat_l2)}</td><td>${p.price_band}</td><td>${p.ship_country.length}国</td><td>${p.monthly_sales}</td><td>${p.rating}</td></tr>`).join('')}
+            ${state.preview.length>12?`<tr><td colspan="7" class="muted">… 仅展示前 12 条，共 ${state.preview.length} 条</td></tr>`:''}
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:14px;display:flex;gap:10px;align-items:center">
+        <button class="btn" ${saveDisabled?'disabled':''} onclick="saveSet()">保存选品集</button>
+        ${saveDisabled?`<span class="muted" style="font-size:12.5px">${state.preview.length===0?'需至少命中 1 个商品':'请先填写选品集名称'}</span>`:''}
+      </div>
+    </div>`;
+}
+function saveSet(){
+  const d=state.draft;
+  if(!d.name.trim()){ toast('请填写选品集名称'); return; }
+  if(state.preview.length===0){ toast('未命中商品，无法保存'); return; }
+  const now=new Date();
+  const ymd=now.toISOString().slice(0,10);
+  const id='PS'+now.getTime().toString().slice(-6);
+  const set={
+    id, name:d.name.trim(), creator:(d.creator&&d.creator.trim())||'当前账号',
+    desc:d.desc||'', createTime:ymd, effStart:d.effStart||'', effEnd:d.effEnd||'',
+    groups:JSON.parse(JSON.stringify(d.groups)),
+    productIds:state.preview.map(p=>p.id), productCount:state.preview.length,
+  };
+  state.sets.unshift(set); saveSets();
+  state.draft=null; state.preview=[]; state.previewLoaded=false;
+  state.view='detail'; state.detailId=id; refreshAll();
+  toast('选品集已保存：'+id);
+}
+
+/* ---------- 选品集详情 ---------- */
+function openDetail(id){ state.detailId=id; state.view='detail'; refreshAll(); }
+
+/* MCP 商品池：规则与来源（纯 HTML 构造，不写 DOM、不触发其他渲染） */
+function buildMcpRules(rules){
+  if(!rules.length) return '<div class="muted" style="font-size:13px">无规则记录</div>';
+  return rules.map((r,i)=>`
+    <div class="rule-row">
+      <span class="muted" style="width:22px">${i+1}</span>
+      <span class="rule-nm">${esc(r.name_cn||r.tag_id)}</span>
+      <span class="rule-op">${esc(mcText(MC.op,r.operator))} <b>${esc(mcValue(r.value))}</b></span>
+      ${r.never_relax?'<span class="lock">不可放宽</span>':''}
+      <span style="flex:1"></span>
+      <span class="src-tag">来源：${esc(r.source_id||'—')}</span>
+    </div>`).join('');
+}
+/* MCP 商品池：逐条件漏斗（只呈现事实，不做结论） */
+function buildMcpFunnel(funnel){
+  if(!funnel.length) return '';
+  const max=funnel[0]&&funnel[0].remaining?funnel[0].remaining:1;
+  return `
+    <div class="card" style="margin-bottom:18px">
+      <div class="section-title">逐条件漏斗</div>
+      <div class="scroll" style="max-height:340px;margin:0 20px 20px">
+        <table>
+          <thead><tr><th>步骤</th><th>条件</th><th style="width:120px">剩余（占比）</th><th>本步过滤</th><th>本步过滤占比</th></tr></thead>
+          <tbody>
+            ${funnel.map(f=>{
+              const w=Math.round((f.remaining/max)*100);
+              return `<tr>
+                <td>${f.step}</td>
+                <td>${esc(f.condition)}</td>
+                <td><div style="display:flex;align-items:center;gap:8px"><span class="fbar"><i class="${f.ratio>=50?'warn':''}" style="width:${w}%"></i></span><b>${f.remaining}</b></div></td>
+                <td>${f.filtered}</td>
+                <td style="color:${f.ratio>=50?'var(--orange)':'inherit'}">${f.ratio}%</td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+}
+/* MCP 商品池：冲突提示（事实 + 参考动作，是否放宽由人决定） */
+function buildMcpConflict(conflicts){
+  if(!conflicts.length) return '';
+  return `
+    <div class="card" style="margin-bottom:18px">
+      <div class="section-title">冲突提示</div>
+      <div style="padding:0 20px 18px">
+        ${conflicts.map(c=>`
+          <div class="cf-item">
+            <div class="t">${esc(c.conflict_id||'')} ${esc(c.conflict||'')} ${c.relaxable?'<span class="tag gray" style="margin-left:6px">可放宽</span>':'<span class="lock" style="margin-left:6px">不可放宽</span>'}</div>
+            <div class="f">${esc(c.fact||'')}</div>
+            <div class="a">参考动作：${esc(c.reference_action||'—')}</div>
+          </div>`).join('')}
+        <div class="note">以上为系统呈现的事实与参考动作，不做自动放宽、不代替判断；是否调整规则需人工确认后由 Skill 重新执行。</div>
+      </div>
+    </div>`;
+}
+
+function renderDetail(){
+  const s=state.sets.find(x=>x.id===state.detailId);
+  if(!s){ state.view='center'; refreshAll(); return; }
+  const products=PRODUCTS.filter(p=>s.productIds.includes(p.id));
+  const isMcp=s.source==='mcp';
+  let groupsHtml='';
+  s.groups.forEach((grp,gi)=>{
+    if(gi>0) groupsHtml+=`<div class="or-divider">— 或 (OR) —</div>`;
+    groupsHtml+=`<div class="group"><div class="group-head"><span class="group-badge">条件组 ${gi+1} · 且(AND)</span></div>
+      ${grp.map(c=>{const ind=IND_MAP[c.key]; if(!ind) return ''; return `<div class="cond"><div class="meta"><div class="name">${esc(ind.name)} <span class="tag gray">${esc(ind.l1)}</span></div><div class="cfg">${c.not?'<b style="color:var(--red)">非(NOT)：</b>':''}${esc(fmtCondValue(c))}</div></div></div>`;}).join('')}
+    </div>`;
+  });
+  const head=`
+    <div class="back-link" onclick="navTo('center')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg> 返回选品中心
+    </div>
+    <div class="stat-row">
+      <div class="card stat"><div class="k">选品ID</div><div class="v" style="font-size:20px">${esc(s.id)}</div></div>
+      <div class="card stat"><div class="k">命中商品</div><div class="v">${s.productCount}</div></div>
+      <div class="card stat"><div class="k">${isMcp?'目标 SKU':'创建人'}</div><div class="v" style="font-size:20px">${isMcp? (s.mcp&&s.mcp.target!=null? s.mcp.target : '—') : esc(s.creator)}</div></div>
+      <div class="card stat"><div class="k">${isMcp?'发布状态':'创建时间'}</div><div class="v" style="font-size:20px">${isMcp? ((s.mcp&&s.mcp.publish)==='published'?'<span style="color:var(--green)">已发布</span>':'<span class="muted">未发布</span>') : esc(s.createTime)}</div></div>
+    </div>`;
+  const meta=`
+    <div class="card" style="margin-bottom:18px;padding:18px 20px">
+      <div style="font-size:20px;font-weight:700">${esc(s.name)}${isMcp?'<span class="badge-mcp">MCP</span>':''}</div>
+      <div class="muted" style="margin-top:6px">${esc(s.desc)||'（无描述）'}</div>
+      <div style="margin-top:10px">
+        ${isMcp? `
+          <span class="pill">${esc(s.creator)}</span>
+          <span class="pill">${esc(s.createTime)}</span>
+          <span class="pill">${(s.mcp&&s.mcp.poolType)?mcText(MC.poolType,s.mcp.poolType):'—'}</span>`
+        : (s.effStart?`<span class="pill">生效 ${esc(s.effStart)} ~ ${esc(s.effEnd)}</span>`:'<span class="pill">未设置生效时间</span>')}
+      </div>
+    </div>`;
+  // 条件区：MCP 商品池用「规则+来源」呈现，本地选品集用指标库条件组
+  const condCard = isMcp
+    ? `<div class="card" style="margin-bottom:18px">
+         <div class="section-title">圈选规则与知识来源</div>
+         <div style="padding:0 20px 18px">${buildMcpRules(s.mcp?s.mcp.rules:[])}</div>
+       </div>`
+    : `<div class="card" style="margin-bottom:18px">
+         <div class="section-title">筛选条件</div>
+         <div style="padding:0 20px 18px">${groupsHtml}</div>
+       </div>`;
+  const extraCards = isMcp ? (buildMcpFunnel(s.mcp?s.mcp.funnel:[]) + buildMcpConflict(s.mcp?s.mcp.conflicts:[])) : '';
+  const listCard=`
+    <div class="card">
+      <div class="section-title">命中商品列表（${products.length}）</div>
+      <div class="scroll" style="max-height:460px;margin:0 20px 20px">
+        <table>
+          <thead><tr><th>商品ID</th><th>名称</th><th>类目</th><th>价格(¥)</th><th>可运达</th><th>月销</th><th>评分</th><th>毛利</th></tr></thead>
+          <tbody>
+            ${products.map(p=>`<tr><td><span class="pill">${esc(p.id)}</span></td><td>${esc(p.name)}</td><td>${esc(p.cat_l1)}/${esc(p.cat_l2)}</td><td>${p.price_band}</td><td>${p.ship_country.length}国</td><td>${p.monthly_sales}</td><td>${p.rating}</td><td>${p.gross_margin}%</td></tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+  document.getElementById('content').innerHTML=head+meta+condCard+extraCards+listCard;
+}
+
+/* ============================================================
+   指标库弹窗
+   ============================================================ */
+function openModal(gi){ state.modal={l1:null, activeGroup:gi, selected:{}}; renderModal(); document.getElementById('modal').classList.add('open'); }
+function closeModal(){ document.getElementById('modal').classList.remove('open'); state.modal=null; }
+function renderModal(){
+  const m=state.modal;
+  // 一级
+  document.getElementById('modalL1').innerHTML='<h4>一级指标</h4>'+INDICATOR_TREE.map(l1=>
+    `<div class="l1-item ${m.l1===l1.name?'active':''}" onclick="selectL1('${esc(l1.name)}')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>${esc(l1.name)}</div>`).join('');
+  // 中间：该一级下的指标（叶子），点击即选中
+  let mid='<h4>可选指标</h4>';
+  if(!m.l1){ mid+='<div class="muted" style="font-size:13px">← 请选择左侧一级指标</div>'; }
+  else{
+    const l1=INDICATOR_TREE.find(x=>x.name===m.l1);
+    for(const l2 of l1.children){
+      const picked=!!m.selected[l2.key];
+      mid+=`<div class="leaf ${picked?'picked':''}" onclick="selectLeaf('${l2.key}')"><span class="dot"></span>${esc(l2.name)}<span class="muted" style="margin-left:auto;font-size:11px">${typeLabel(l2.type)}</span></div>`;
+    }
+  }
+  document.getElementById('modalMid').innerHTML=mid;
+  // 右侧：仅展示已选指标（取值在选品集的「指标规则」中配置）
+  const keys=Object.keys(m.selected);
+  let right = keys.length? '' : '<div class="muted" style="font-size:13px">在中间栏点击指标即可加入此处。取值规则请在选品集的「指标规则」中配置。</div>';
+  for(const k of keys){
+    const ind=IND_MAP[k];
+    right+=`<div class="sel-item"><div class="top"><span class="nm">${esc(ind.name)}</span><button class="icon-btn" onclick="removeSelected('${k}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div><div class="muted" style="font-size:11.5px">${typeLabel(ind.type)} · 待配置规则</div></div>`;
+  }
+  document.getElementById('modalSel').innerHTML=right;
+}
+function typeLabel(t){ return ({range:'数值区间',enum:'多选',country:'国家多选',bool:'有无',category:'类目树'})[t]||''; }
+function selectL1(name){ state.modal.l1=name; renderModal(); }
+function selectLeaf(key){
+  const m=state.modal;
+  if(!m.selected[key]){
+    const ind=IND_MAP[key];
+    let val;
+    if(ind.type==='range') val={min:null,max:null};
+    else if(ind.type==='enum'||ind.type==='country') val={values:[]};
+    else if(ind.type==='category') val={l2:[]};
+    else if(ind.type==='bool') val={value:undefined};
+    m.selected[key]={value:val};
+  }
+  renderModal();
+}
+function removeSelected(key){ delete state.modal.selected[key]; renderModal(); }
+function confirmModal(){
+  const m=state.modal; const gi=m.activeGroup;
+  let added=0;
+  for(const key of Object.keys(m.selected)){
+    const val=JSON.parse(JSON.stringify(m.selected[key].value));
+    // 若已存在同指标条件则跳过（避免重复）
+    if(state.draft.groups[gi].some(c=>c.key===key)) continue;
+    state.draft.groups[gi].push({key, value:val, not:false});
+    added++;
+  }
+  closeModal();
+  if(added===0) toast('已选指标均已加入（无新增）');
+  else { state.previewLoaded=false; refreshAll(); }
+}
+
+/* ============================================================
+   智能选品 Agent
+   ============================================================ */
+const CN_COUNTRY={'美国':'美国','美区':'美国','英国':'英国','德国':'德国','法国':'法国','日本':'日本','加拿大':'加拿大','澳洲':'澳大利亚','澳大利亚':'澳大利亚','意大利':'意大利','西班牙':'西班牙','墨西哥':'墨西哥','巴西':'巴西','新加坡':'新加坡'};
+const CN_CAT={'3C':'3C数码','数码':'3C数码','电子':'3C数码','服饰':'服饰鞋包','服装':'服饰鞋包','鞋':'服饰鞋包','美妆':'美妆个护','护肤':'美妆个护','家居':'家居家纺','家纺':'家居家纺','户外':'户外运动','运动':'户外运动','母婴':'母婴玩具','玩具':'母婴玩具','汽车':'汽车配件','车载':'汽车配件','宠物':'宠物用品'};
+function parseSmart(text){
+  const groups=[]; const conds=[]; const steps=[];
+  const t=text;
+  // 价格
+  let pm=t.match(/(\d+(?:\.\d+)?)\s*(?:元|¥|\$|美金)?/g);
+  const priceIdx=t.search(/价格|售价|客单价|单价|价位/);
+  if(priceIdx>=0){
+    const seg=t.slice(priceIdx);
+    const nums=(seg.match(/\d+(?:\.\d+)?/g)||[]).map(Number);
+    if(nums.length){
+      const lower=/低于|小于|不超过|以下|至多/.test(seg);
+      const higher=/高于|大于|超过|以上|至少/.test(seg);
+      const range=/到|至|-|~/.test(seg);
+      let val;
+      if(range && nums.length>=2) val={min:nums[0],max:nums[1]};
+      else if(lower) val={max:nums[0]};
+      else if(higher) val={min:nums[0]};
+      else val={min:nums[0],max:nums[0]};
+      conds.push(c('price_band',val));
+      steps.push(`识别到「价格」诉求，映射为指标库【价格带】，取值 ${fmtCondValue({key:'price_band',value:val})}。`);
+    }
+  }
+  // 国家
+  let countries=[];
+  for(const k in CN_COUNTRY){ if(t.includes(k)) countries.push(CN_COUNTRY[k]); }
+  if(/欧美/.test(t)) countries=countries.concat(['美国','英国','德国','法国']);
+  if(/北美/.test(t)) countries=countries.concat(['美国','加拿大','墨西哥']);
+  countries=[...new Set(countries)];
+  if(countries.length){ conds.push(c('ship_country',{values:countries})); steps.push(`识别到目标市场【${countries.join('、')}】，映射为指标库【可运达国家】。`); }
+  // 类目
+  let cats=[];
+  for(const k in CN_CAT){ if(t.includes(k)) cats.push(CN_CAT[k]); }
+  cats=[...new Set(cats)];
+  if(cats.length){ conds.push(c('cat',{l2:cats.flatMap(n=>catSubs(n))})); steps.push(`识别到品类【${cats.join('、')}】，映射为指标库【商品类目】，已展开其下明细类目。`); }
+  // 销量
+  if(/月销/.test(t)){ const n=(t.match(/月销[^\d]*(\d+)/)||[])[1]; if(n) conds.push(c('monthly_sales',{min:Number(n)})); }
+  else if(/日销|销量|动销/.test(t)){ const n=(t.match(/(?:日销|销量|动销)[^\d]*(\d+)/)||[])[1]; if(n) conds.push(c('daily_sales',{min:Number(n)})); }
+  // 评分
+  if(/评分|星/.test(t)){ const n=(t.match(/(?:评分|星)[^\d]*(\d(?:\.\d)?)/)||[])[1]; if(n) conds.push(c('rating',{min:Number(n)})); }
+  // 退货
+  if(/退货/.test(t)){ const n=(t.match(/退货[^\d]*(\d+)/)||[])[1]; if(n) conds.push(c('return_rate',{max:Number(n)})); }
+  // 毛利
+  if(/毛利/.test(t)){ const n=(t.match(/毛利[^\d]*(\d+)/)||[])[1]; if(n) conds.push(c('gross_margin',{min:Number(n)})); }
+  // 海外仓
+  if(/海外仓/.test(t)){ conds.push(c('overseas_wh',{value:true})); steps.push('识别到「海外仓」诉求，映射为指标库【海外仓=有】。'); }
+  // 品牌/白牌
+  if(/白牌/.test(t)) conds.push(c('brand_type',{values:['白牌']}));
+  else if(/品牌/.test(t)) conds.push(c('brand_type',{values:['品牌']}));
+  // 增长/趋势
+  if(/上升|增长|爆款|潜力/.test(t)) conds.push(c('growth',{values:['上升']}));
+  else if(/下降|衰退/.test(t)) conds.push(c('growth',{values:['下降']}));
+  // 搜索热度
+  if(/热度|搜索/.test(t)){ const n=(t.match(/(?:热度|搜索)[^\d]*(\d+)/)||[])[1]; if(n) conds.push(c('search_heat',{min:Number(n)})); }
+  // 非/排除
+  if(/不要|排除|不含|无侵权|无知识|没有/.test(t)){
+    if(!conds.some(cd=>cd.key==='ip_risk')) conds.push(c('ip_risk',{value:false}));
+  }
+
+  if(conds.length===0){ conds.push(c('daily_sales',{min:50}),c('competition',{values:['低']})); steps.push('未识别到明确指标，已使用默认「稳定日销 + 低竞争」热销条件。'); }
+
+  groups.push(conds);
+  return {groups, steps, countries, cats};
+}
+
+function renderSmart(){
+  const html=`
+    <div class="card chat-card">
+      <div class="chat-head">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2f54eb" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        智能选品 Agent
+        <span class="pill" style="margin-left:8px">输入需求，自动理解并生成选品集</span>
+      </div>
+      <div class="chat-body" id="chatBody">
+        <div class="msg bot">你好，我是选品助手。请用一句话描述你想要的选品，例如：<br>“帮我找面向欧美市场、价格 100 到 400 元的 3C 数码，且要有海外仓”。</div>
+      </div>
+      <div class="suggestions">
+        <span class="sg" onclick="fillSg(this)">帮我找面向欧美市场、价格100到400元的3C数码，且要有海外仓</span>
+        <span class="sg" onclick="fillSg(this)">日本可运达的轻小件商品，重量2kg以内、价格100元以下</span>
+        <span class="sg" onclick="fillSg(this)">美妆个护类目，毛利率40%以上、竞争强度为低的高毛利款</span>
+        <span class="sg" onclick="fillSg(this)">白牌服饰，退货率低于15%，排除知识产权风险</span>
+      </div>
+      <div class="chat-input">
+        <textarea id="smartInput" placeholder="描述选品需求…" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();smartSend();}"></textarea>
+        <button class="btn" onclick="smartSend()">发送</button>
+      </div>
+    </div>`;
+  document.getElementById('content').innerHTML=html;
+}
+function fillSg(el){ document.getElementById('smartInput').value=el.textContent; }
+function smartSend(){
+  const input=document.getElementById('smartInput');
+  const text=input.value.trim(); if(!text) return;
+  const body=document.getElementById('chatBody');
+  body.innerHTML+=`<div class="msg user">${esc(text)}</div>`;
+  input.value='';
+  const {groups,steps}=parseSmart(text);
+  state.lastSmart={text, groups};
+  // 思考流程（逐步出现）
+  const think=document.createElement('div');
+  think.className='msg bot thinking';
+  think.innerHTML='<b>🤔 正在分析需求…</b>';
+  body.appendChild(think);
+  body.scrollTop=body.scrollHeight;
+
+  const stepEls=[];
+  const intro=document.createElement('div');
+  intro.className='msg bot';
+  intro.innerHTML='<b>选品思考流程</b>';
+  body.appendChild(intro); stepEls.push(intro);
+
+  let i=0;
+  function nextStep(){
+    if(i<steps.length){
+      const s=document.createElement('div');
+      s.className='msg bot thinking';
+      s.innerHTML=`<div class="step"><span class="dot">${i+1}</span><div class="txt">${esc(steps[i])}</div></div>`;
+      body.appendChild(s); body.scrollTop=body.scrollHeight; stepEls.push(s); i++;
+      setTimeout(nextStep,420);
+    } else {
+      // 汇总 + 生成
+      const matched=filterProducts(groups);
+      const condSummary=groups[0].map(cd=>{const ind=IND_MAP[cd.key];return `<span class="chip">${esc(ind.name)}: ${esc(fmtCondValue(cd))}</span>`;}).join('');
+      const res=document.createElement('div');
+      res.className='msg bot';
+      res.innerHTML=`<div class="result-card">
+        <div class="rc-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> 已生成选品集</div>
+        <div>命中商品 <b style="color:var(--primary);font-size:18px">${matched.length}</b> 个</div>
+        <div style="margin:8px 0">${condSummary}</div>
+        <button class="btn sm" onclick="commitSmart()">保存为选品集并查看</button>
+      </div>`;
+      body.appendChild(res); body.scrollTop=body.scrollHeight;
+      think.remove();
+    }
+  }
+  setTimeout(nextStep,500);
+}
+function commitSmart(){
+  const ls=state.lastSmart; if(!ls) return;
+  const text=ls.text, groups=ls.groups;
+  const matched=filterProducts(groups);
+  const now=new Date(); const ymd=now.toISOString().slice(0,10);
+  const id='PS'+now.getTime().toString().slice(-6);
+  const name=text.length>16? text.slice(0,16)+'…' : text;
+  const set={ id, name:'AI·'+name, creator:'智能选品Agent', desc:'由智能选品 Agent 自动生成：'+text,
+    createTime:ymd, effStart:'', effEnd:'', groups:JSON.parse(JSON.stringify(groups)),
+    productIds:matched.map(p=>p.id), productCount:matched.length };
+  state.sets.unshift(set); saveSets();
+  state.view='detail'; state.detailId=id; refreshAll();
+  toast('智能选品集已生成：'+id);
+}
+
+/* ============================================================
+   初始化
+   ============================================================ */
+function resetData(){
+  if(!confirm('确定重置为初始演示数据？当前自建选品集将被清空。')) return;
+  localStorage.removeItem(LS_KEY);
+  state.sets=loadSets();
+  if(state.view!=='center'){ state.view='center'; }
+  refreshAll();
+  toast('已重置为初始演示数据');
+  syncFromMCP(true); // 重置后重新拉取 MCP 商品池（服务端数据不受本地重置影响）
+}
+
+function init(){
+  state.sets=loadSets();
+  refreshAll();
+  // 静默尝试连接 MCP：成功则把 Skill 生成的商品池带回来，失败则保持本地演示数据
+  syncFromMCP(true);
+}
+window.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
