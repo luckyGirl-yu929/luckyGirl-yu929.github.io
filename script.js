@@ -232,6 +232,18 @@
         title: "打破“原厂迷信”：AI短剧视频模型横评与场景化选型策略",
         url: "https://my.feishu.cn/docx/YMxcdAJDqovGMUxukpfcGykEnwb"
       }
+    },
+    selection: {
+      index: "04 / AI PRODUCT · LAZADA · PROJECT FILE", title: "电商选品 Agent", subtitle: "把运营经验，变成可执行的选品规则",
+      origin: "面向 Lazada 大促商品池配置：选品经验散落在口头需求与人工试筛里，营销目标、类目经验和国家履约要求的口径不一致，结果难以复用。项目尝试把经验沉淀为四层知识，让 Agent 从一句业务需求生成有依据、可核验的商品池。",
+      capabilities: [
+        "需求拆解：把「爆品」「低价」「库存充足」等业务表达拆成确定性条件与泛化主题，标出缺失参数和待确认项。",
+        "四层知识库：指标与标签知识卡、业务语言映射、场景策略模板、历史选品 Case，检索时保留来源与版本。",
+        "规则组装与预估：按模板组装指标、阈值与组合逻辑，输出命中预估和逐条件筛选漏斗，让选少了也能定位原因。",
+        "人机边界：先预估、人工确认、再执行；圈选、保存与发布拆为独立动作，合规参数不可擅自放宽。"
+      ],
+      result: "独立构建 400+ 条测评数据，覆盖多业务场景并支持版本回归；业务项目选品准确率约 40% → 70%，选品人力投入减少约 40%。公开体验页另以 500 条模拟商品复跑两组案例，16/16 项验证通过。",
+      href: "projects/Selection_Agent.html"
     }
   };
   var projectDialog = document.getElementById("project-file");
