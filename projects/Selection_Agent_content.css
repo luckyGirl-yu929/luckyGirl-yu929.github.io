@@ -1,0 +1,112 @@
+/* ============================================================
+   内容结构优化补充样式
+   原则：不改动 Selection_Agent.css 的任何原有规则，只做增量覆盖；
+   保留原有紫色配色、卡片、字体与交互视觉。
+   ============================================================ */
+
+/* 01 项目介绍：定位句与背景说明 */
+.intro{font-size:20px;line-height:1.6;max-width:560px}
+.lead{max-width:600px}
+
+/* 02 贡献卡：角色标签沿用 .num，仅压缩标题长度 */
+.contributions h3{font-size:16px;line-height:1.5}
+
+/* 03 业务痛点：三点核心问题列表 */
+.pain-list{list-style:none;padding:0;margin:24px 0 0}
+.pain-list li{border-left:2px solid var(--purple);padding:5px 0 5px 16px;margin-bottom:15px}
+.pain-list b{display:block;font-size:13px;font-weight:600;color:var(--ink)}
+.pain-list span{font-size:12px;color:var(--muted);line-height:1.75}
+
+/* 04 工作流：7 步流程图 */
+.flow{grid-template-columns:repeat(7,1fr)}
+.flow li{padding:18px 12px}
+.flow h3{font-size:14px;line-height:1.5;margin:10px 0 8px}
+.flow p{font-size:10px;line-height:1.7}
+.summary-line{text-align:center;color:var(--gold);font-size:14px;letter-spacing:.3px;margin:0 0 30px;padding:13px 16px;border:1px dashed #e8cf9a45;border-radius:8px;background:#e8cf9a08}
+.principles b{font-size:13px}
+.principles p{font-size:12px;line-height:1.7}
+
+/* 05 四层知识库：卡片 + 可展开详情 */
+.knowledge-section{padding-top:0}
+.knowledge-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.knowledge-card{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:22px 24px}
+.knowledge-card h3{font-size:17px;margin:8px 0 0}
+.k-question{font-size:12px;color:var(--muted);margin-top:12px;line-height:1.7}
+.k-example{font-size:12px;color:var(--gold);background:#e8cf9a0a;border-left:2px solid #e8cf9a55;padding:9px 12px;margin-top:12px;line-height:1.75}
+.knowledge-card details{border-bottom:0;border-top:1px solid var(--line);margin-top:16px}
+.knowledge-card summary{padding:12px 0 0;font-size:11px;color:var(--purple)}
+.knowledge-card details p{font-size:12px;color:var(--dim);line-height:1.8;padding:6px 0 4px}
+
+/* 06 演示：说明条与链接 */
+.demo-note{background:#c4a8f50d;border:1px solid #c4a8f533;border-radius:8px;padding:14px 18px;font-size:12px;color:var(--muted);line-height:1.9;margin:0 0 22px}
+.demo-note b{color:var(--ink);font-weight:600}
+.caption a{color:var(--purple);text-decoration:underline;text-underline-offset:2px}
+
+/* 07 评测：Badcase 案例卡片 */
+.evaluation-grid h3{font-size:17px}
+.evaluation-grid p{font-size:13px;line-height:1.8}
+.badcase-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:24px}
+.badcase-card{background:#110d19;border:1px solid var(--line);border-radius:8px;padding:18px 20px}
+.badcase-card h4{font-size:14px;font-weight:600;color:var(--gold);margin:0 0 14px;line-height:1.5}
+.badcase-card dl{margin:0;display:grid;grid-template-columns:68px 1fr;gap:8px 10px;font-size:11.5px;line-height:1.7}
+.badcase-card dt{color:var(--purple);white-space:nowrap}
+.badcase-card dd{margin:0;color:var(--muted)}
+
+/* 08 复盘：三条产品思考 */
+.reflection-list{list-style:none;padding:0;margin:24px 0 0}
+.reflection-list li{display:grid;grid-template-columns:30px 1fr;gap:12px;padding:14px 0;border-top:1px solid var(--line)}
+.reflection-list span{color:var(--purple);font-size:12px}
+.reflection-list p{font-size:13px;color:var(--muted);margin:0;line-height:1.8}
+
+/* 平板 */
+@media(max-width:1000px){
+  .flow{grid-template-columns:repeat(4,1fr)}
+  .flow li{padding:16px 12px}
+  .knowledge-card{padding:20px}
+}
+
+/* 手机：优先保证阅读，不产生横向溢出 */
+@media(max-width:700px){
+  .intro{font-size:18px;line-height:1.6}
+  .lead{max-width:none}
+  .pain-list{margin-top:18px}
+  .flow{grid-template-columns:1fr;margin:25px 0 30px}
+  .flow li{border-right:0;border-bottom:1px solid var(--line);padding:14px 18px;display:grid;grid-template-columns:28px 1fr;gap:0 10px;align-items:baseline}
+  .flow li:last-child{border-bottom:0}
+  .flow h3{margin:0;font-size:15px}
+  .flow p{grid-column:2;font-size:11px}
+  .summary-line{font-size:12px;padding:12px;margin-bottom:24px}
+  .knowledge-cards,.badcase-cards{grid-template-columns:1fr}
+  .knowledge-card,.badcase-card{padding:18px}
+  .knowledge-section{padding-top:0}
+  .demo-note{padding:12px 14px;font-size:11.5px}
+  .badcase-card dl{grid-template-columns:64px 1fr}
+  .reflection-list li{gap:8px;grid-template-columns:24px 1fr}
+}
+
+@media print{
+  .flow{grid-template-columns:repeat(7,1fr)}
+  .knowledge-cards,.badcase-cards{grid-template-columns:repeat(2,1fr)}
+  .summary-line,.demo-note,.k-example,.badcase-card{background:white!important}
+}
+
+/* ------------------------------------------------------------
+   横向溢出防护：长英文标识、箭头流程串、grid/flex 子项不撑宽容器。
+   仅影响换行与最小宽度，不改变配色、卡片与交互。
+   ------------------------------------------------------------ */
+html{overflow-x:clip}
+body{max-width:100%}
+.wrap,header.top,main,footer,.hero-grid,.hero-proof,.metrics,.metrics article,
+.contributions,.contributions article,.split,.before-after,.pain-list,.flow,.flow li,
+.summary-line,.principles,.principles article,.knowledge-cards,.knowledge-card,
+.demo-note,.demo-grid,.demo-story,.funnel-panel,.evaluation-grid,.evaluation-grid article,
+.badcase,.badcase-cards,.badcase-card,.badcase-card dl,.reflection-list,.reflection-list li,
+.closing,.section-heading,.section-heading>div,.section-heading>p,.scenario-switch,.trace,.chips{
+  min-width:0;
+  max-width:100%;
+}
+p,dd,dt,li,span,strong,b,h1,h2,h3,h4,a,summary,.k-example,.k-question,
+.before-after p,.demo-note,.caption,.output,.num,.pill,.case-caveat{
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
