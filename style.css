@@ -558,10 +558,11 @@ body.is-light .rail__dot.is-active .rail__label { color: var(--accent-deep); }
 #screen-03 .project-sticker--skill { left: 72.5%; top: 22%; width: 19.5%; --sticker-angle: 1.6deg; }
 #screen-03 .project-sticker--skill::after { background: rgb(219 133 186 / .55); left: 70%; }
 #screen-03 .project-sticker--video { left: 12%; top: 59.5%; width: 22%; --sticker-angle: -.8deg; }
-/* 04 电商选品 Agent：与前三张同款贴纸，落在右下留白处 */
-#screen-03 .project-sticker--selection { left: 68%; top: 64%; width: 22.5%; --sticker-angle: -1.4deg; }
+/* 01 与 04 卡片对调位置：电商选品落在左上，LabOps 落在右下留白处 */
+#screen-03 .project-sticker--agent { left: 68%; top: 64%; width: 22.5%; --sticker-angle: -1.4deg; }
+#screen-03 .project-sticker--selection { left: 5%; top: 25%; width: 19.5%; --sticker-angle: -1.5deg; }
 #screen-03 .project-sticker--selection::after { background: rgb(232 201 142 / .72); left: 62%; }
-#screen-03.projects-entered .project-sticker--selection { animation-delay: 360ms; }
+#screen-03.projects-entered .project-sticker--agent { animation-delay: 360ms; }
 #screen-03 .project-sticker__label {
   display: flex; align-items: center; justify-content: space-between;
   color: #8955B8; font: 700 max(9px, .77cqw)/1.2 var(--font-en); letter-spacing: .1em;
