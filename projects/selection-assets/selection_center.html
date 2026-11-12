@@ -3,7 +3,7 @@
 <head data-page-node-id="W83cvujsagj9Klu1YbfjmD">
 <meta charset="UTF-8" data-page-node-id="FJxMrGF5amGzSLpVacJl8f" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" data-page-node-id="gBOKCknWHGHvH3FVmX6hBU" />
-<title>跨境电商选品中心</title>
+<title>AI 选品助手 · 跨境电商选品中心</title>
 <style>
   :root{
     --primary:#2f54eb; --primary-soft:#e8edff; --primary-deep:#1d39c4;
@@ -174,22 +174,26 @@
     .nav{padding:0 12px; overflow-x:auto;}
   }
 </style>
-<style>.portfolio-demo-notice{padding:12px 20px;background:#241a35;color:#fff;font-size:13px;line-height:1.8}.portfolio-demo-notice a{color:#dfc8ff}@media(max-width:720px){.card{overflow-x:auto}.toolbar{flex-wrap:wrap}body{min-width:0}table{min-width:700px}}</style></head>
-<body data-page-node-id="H5qWDhySGAvuBD2FGcMyu0"><div class="portfolio-demo-notice">BYME 项目演示 · 500 条模拟商品 · 智能选品为本地规则解析，非真实大模型。商品池含 Python 引擎复跑快照。 <a href="../Selection_Agent.html">返回项目介绍 ↗</a></div>
+<style>.portfolio-demo-notice{padding:12px 20px;background:#241a35;color:#fff;font-size:13px;line-height:1.8}.portfolio-demo-notice a{color:#dfc8ff}@media(max-width:720px){.card{overflow-x:auto}.toolbar{flex-wrap:wrap}body{min-width:0}table{min-width:700px}}</style>
+<link rel="stylesheet" href="selection_agent.css">
+<script src="selection_agent.js" defer></script>
+</head>
+<body data-page-node-id="H5qWDhySGAvuBD2FGcMyu0"><div class="portfolio-demo-notice">BYME 项目演示 · 500 条模拟商品 · 默认进入「AI 选品助手」，「选品中心」为 Agent 调用的业务工具端。自然语言解析与工具执行均为本地规则实现，非在线大模型、非真实 MCP 链路；商品池含 Python 引擎复跑快照。 <a href="../Selection_Agent.html">返回项目介绍 ↗</a></div>
 <div class="app" data-page-node-id="DNRIiZfBIr5p8n5PNdV1l5">
   <div class="topbar" data-page-node-id="sJwp5KbqbGDiiV31x47Lpw">
     <div class="logo" data-page-node-id="VBS7NUR6iuj8Cgeuden56y">
       <span class="mark" data-page-node-id="wuPlqUz8czgaS8gE5lNBDb">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" data-page-node-id="5TGoIiNhMsTg1U1zwj1w78"><path d="M3 7l9-4 9 4-9 4-9-4z" data-page-node-id="Og4BZXImAqsCaq06g5QCxi"/><path d="M3 12l9 4 9-4" data-page-node-id="9SFYYddZ6Sy815SF5XjjS1"/><path d="M3 17l9 4 9-4" data-page-node-id="WpXE6a8ncAYmUZt5H7SzrO"/></svg>
       </span>
-      跨境电商 · 选品中心
+      BYME · 选品工作台
     </div>
     <div class="spacer" data-page-node-id="rcoGOgVtd7xwoo2EdQzJU1"></div>
     <button class="reset-btn" onclick="resetData()" data-page-node-id="jUY7gCPz4aYCRZB9GJP6Wz">重置演示数据</button>
   </div>
   <div class="nav" data-page-node-id="uLqJLw47uU4KfJWh2aLOC5">
-    <button class="tab active" id="tab-center" onclick="navTo('center')" data-page-node-id="DyCGt7zb7wJWW34Li70PzG">选品中心</button>
-    <button class="tab" id="tab-smart" onclick="navTo('smart')" data-page-node-id="U1AX3DNfMpIM7FzWtP7vXb">智能选品</button>
+    <button class="tab active" id="tab-agent" onclick="navTo('agent')" data-page-node-id="agentTab">AI 选品助手</button>
+    <button class="tab" id="tab-center" onclick="navTo('center')" data-page-node-id="DyCGt7zb7wJWW34Li70PzG">选品中心</button>
+    <button class="tab" id="tab-smart" onclick="navTo('smart')" data-page-node-id="U1AX3DNfMpIM7FzWtP7vXb" hidden>智能选品（存档）</button>
   </div>
   <div class="content" id="content" data-page-node-id="mZXDbiIroWYW4VjTZPXV1A"></div>
 </div>
@@ -483,7 +487,7 @@ function buildSeedSets(){
 const LS_KEY='byme_selection_portfolio_v1'; // v3：演示商品库由 200 扩至 500，种子集命中数已变，旧缓存不再适用
 const LS_MCP='xp_mcp_base';
 let MCP_BASE=(function(){ try{ return localStorage.getItem(LS_MCP)||'http://127.0.0.1:8765'; }catch(e){ return 'http://127.0.0.1:8765'; } })();
-let state = { view:'center', sets:[], draft:null, modal:null, preview:[], detailId:null, smart:[], mcp:false };
+let state = { view:'agent', sets:[], draft:null, modal:null, preview:[], detailId:null, smart:[], mcp:false };
 
 function loadSets(){
   try{ const raw=localStorage.getItem(LS_KEY); if(raw){ const a=JSON.parse(raw); if(Array.isArray(a)&&a.length) return a; } }catch(e){}
@@ -555,11 +559,13 @@ function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg
 function refreshAll(){
   // 更新导航高亮
   document.getElementById('tab-center').classList.toggle('active', state.view==='center'||state.view==='create'||state.view==='detail');
+  document.getElementById('tab-agent').classList.toggle('active', state.view==='agent');
   document.getElementById('tab-smart').classList.toggle('active', state.view==='smart');
   if(state.view==='center') renderCenter();
   else if(state.view==='create') renderCreate();
   else if(state.view==='detail') renderDetail();
   else if(state.view==='smart') renderSmart();
+  else if(state.view==='agent') renderAgent();
 }
 function navTo(view){ if(view==='smart'){ state.smart=[]; } state.view=view; window.scrollTo(0,0); refreshAll(); }
 
@@ -597,7 +603,7 @@ function renderCenter(){
         <tbody>
           ${state.sets.map(s=>`
             <tr>
-              <td><b>${esc(s.name)}</b>${s.source==='mcp'?'<span class="badge-mcp">MCP</span>':''}<div class="muted" style="font-size:12px">${esc(s.desc)}</div></td>
+              <td><b>${esc(s.name)}</b>${s.source==='mcp'?'<span class="badge-mcp">引擎快照</span>':(s.source==='agent'?'<span class="badge-mcp">本地引擎</span>':'')}<div class="muted" style="font-size:12px">${esc(s.desc)}</div></td>
               <td><span class="pill">${esc(s.id)}</span></td>
               <td>${s.source==='mcp'?'<span class="tag">模拟案例圈选</span>':'<span class="tag gray">人工配置</span>'}</td>
               <td>${esc(s.creator)}</td>
@@ -843,7 +849,7 @@ function renderDetail(){
   const s=state.sets.find(x=>x.id===state.detailId);
   if(!s){ state.view='center'; refreshAll(); return; }
   const products=PRODUCTS.filter(p=>s.productIds.includes(p.id));
-  const isMcp=s.source==='mcp';
+  const isMcp=s.source==='mcp'||s.source==='agent';
   let groupsHtml='';
   s.groups.forEach((grp,gi)=>{
     if(gi>0) groupsHtml+=`<div class="or-divider">— 或 (OR) —</div>`;
@@ -863,7 +869,7 @@ function renderDetail(){
     </div>`;
   const meta=`
     <div class="card" style="margin-bottom:18px;padding:18px 20px">
-      <div style="font-size:20px;font-weight:700">${esc(s.name)}${isMcp?'<span class="badge-mcp">MCP</span>':''}</div>
+      <div style="font-size:20px;font-weight:700">${esc(s.name)}${s.source==='mcp'?'<span class="badge-mcp">引擎快照</span>':(s.source==='agent'?'<span class="badge-mcp">本地引擎 · 人工确认</span>':'')}</div>
       <div class="muted" style="margin-top:6px">${esc(s.desc)||'（无描述）'}</div>
       <div style="margin-top:10px">
         ${isMcp? `

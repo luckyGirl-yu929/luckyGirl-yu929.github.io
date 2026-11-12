@@ -102,14 +102,14 @@
 <!-- 06 可交互产品演示 -->
 <section id="demo" class="section demo-section">
 <div class="wrap">
-<div class="section-heading"><div><div class="section-kicker">06 / INTERACTIVE WALKTHROUGH</div><h2>可交互产品演示</h2></div><p>两个预设案例可快速切换<br>结果来自本地规则引擎复跑快照</p></div>
-<p class="demo-note">公开演示采用 <b>500 条模拟商品数据</b>，基于预设案例验证需求结构化后的规则组装、商品筛选、数量预估、逐条件漏斗与商品池保存流程。原型使用本地规则解析，不是在线大模型；智能选品未实现真实 LLM 自然语言端到端调用，也未运行 MCP 客户端传输层。</p>
-<div class="scenario-switch" role="group" aria-label="选择演示案例"><button type="button" data-case="0" aria-pressed="true">A / 美国万圣节主题</button><button type="button" data-case="1" aria-pressed="false">B / 墨西哥本地速递</button></div>
+<div class="section-heading"><div><div class="section-kicker">06 / INTERACTIVE WALKTHROUGH</div><h2>可交互产品演示</h2></div><p>默认进入 AI 选品助手<br>选品中心为 Agent 调用的业务工具端</p></div>
+<p class="demo-note">演示原型已升级为 <b>「AI 选品助手」+「选品中心」双模块</b>，采用 <b>500 条模拟商品数据</b>。默认进入 AI 选品助手，可亲自输入一条选品需求，查看 Agent 的结构化需求理解、五步策略规划、可展开的工具调用记录与逐条件筛选漏斗，并在人工确认后完成商品池创建；选品中心作为 Agent 调用的业务工具端完整保留。自然语言解析由本地关键词与正则规则完成，工具调用由本地业务函数执行，<b>不是在线大模型，也未接入真实 MCP Server / Client</b>；工具名与参数按可替换的函数接口组织。</p>
+<div class="scenario-switch" role="group" aria-label="选择引擎复跑快照案例"><button type="button" data-case="0" aria-pressed="true">A / 美国万圣节 · 快照</button><button type="button" data-case="1" aria-pressed="false">B / 墨西哥速递 · 快照</button></div>
 <div class="demo-grid">
-<div class="demo-story"><span class="pill">500 条模拟商品 · 非在线大模型</span><h3 id="case-title"></h3><p id="case-input"></p><div class="case-result"><strong id="case-count"></strong><span id="case-target"></span></div><p id="case-insight"></p><div class="case-caveat" id="case-caveat"></div><a class="text-link" href="selection-assets/selection_center.html" target="_blank" rel="noopener">打开完整选品中心原型 ↗</a><p class="caption">原型可浏览商品数据、配置指标与筛选条件、预览命中数量、查看逐条件漏斗并保存选品集。</p></div>
+<div class="demo-story"><span class="pill">500 条模拟商品 · 非在线大模型</span><h3 id="case-title"></h3><p id="case-input"></p><div class="case-result"><strong id="case-count"></strong><span id="case-target"></span></div><p id="case-insight"></p><div class="case-caveat" id="case-caveat"></div><a class="text-link" href="selection-assets/selection_center.html" target="_blank" rel="noopener">打开完整演示工作台 · 直接输入需求体验 ↗</a><p class="caption">原型默认进入 AI 选品助手：输入需求 → 结构化理解 → 策略规划 → 工具调用记录 → 逐条件漏斗 → 人工确认创建商品池；第二个标签为选品中心，保留商品库、历史商品池、商品筛选、商品详情与商品池管理。下方两组漏斗为 Python 规则引擎复跑快照；原型内的 AI 选品助手另提供「美国万圣节 / 英国圣诞节本地配送」两个快捷案例，后者在 500 条模拟商品上实时筛选。</p></div>
 <div class="funnel-panel"><div class="panel-heading"><h3>每一步，为什么只剩这些商品？</h3><span>逐条件筛选漏斗</span></div><div id="funnel" aria-live="polite"></div><details><summary>查看规则来源与运行说明</summary><div id="case-source"></div><p>案例脚本预设结构化需求和规则，复跑验证圈选、漏斗与保存；案例 A 只按主题标签筛选，案例 B 未定义「小商品」的体积或重量，均需人工复核。</p></details></div>
 </div>
-<details class="prototype"><summary>在当前页展开选品中心</summary><iframe title="选品中心模拟原型" data-src="selection-assets/selection_center.html" loading="lazy"></iframe></details>
+<details class="prototype"><summary>在当前页展开 AI 选品助手与选品中心（可直接输入需求）</summary><iframe title="AI 选品助手与选品中心演示原型" data-src="selection-assets/selection_center.html" loading="lazy"></iframe></details>
 <p class="caption">演示原型另有 16 项脚本验证，16/16 项通过（<a href="selection-assets/verification.txt" target="_blank" rel="noopener">查看复跑记录与边界 ↗</a>）。该结果只验证公开演示链路，与上方业务项目成果无关。</p>
 </div>
 </section>
