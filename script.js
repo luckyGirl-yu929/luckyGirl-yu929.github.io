@@ -201,6 +201,17 @@
 
   // 03 项目档案：原生 dialog 提供 top layer 与背景 inert，焦点返回触发卡片。
   var projectFiles = {
+    film: {
+      index: "04 / AI SHORT FILM · PROJECT FILE", title: "《暂停中》 · PAUSE.", subtitle: "个人创作项目 | AI 短片实践",
+      origin: "从真实的职业转型经历出发，以裸辞第 225 天的一次近况询问为起点，讲述二十多岁面对职业选择、自我怀疑与重新开始的心情。",
+      capabilities: [
+        "创意与叙事：独立确定选题、撰写剧本、设计分镜，并组织镜头与旁白。",
+        "AI 工具协同：用 WorkBuddy 辅助剧本、DeepSeek 迭代分镜、ChatGPT 生成画面、腾讯 MiOra / MiniMax 生成视频素材。",
+        "个人制作：调整提示词、筛选生成素材，完成配音、配乐、字幕与剪辑。"
+      ],
+      result: "完成约 1 分 42 秒的 9:16 竖版 AI 短片，并整理真实制作素材和创作复盘。",
+      href: "projects/AI_Short_Film.html"
+    },
     agent: {
       index: "04 / AI AGENT · PROJECT FILE", title: "LabOps Agent", subtitle: "智能实验室预约 Agent",
       origin: "从电子工程师实际经历的实验室资源预约问题出发，探索用自然语言和业务规则简化设备预约流程。",

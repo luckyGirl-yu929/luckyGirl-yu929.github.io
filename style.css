@@ -1393,3 +1393,10 @@ html.story-lock, html.story-lock body { overflow: hidden; }
   #screen-04 .sk4-card,
   #screen-04 .sk4-btn { transition: none; }
 }
+
+
+#screen-03 .project-sticker--film { color: #38274c; text-decoration: none; }
+#screen-03 .project-sticker--film .project-sticker__name { font-size: max(14px, 1.26cqw); letter-spacing: 0; }
+@media (min-width: 761px) {
+  #screen-03 .project-sticker--film .project-sticker__description { font-size: max(10px, .83cqw); line-height: 1.42; }
+}
