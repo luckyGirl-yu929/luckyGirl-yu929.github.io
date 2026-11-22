@@ -41,6 +41,13 @@
 .demo-note{background:#c4a8f50d;border:1px solid #c4a8f533;border-radius:8px;padding:14px 18px;font-size:12px;color:var(--muted);line-height:1.9;margin:0 0 22px}
 .demo-note b{color:var(--ink);font-weight:600}
 .caption a{color:var(--purple);text-decoration:underline;text-underline-offset:2px}
+.demo-launch{display:flex;flex-direction:column;gap:6px;position:relative;margin:0 0 24px;padding:20px 24px;border:1px solid #c4a8f555;border-radius:10px;background:linear-gradient(120deg,#2a2040,#1b1626 70%);box-shadow:0 10px 30px #0003;transition:border-color .2s,transform .2s}
+.demo-launch:hover{border-color:var(--purple);transform:translateY(-2px);color:inherit}
+.demo-launch__tag{font-size:10px;letter-spacing:1.6px;color:var(--gold);font-weight:700}
+.demo-launch b{font-size:21px;color:var(--ink);line-height:1.4}
+.demo-launch b span{color:var(--purple);margin-left:10px}
+.demo-launch small{font-size:11.5px;color:var(--muted);line-height:1.7}
+.demo-launch::after{content:'↗';position:absolute;right:24px;top:50%;transform:translateY(-50%);font-size:26px;color:var(--purple);opacity:.65}
 
 /* 07 评测：Badcase 案例卡片 */
 .evaluation-grid h3{font-size:17px}
@@ -80,6 +87,10 @@
   .knowledge-card,.badcase-card{padding:18px}
   .knowledge-section{padding-top:0}
   .demo-note{padding:12px 14px;font-size:11.5px}
+  .demo-launch{padding:16px 16px 16px 18px;margin-bottom:18px}
+  .demo-launch b{font-size:18px}
+  .demo-launch small{font-size:10.5px}
+  .demo-launch::after{right:14px;font-size:20px}
   .badcase-card dl{grid-template-columns:64px 1fr}
   .reflection-list li{gap:8px;grid-template-columns:24px 1fr}
 }
@@ -110,3 +121,148 @@ p,dd,dt,li,span,strong,b,h1,h2,h3,h4,a,summary,.k-example,.k-question,
   overflow-wrap:anywhere;
   word-break:break-word;
 }
+
+/* ============================================================
+   作品集优化新增模块（2026-11 精修）
+   全部采用新增类名，不改动上方任何原有规则；
+   沿用紫金主色与绿色点缀、卡片/圆角/留白/字体体系。
+   ============================================================ */
+
+/* --- 顶部导航：6 项锚点 --- */
+.top nav{gap:20px}
+.top nav a{white-space:nowrap}
+
+/* --- 首屏：项目标签 + 我的贡献 --- */
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.hero-tags span{font-size:10px;letter-spacing:.5px;color:var(--green);border:1px solid #a7d5be40;background:#a7d5be0d;border-radius:4px;padding:4px 10px}
+.hero-contrib{margin-top:22px;padding:16px 18px;background:linear-gradient(120deg,#a7d5be0c,#c4a8f508);border:1px solid #a7d5be2e;border-radius:9px}
+.hc-title{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:600;color:var(--green);letter-spacing:.4px}
+.hc-list{list-style:none;padding:0;margin:12px 0 0;display:grid;grid-template-columns:repeat(2,1fr);gap:9px 18px}
+.hc-list li{font-size:12px;color:var(--ink);line-height:1.5;display:flex;gap:9px;align-items:baseline}
+.hc-list b{flex-shrink:0;font-size:10px;font-weight:600;color:var(--gold);border:1px solid #e8cf9a40;background:#e8cf9a0d;border-radius:3px;padding:1px 6px;white-space:nowrap}
+
+/* --- 成果：准确率多轮迭代视觉 --- */
+.metric-iter .iter-flow{display:flex;align-items:center;gap:6px;margin:6px 0 12px;min-height:58px}
+.iter-node{display:flex;flex-direction:column;line-height:1.2}
+.iter-node b{font-size:30px;font-weight:600;color:var(--dim);letter-spacing:-1px;white-space:nowrap}
+.iter-node.end b{color:var(--gold)}
+.iter-node small{font-size:10px;color:var(--dim);margin-top:5px}
+.iter-arrow{position:relative;flex:1;min-width:56px;text-align:center;font-size:10px;color:var(--purple);white-space:nowrap;padding-bottom:14px}
+.iter-arrow::before{content:"";position:absolute;left:0;right:0;bottom:16px;height:1px;background:linear-gradient(90deg,var(--dim),var(--purple))}
+.iter-arrow::after{content:"";position:absolute;right:0;bottom:16px;width:6px;height:6px;border-top:1px solid var(--purple);border-right:1px solid var(--purple);transform:translateY(0) rotate(45deg)}
+
+/* --- 职责边界：分层卡片 --- */
+.boundary-block{margin-top:38px;padding-top:30px;border-top:1px solid var(--line)}
+.boundary-head{text-align:center;max-width:720px;margin:0 auto 26px}
+.boundary-head h3{font-size:22px;margin-top:8px}
+.boundary-head p{font-size:13px;color:var(--muted);margin-top:10px;line-height:1.75}
+.boundary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.boundary-card{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:18px 15px;border-top:3px solid var(--purple)}
+.boundary-card.role-rag{border-top-color:#7fb7e8}
+.boundary-card.role-rule{border-top-color:var(--gold)}
+.boundary-card.role-tool{border-top-color:var(--green)}
+.boundary-card.role-human{border-top-color:#e79a9a}
+.bc-head{display:flex;flex-direction:column;gap:9px;margin-bottom:12px}
+.bc-icon{align-self:flex-start;font-size:10px;font-weight:700;letter-spacing:.6px;color:var(--purple);border:1px solid #c4a8f545;background:#c4a8f50d;border-radius:4px;padding:3px 8px}
+.boundary-card.role-rag .bc-icon{color:#7fb7e8;border-color:#7fb7e845;background:#7fb7e80d}
+.boundary-card.role-rule .bc-icon{color:var(--gold);border-color:#e8cf9a45;background:#e8cf9a0d}
+.boundary-card.role-tool .bc-icon{color:var(--green);border-color:#a7d5be45;background:#a7d5be0d}
+.boundary-card.role-human .bc-icon{color:#e79a9a;border-color:#e79a9a45;background:#e79a9a0d}
+.bc-head h4{font-size:14px;margin:0;font-weight:600;color:var(--ink);line-height:1.45}
+.boundary-card ul{list-style:none;padding:0;margin:0}
+.boundary-card li{font-size:11px;color:var(--muted);line-height:1.6;padding:6px 0 6px 14px;border-top:1px solid var(--line);position:relative}
+.boundary-card li::before{content:"";position:absolute;left:0;top:14px;width:4px;height:4px;border-radius:50%;background:var(--purple)}
+.boundary-card.role-rag li::before{background:#7fb7e8}
+.boundary-card.role-rule li::before{background:var(--gold)}
+.boundary-card.role-tool li::before{background:var(--green)}
+.boundary-card.role-human li::before{background:#e79a9a}
+
+/* --- 知识案例：从业务语言到可执行规则 --- */
+.translate-case{margin-top:30px;padding:26px 28px;background:#191420;border:1px solid #c4a8f533;border-radius:10px}
+.tc-head h3{font-size:21px;margin-top:8px}
+.tc-query{font-size:15px;color:var(--ink);margin-top:14px}
+.tc-query span{display:inline-block;font-size:10px;color:var(--gold);border:1px solid #e8cf9a45;background:#e8cf9a0d;border-radius:3px;padding:2px 7px;margin-right:8px;vertical-align:middle}
+.tc-goal{font-size:12px;color:var(--muted);margin-top:9px}
+.tc-goal b{color:var(--green);font-weight:600}
+.tc-flow{list-style:none;padding:0;margin:24px 0 0;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;counter-reset:none}
+.tc-flow li{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:18px 16px}
+.tc-flow li:not(:last-child)::after{content:"→";position:absolute;right:-11px;top:50%;transform:translateY(-50%);z-index:2;color:var(--purple);font-size:15px}
+.tc-step{font-size:12px;font-weight:700;color:var(--purple);letter-spacing:1px}
+.tc-flow h4{font-size:14px;margin:8px 0 8px;color:var(--ink)}
+.tc-flow p{font-size:11px;color:var(--muted);line-height:1.7}
+
+/* --- 演示入口：原型优先 + 边界折叠 --- */
+.demo-intro{margin:0 0 22px;padding:20px 24px;background:linear-gradient(120deg,#a7d5be0f,#c4a8f508);border:1px solid #a7d5be33;border-radius:10px}
+.demo-intro__lead{display:flex;align-items:center;flex-wrap:wrap;gap:12px}
+.demo-intro__tag{font-size:10px;letter-spacing:1.4px;font-weight:700;color:#21132f;background:var(--green);border-radius:4px;padding:4px 10px}
+.demo-intro__lead b{font-size:16px;color:var(--ink);font-weight:600}
+.demo-path{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:14px}
+.demo-path span{font-size:11px;color:var(--muted);background:#ffffff08;border:1px solid var(--line);border-radius:4px;padding:4px 9px}
+.demo-path em{font-style:normal;color:var(--green);font-size:12px}
+.demo-boundary{margin:0 0 22px;border:1px solid var(--line);border-radius:8px;background:#110d19}
+.demo-boundary>summary{padding:13px 18px;font-size:12px;color:var(--purple);list-style:none;cursor:pointer}
+.demo-boundary>summary::-webkit-details-marker{display:none}
+.demo-boundary>summary::before{content:"+";display:inline-block;width:16px;color:var(--gold);font-weight:700}
+.demo-boundary[open]>summary::before{content:"−"}
+.demo-boundary[open]>summary{border-bottom:1px solid var(--line)}
+.demo-boundary__body{padding:6px 18px 16px}
+.demo-boundary__body p{font-size:12px;color:var(--muted);line-height:1.85;margin-top:10px}
+.demo-boundary__body b{color:var(--ink);font-weight:600}
+
+/* --- Badcase 代表性案例深拆 --- */
+.badcase-deep{margin-top:22px;border:1px solid #e8cf9a40;border-radius:9px;background:#1b1626;padding:0 20px}
+.badcase-deep>summary{padding:15px 0;font-size:13px;font-weight:600;color:var(--gold);list-style:none;cursor:pointer}
+.badcase-deep>summary::-webkit-details-marker{display:none}
+.badcase-deep>summary::before{content:"▸";display:inline-block;margin-right:8px;color:var(--gold);transition:transform .2s}
+.badcase-deep[open]>summary::before{transform:rotate(90deg)}
+.badcase-deep[open]>summary{border-bottom:1px solid var(--line)}
+.badcase-deep>.caption{margin-top:12px!important}
+.bd-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+.bd-step{position:relative;background:#110d19;border:1px solid var(--line);border-radius:8px;padding:16px 15px}
+.bd-num{position:absolute;top:-1px;left:15px;transform:translateY(-50%);font-size:10px;font-weight:700;color:#21132f;background:var(--gold);border-radius:3px;padding:2px 8px}
+.bd-step h4{font-size:13px;margin:8px 0;color:var(--gold)}
+.bd-step p{font-size:11px;color:var(--muted);line-height:1.7}
+.bd-step p b{color:var(--ink);font-weight:600}
+.bd-skills{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 16px;font-size:11px;color:var(--muted)}
+.bd-skills span{color:var(--green);font-weight:600}
+.bd-skills{color:var(--gold)}
+
+/* --- 响应式：平板 --- */
+@media(max-width:1000px){
+  .boundary-grid{grid-template-columns:repeat(3,1fr)}
+  .tc-flow{grid-template-columns:repeat(2,1fr)}
+  .tc-flow li:not(:last-child)::after{display:none}
+  .bd-flow{grid-template-columns:repeat(2,1fr)}
+}
+
+/* --- 响应式：手机 --- */
+@media(max-width:700px){
+  .top nav{gap:10px;font-size:10px;flex-wrap:wrap;justify-content:flex-end;row-gap:2px}
+  .hero-tags span{font-size:9px;padding:3px 8px}
+  .hc-list{grid-template-columns:1fr;gap:8px}
+  .hc-list li{font-size:11.5px}
+  .metric-iter .iter-flow{min-height:50px}
+  .iter-node b{font-size:24px}
+  .iter-arrow{min-width:44px;font-size:9px}
+  .boundary-block{margin-top:28px;padding-top:24px}
+  .boundary-head h3{font-size:19px}
+  .boundary-grid{grid-template-columns:1fr}
+  .boundary-card{padding:14px 16px}
+  .bc-head{flex-direction:row;align-items:center}
+  .bc-head h4{margin:0}
+  .translate-case{padding:20px 18px}
+  .tc-flow{grid-template-columns:1fr;gap:12px}
+  .demo-intro{padding:16px 16px}
+  .demo-intro__lead b{font-size:14px}
+  .demo-path span{font-size:10px;padding:3px 7px}
+  .bd-flow{grid-template-columns:1fr;gap:16px}
+  .badcase-deep{padding:0 14px}
+  .badcase-deep>summary{font-size:12px}
+}
+
+/* --- 新增模块的溢出防护 --- */
+.hero-tags,.hc-list,.hc-list li,.metric-iter,.iter-flow,.iter-node,.iter-arrow,
+.boundary-block,.boundary-head,.boundary-grid,.boundary-card,.bc-head,
+.translate-case,.tc-head,.tc-flow,.tc-flow li,
+.demo-intro,.demo-intro__lead,.demo-path,.demo-path span,.demo-boundary,.demo-boundary__body,
+.badcase-deep,.bd-flow,.bd-step,.bd-skills{min-width:0;max-width:100%}
