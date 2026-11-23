@@ -1400,3 +1400,29 @@ html.story-lock, html.story-lock body { overflow: hidden; }
 @media (min-width: 761px) {
   #screen-03 .project-sticker--film .project-sticker__description { font-size: max(10px, .83cqw); line-height: 1.42; }
 }
+
+/* ===== 首页项目弹窗：成果亮点（大数字 + 短标签）===== */
+#project-file .project-file__highlights {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px;
+  margin: 2px 0 20px;
+}
+#project-file .project-file__highlights[hidden] { display: none; }
+#project-file .project-file__highlight {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 3px; min-width: 0; padding: 13px 7px;
+  border: 1px solid #C5A4EA; border-radius: 12px;
+  background: linear-gradient(160deg, #F6EBFC, #FBF6FE); text-align: center;
+}
+#project-file .project-file__highlight strong {
+  font: 700 clamp(16px, 3.3vw, 22px)/1.15 var(--font-en);
+  color: #6B3E96; letter-spacing: -.02em; overflow-wrap: anywhere;
+}
+#project-file .project-file__highlight span {
+  font-size: 11px; line-height: 1.35; color: #7B5A93;
+}
+@media (max-width: 480px) {
+  #project-file .project-file__highlights { gap: 6px; margin-bottom: 16px; }
+  #project-file .project-file__highlight { padding: 10px 5px; }
+  #project-file .project-file__highlight strong { font-size: 14px; }
+  #project-file .project-file__highlight span { font-size: 10px; }
+}

@@ -202,14 +202,19 @@
   // 03 项目档案：原生 dialog 提供 top layer 与背景 inert，焦点返回触发卡片。
   var projectFiles = {
     film: {
-      index: "04 / AI SHORT FILM · PROJECT FILE", title: "《暂停中》 · PAUSE.", subtitle: "个人创作项目 | AI 短片实践",
-      origin: "从真实的职业转型经历出发，以裸辞第 225 天的一次近况询问为起点，讲述二十多岁面对职业选择、自我怀疑与重新开始的心情。",
-      capabilities: [
-        "创意与叙事：独立确定选题、撰写剧本、设计分镜，并组织镜头与旁白。",
-        "AI 工具协同：用 WorkBuddy 辅助剧本、DeepSeek 迭代分镜、ChatGPT 生成画面、腾讯 MiOra / MiniMax 生成视频素材。",
-        "个人制作：调整提示词、筛选生成素材，完成配音、配乐、字幕与剪辑。"
+      index: "04 / AI SHORT FILM · PROJECT FILE", title: "《暂停中》 · PAUSE.", subtitle: "个人原创 AIGC 短片 · AI 全流程创作实践",
+      highlights: [
+        { value: "01:42", label: "完整短片" },
+        { value: "9:16", label: "竖屏成片" },
+        { value: "AIGC", label: "个人独立创作" }
       ],
-      result: "完成约 1 分 42 秒的 9:16 竖版 AI 短片，并整理真实制作素材和创作复盘。",
+      origin: "以裸辞第 225 天被问「工作找得怎么样」为起点，讲述二十多岁面对职业选择、自我怀疑与重新开始的真实心情。",
+      capabilities: [
+        "创意与叙事：确定选题、撰写剧本、设计分镜，组织镜头与旁白。",
+        "AI 工具协同：WorkBuddy 辅助剧本、DeepSeek 迭代分镜、ChatGPT 生成画面、MiOra / MiniMax 生成视频。",
+        "后期制作：调整提示词、筛选素材，独立完成配音、配乐与剪辑。"
+      ],
+      result: "完成 1 分 42 秒的 9:16 竖版 AI 短片，并整理真实制作素材与创作复盘。",
       href: "projects/AI_Short_Film.html"
     },
     agent: {
@@ -219,15 +224,19 @@
       href: "/projects/LabOps_Agent.html"
     },
     skill: {
-      index: "02 / AI SKILL · PROJECT FILE", title: "Knowledge Skill", subtitle: "工程经验知识沉淀",
-      origin: "围绕汽车电子工程实践中的测试经验沉淀、测试方法查询和 Bug 排查问题，将分散的工程经验转化为可检索、可追溯、可复用的结构化知识。",
-      capabilities: [
-        "经验沉淀：支持工程师口述或文字输入，AI 自动整理为结构化知识卡草稿。",
-        "智能检索：支持自然语言提问、Query 改写、专业术语别名扩展和关键问题追问。",
-        "Bug 辅助排查：检索相似案例，生成分层排查思路。",
-        "可信知识管理：保留原始来源、适用条件和审核状态，设置人工确认机制。"
+      index: "02 / AI SKILL · PROJECT FILE", title: "Knowledge Skill", subtitle: "工程经验知识沉淀 · 复合型 Skill MVP",
+      highlights: [
+        { value: "3 类", label: "核心场景" },
+        { value: "23 条", label: "初始知识" },
+        { value: "MVP", label: "已验证" }
       ],
-      result: "基于 WorkBuddy 完成复合型 Skill MVP，验证经验沉淀、测试方法查询和 Bug 辅助排查三个场景。",
+      origin: "围绕汽车电子工程中的测试经验沉淀、方法查询与 Bug 排查，将分散经验转化为可检索、可追溯的结构化知识。",
+      capabilities: [
+        "经验沉淀：口述或文字输入，AI 整理为结构化知识卡草稿，保留来源并设人工确认。",
+        "智能检索：自然语言提问、Query 改写与专业术语别名扩展。",
+        "Bug 辅助排查：检索相似案例，生成分层排查思路。"
+      ],
+      result: "基于 WorkBuddy 完成复合型 Skill MVP，验证经验沉淀、测试方法查询与 Bug 辅助排查三个场景。",
       href: "/projects/Knowledge_Skill.html",
       doc: {
         title: "从真实业务场景出发：AI如何重构工程研发工作流",
@@ -235,9 +244,19 @@
       }
     },
     video: {
-      index: "03 / AI EVALUATION · PROJECT FILE", title: "AI Video Lab", subtitle: "AI 视频模型测评",
-      origin: "从 AI 视频生成的实际观看体验出发，探索用一致的观察维度比较不同模型，记录能力与局限。",
-      capabilities: ["对比多模型的视频生成效果", "观察角色外观与跨镜头一致性", "评测动作表现、连贯性与自然程度"],
+      index: "03 / AI EVALUATION · PROJECT FILE", title: "AI Video Lab", subtitle: "AI 视频模型横向评测与产品机会探索",
+      highlights: [
+        { value: "5 类", label: "任务场景" },
+        { value: "30 段", label: "原始视频" },
+        { value: "横评", label: "模型 × 通道" }
+      ],
+      origin: "从真实 AI 视频创作需求出发，发现不同模型与平台通道在动作、一致性和画面稳定性上表现不一，缺少直观的选型依据。",
+      capabilities: [
+        "设计 5 类视频任务与统一观察维度，横向对比模型与平台通道。",
+        "执行 30 段生成任务，记录角色一致性、动作合理性与空间表现。",
+        "分析失败表现与成本，提出视频生成前置决策助手产品构想。"
+      ],
+      result: "完成评测报告、场景对比页面与 30 段原始视频证据，并提出视频生成前置决策助手产品构想。",
       href: "projects/AI_Video_Evaluation.html",
       doc: {
         title: "打破“原厂迷信”：AI短剧视频模型横评与场景化选型策略",
@@ -246,12 +265,16 @@
     },
     selection: {
       index: "01 / AI PRODUCT · LAZADA · PROJECT FILE", title: "电商选品 Agent", subtitle: "把运营经验，变成可执行的选品规则",
-      origin: "面向 Lazada 大促商品池配置，选品经验分散在运营口径、人工试筛与历史案例中，存在规则不统一、复用效率低的问题。项目尝试将经验沉淀为可检索、可调用、可验证的知识与规则，支持 Agent 辅助选品。",
+      highlights: [
+        { value: "40%→70%", label: "选品准确率（约）" },
+        { value: "↓约40%", label: "选品人力投入" },
+        { value: "400+", label: "评测样本" }
+      ],
+      origin: "面向 Lazada 大促选品，经验分散在运营口径与人工试筛中，规则不统一、复用效率低；项目尝试沉淀为可检索、可调用的规则，支持 Agent 辅助选品。",
       capabilities: [
-        "需求拆解： 将“爆品、低价、库存充足”等业务表达，抽象为可执行的判断条件。",
-        "知识设计： 搭建标签、术语、场景策略与历史案例四层知识结构，沉淀选品依据。",
-        "规则与评测： 设计规则组装与命中预估逻辑，构建 400+ 测试数据持续验证效果。",
-        "人机协同： 明确预估、人工确认与执行边界，兼顾效率与可控性。"
+        "需求拆解：将「爆品、低价、库存充足」等表达抽象为可执行判断条件。",
+        "知识设计：搭建标签、术语、场景策略与历史案例四层知识结构。",
+        "规则与评测：设计规则组装与命中预估，用 400+ 样本持续验证。"
       ],
       result: "完成 Lazada 选品 Agent 的知识与评测方案设计，覆盖多业务场景并支持版本回归；业务项目中选品准确率约 40% 提升至 70%，选品人力投入减少约 40%。",
       href: "projects/Selection_Agent.html"
@@ -282,6 +305,21 @@
       data.capabilities.forEach(function (text) {
         var item = document.createElement("li"); item.textContent = text; list.appendChild(item);
       });
+      // 成果亮点（可选区块：2-3 个醒目数字/短标签）
+      var highlightBox = document.getElementById("project-file-highlights");
+      highlightBox.replaceChildren();
+      var highlights = data.highlights || [];
+      if (highlights.length) {
+        highlights.forEach(function (h) {
+          var cell = document.createElement("div"); cell.className = "project-file__highlight";
+          var val = document.createElement("strong"); val.textContent = h.value;
+          var lab = document.createElement("span"); lab.textContent = h.label;
+          cell.appendChild(val); cell.appendChild(lab); highlightBox.appendChild(cell);
+        });
+        highlightBox.hidden = false;
+      } else {
+        highlightBox.hidden = true;
+      }
       // 项目成果（可选区块：仅提供 result 的项目显示，如 Knowledge Skill）
       var resultSection = document.getElementById("project-file-result-section");
       if (data.result) {
