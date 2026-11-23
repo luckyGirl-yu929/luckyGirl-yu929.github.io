@@ -10,3 +10,42 @@
 .origin-video figcaption p{font-size:16px;line-height:1.8;margin:16px 0}
 .origin-video figcaption strong{color:var(--ink)}
 @media(max-width:760px){.origin-video>.panel{grid-template-columns:1fr;gap:24px}.origin-video{margin-top:32px}.origin-video figcaption h3{margin-bottom:18px}}
+
+/* ===== AI Video Lab upgrade modules ===== */
+.snapshot .intro{max-width:840px}
+.snapshot-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:28px}
+.snap-stat b{display:block;font:700 34px/1.2 'Space Grotesk','Noto Sans SC',sans-serif;color:var(--accent)}
+.snap-stat span{display:block;margin-top:8px;font-size:14px;color:var(--dim)}
+.snap-wide{background:linear-gradient(140deg,#32254888,#221a30)}
+.snap-wide h3{font-size:15px;color:var(--accent);margin-bottom:8px}
+.snap-wide p{font-size:14px;margin:0}
+.findings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:28px}
+.finding-v2 .fnum{font:12px 'Space Grotesk',sans-serif;letter-spacing:1.5px;color:var(--accent)}
+.finding-v2 h3{margin:12px 0 16px}
+.fstruct{margin:0}
+.fstruct dt{font-size:12px;font-weight:700;letter-spacing:1px;color:#d8cfec;margin-top:14px}
+.fstruct dd{margin:4px 0 0;font-size:14px;color:var(--dim);line-height:1.8}
+.metric-block,.validation-block{margin-top:34px;padding:26px;border:1px solid #58446d;border-radius:16px;background:#221a3070}
+.metric-block h3,.validation-block h3{margin:0 0 16px}
+.metric-block>p{margin-top:0}
+.metric-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.metric{padding:16px;border:1px solid #58446d;border-radius:12px;background:#2a2140aa}
+.metric b{display:block;font-size:14px;color:var(--ink);margin-bottom:8px}
+.metric span{display:block;font-size:13px;color:var(--dim);line-height:1.7}
+.scene-verdict{margin:20px 0 4px;padding:16px 20px;border-left:3px solid var(--accent);border-radius:0 12px 12px 0;background:#a77fd612;color:var(--ink);font-size:15px}
+.scene-verdict:before{content:'本场景结论 · ';font-weight:700;color:var(--accent)}
+.strategy-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:18px}
+.strategy-grid .panel h3{font-size:16px;margin:0 0 8px;color:var(--ink)}
+.strategy-grid .panel p{margin:0;font-size:14px}
+.flow-seven{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.product-basics{margin-top:24px}
+.validation-block .intro{margin-top:0}
+#cost .formal-cost{margin-top:0}
+@media(max-width:900px){.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.findings-grid,.strategy-grid{grid-template-columns:1fr}.snapshot-grid{grid-template-columns:1fr}.metric-grid{grid-template-columns:1fr}.snap-stat b{font-size:28px}.flow-seven{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* ===== 移动端溢出修复：约束包裹图片的裸 a / figure（遗留问题） ===== */
+figure>a{display:block;max-width:100%}
+figure>a>img,figure>img{max-width:100%}
+.wb-shots a,.wb-references a,.formal-price-images a,.design-board a,.turnaround-views a,.wb-agent a,.formal-evidence a{max-width:100%;display:block}
+img{max-width:100%}
