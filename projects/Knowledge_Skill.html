@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Knowledge Skill · 工程经验知识沉淀 | 曾雨作品集</title>
-<meta name="description" content="把工程师口述、测试资料和 Bug 处理经验，转化为可检索、可追溯、可审核、可复用的知识资产。基于 WorkBuddy 搭建的复合型 Skill MVP。">
+<title>Knowledge Skill · 车载测试知识沉淀与检索 | 曾雨作品集</title>
+<meta name="description" content="车载测试知识沉淀与检索助手。基于 WorkBuddy 搭建的个人 Skill MVP，覆盖经验沉淀、测试方法查询与 Bug 排查，提供预置案例交互演示。">
 <style>
   /* ============ 设计令牌：对齐 LabOps Agent 深色科技风 ============ */
   :root{
@@ -111,6 +111,7 @@
   .btn-g:hover{background:rgba(167,139,250,.10);border-color:var(--purple)}
   .btn-sm{padding:8px 16px;font-size:13.5px;border-radius:9px}
   .btn:disabled{cursor:not-allowed;opacity:.55;transform:none;filter:none}
+  .btn:not(:disabled):active{transform:translateY(1px);filter:brightness(.92)}
 
   .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:34px}
   .tag{
@@ -518,9 +519,9 @@
   }
   .pipe .pnode small{display:block;font-size:11px;color:var(--muted-2);font-weight:400}
   .pipe .parr{align-self:center;padding:0 7px;color:var(--purple);font-weight:700}
-  .arch-block.sediment .pipe .pnode:nth-child(3){background:rgba(233,199,126,.08)}
-  .arch-block.sediment .pipe .pnode:nth-child(7){background:rgba(225,75,95,.08)}
-  .arch-block.sediment .pipe .pnode:nth-child(9){background:rgba(127,209,168,.08);border-color:rgba(127,209,168,.25)}
+  .arch-block.sediment .pipe .pnode:nth-child(5){background:rgba(233,199,126,.08)}
+  .arch-block.sediment .pipe .pnode:nth-child(11){background:rgba(225,75,95,.08)}
+  .arch-block.sediment .pipe .pnode:nth-child(13){background:rgba(127,209,168,.08);border-color:rgba(127,209,168,.25)}
   .tech-notes{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
   .tech-note{
     font-size:13px;line-height:1.75;color:var(--muted);
@@ -589,6 +590,29 @@
   dialog.lb img{max-width:94vw;max-height:86vh;border-radius:10px;border:1px solid var(--line-strong);box-shadow:0 30px 80px rgba(0,0,0,.6);background:#fff}
   dialog.lb .txt{position:fixed;bottom:16px;left:0;right:0;text-align:center;font-size:13px;color:var(--muted);text-shadow:0 1px 6px rgba(0,0,0,.8);pointer-events:none}
 
+  /* ---------- 组件职责 / 我的工作 ---------- */
+  .comp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}
+  .comp-grid>div{border:1px solid var(--line);border-radius:12px;background:var(--panel-2);padding:11px 15px}
+  .comp-grid b{display:block;font-size:13px;color:var(--purple);margin-bottom:2px}
+  .comp-grid span{font-size:12.5px;color:var(--muted);line-height:1.65}
+  .contrib{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:26px}
+  .contrib-card{border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(180deg,rgba(27,20,41,.7),rgba(21,16,32,.5));padding:20px 24px}
+  .contrib-card h3{font-size:13px;letter-spacing:.1em;font-weight:700;color:var(--purple);margin-bottom:12px}
+  .worksteps{list-style:none;counter-reset:w;display:grid;gap:10px}
+  .worksteps li{counter-increment:w;position:relative;padding-left:34px;font-size:13.5px;color:var(--text);line-height:1.7}
+  .worksteps li::before{content:counter(w);position:absolute;left:0;top:2px;width:22px;height:22px;border-radius:8px;display:grid;place-items:center;font-size:11px;font-weight:800;color:var(--purple);background:rgba(139,92,246,.14);border:1px solid var(--line)}
+  .worksteps li small{display:block;color:var(--muted);font-size:12.5px;line-height:1.65}
+  .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .metric{border:1px solid var(--line-strong);border-radius:12px;background:rgba(139,92,246,.08);padding:14px 10px;text-align:center}
+  .metric b{display:block;font-size:26px;color:var(--gold);line-height:1.2}
+  .metric span{font-size:12.5px;color:var(--muted)}
+  .limit-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:8px 18px}
+  .limit-list li{font-size:13px;color:var(--muted);padding-left:16px;position:relative;line-height:1.7}
+  .limit-list li::before{content:"—";position:absolute;left:0;color:var(--gold)}
+  .contrib-note{margin-top:12px;font-size:12.5px;color:var(--muted-2);border-top:1px solid var(--line);padding-top:10px;line-height:1.7}
+  .lb-close{position:fixed;top:20px;right:24px;z-index:5;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;color:#fff;background:rgba(139,92,246,.9);border:1px solid var(--line-strong);border-radius:999px;padding:9px 18px;transition:.15s}
+  .lb-close:hover{background:var(--purple-deep);transform:translateY(-1px)}
+
   /* ---------- 响应式 ---------- */
   @media (max-width:1120px){
     .demo-grid{grid-template-columns:190px 1fr}
@@ -599,8 +623,12 @@
     .mockwrap{max-width:560px;margin:0 auto}
   }
   @media (max-width:900px){
-    .topnav{display:none}
-    .pains,.entries,.cases,.tech-notes,.bounds,.summary{grid-template-columns:1fr}
+    .topbar .wrap{height:auto;flex-wrap:wrap;padding-top:9px;padding-bottom:7px;gap:4px}
+    .brand{width:100%}
+    .topnav{display:flex;width:100%;gap:16px;overflow-x:auto;white-space:nowrap;scrollbar-width:none;padding-bottom:2px}
+    .topnav::-webkit-scrollbar{display:none}
+    section{scroll-margin-top:112px}
+    .pains,.entries,.cases,.tech-notes,.bounds,.summary,.contrib,.limit-list,.metrics,.comp-grid{grid-template-columns:1fr}
     .shots,.shotgrid{grid-template-columns:1fr}
     .hero{padding:52px 0 34px}
     .demo-flag{margin-left:0}
@@ -633,6 +661,7 @@
       <a href="#cases">案例</a>
       <a href="#arch">架构</a>
       <a href="#bounds">边界</a>
+      <a href="#contrib">我的工作</a>
       <a href="#summary">总结</a>
     </nav>
   </div>
@@ -645,13 +674,13 @@
       <div>
         <span class="kicker">BYME 作品集 · AI SKILL · 真实业务场景驱动</span>
         <h1>Knowledge Skill</h1>
-        <p class="hero-cn">工程经验知识沉淀</p>
-        <p class="hero-sub">把工程师<b>口述、测试资料和 Bug 处理经验</b>，转化为<b>可检索、可追溯、可审核、可复用</b>的知识资产。</p>
-        <p class="hero-data">业务观察：一次基础的以太网物理层连通性测试仅需 2 个步骤，但新人独立完成比例不足 20%，平均需询问 3–5 位同事，检索与等待耗时约 30–60 分钟。<b>（来源：本人业务观察估计，非正式统计）</b></p>
+        <p class="hero-cn">车载测试知识沉淀与检索助手</p>
+        <p class="hero-sub">把工程师口述经验和分散的测试资料，转化为<b>可检索、可追溯、可审核、可复用</b>的知识资产。</p>
+        <p class="hero-data">基于 WorkBuddy 搭建的<b>个人 Skill MVP</b> · 覆盖经验沉淀、测试方法查询与 Bug 排查 · <b>23 条初始知识</b> · 预置案例交互演示</p>
         <div class="caps" aria-label="三大核心能力">
-          <span class="cap"><i aria-hidden="true">✎</i>经验沉淀 · 入口 C</span>
-          <span class="cap"><i aria-hidden="true">🔍</i>新人查询 · 入口 A</span>
-          <span class="cap"><i aria-hidden="true">🧭</i>Bug 排查 · 入口 B</span>
+          <span class="cap"><i aria-hidden="true">🔍</i>A · 测试方法查询</span>
+          <span class="cap"><i aria-hidden="true">🧭</i>B · Bug 排查</span>
+          <span class="cap"><i aria-hidden="true">✎</i>C · 经验沉淀</span>
         </div>
         <div class="actions">
           <a class="btn btn-p" href="#demo">立即体验 ↓</a>
@@ -659,7 +688,7 @@
         </div>
       </div>
 
-      <!-- Skill 工作台 Mockup：内容来自真实案例（场景 B） -->
+      <!-- Skill 工作台 Mockup：内容来自真实案例（入口 A · 测试方法查询） -->
       <div class="mockwrap" aria-label="Skill 工作台界面示意">
         <span class="star s1" aria-hidden="true">✦</span>
         <span class="star s2" aria-hidden="true">✧</span>
@@ -701,7 +730,7 @@
       <span class="tag hl">从真实测试场景出发</span>
       <span class="tag">复合型 Skill（沉淀 + 检索）</span>
       <span class="tag">基于 WorkBuddy 搭建 MVP</span>
-      <span class="tag">预置案例 · 全流程可交互</span>
+      <span class="tag">预置案例 · 分步交互演示</span>
     </div>
   </div>
 </header>
@@ -710,30 +739,30 @@
 <section id="problem">
   <div class="wrap">
     <div class="sec-head"><span class="sec-num">01</span><h2>业务痛点与产品方案</h2></div>
-    <p class="lead">在硬件研发与测试中，经验通常分散在<b>个人记忆、历史报告、Bug 记录与跨部门沟通</b>里。以下四个痛点来自我在汽车电子 Tier 1 的实际观察，每一条都对应产品中的一个具体环节。</p>
+    <p class="lead">以下四个痛点来自我在车载摄像头、雷达测试中的实际观察，每一条都对应产品中的一个具体环节。需要说明：本项目为个人 MVP，<b>企业权限系统尚未接入</b>。</p>
     <div class="pains">
       <div class="pain">
         <div class="pn">痛点 01</div>
-        <h3>老工程师缺乏沉淀动力</h3>
-        <p class="was">测试和调试本身已占满工时，额外整理文档既耽误工作又没有工时——经验停留在口头交流中，甚至「经验跟着人走」。</p>
+        <h3>经验沉淀成本高</h3>
+        <p class="was">工程师缺少额外时间整理经验，知识容易停留在口头交流中，难以被后续项目复用。</p>
         <div class="fix"><span class="fk">产品方案 · 入口 C</span><b>口述即可，不必从零写文档。</b>AI 分类与字段提取、按模板生成草稿，工程师只做确认与补充。</div>
       </div>
       <div class="pain">
         <div class="pn">痛点 02</div>
-        <h3>资料分散且格式不统一</h3>
-        <p class="was">测试方法记在测试报告里，仪器操作写在操作文档里，Bug 过程留在问题日志或聊天记录里——难以形成完整、可检索的经验记录。</p>
+        <h3>资料分散</h3>
+        <p class="was">测试方法、仪器操作与历史问题分布在不同文档中，难以形成完整、可检索的经验记录。</p>
         <div class="fix"><span class="fk">产品方案 · 统一模板</span><b>测试方法卡与 Bug 经验卡两套统一模板。</b>原始输入逐句保留，AI 整理结果与原始材料都可回溯核对。</div>
       </div>
       <div class="pain">
         <div class="pn">痛点 03</div>
-        <h3>跨项目经验难以复用</h3>
-        <p class="was">即使其他项目解决过类似问题，新人也不知道资料在哪、该找谁，且非项目组人员通常没有访问权限。</p>
-        <div class="fix"><span class="fk">产品方案 · 权限内共享</span><b>共享的是测试与排查经验，而非受限文档。</b>沿用企业安全规则（如受控文档 SI-002），项目机密不进入检索范围。</div>
+        <h3>跨部门共享不顺畅</h3>
+        <p class="was">其他部门已经积累的经验，不容易被及时获取和复用，同类问题可能在不同项目里重复摸索。</p>
+        <div class="fix"><span class="fk">产品方案 · 可检索与可追溯</span><b>让经验以结构化知识卡的形式被检索到，并标注来源与状态。</b>企业权限控制属于未来规划，当前尚未实现。</div>
       </div>
       <div class="pain">
         <div class="pn">痛点 04</div>
-        <h3>新人不会提问，也难以检索</h3>
-        <p class="was">新人只知道「测试结果异常」，不知道如何检索、提问时该提供什么信息；向老工程师提问也问不到点子上。</p>
+        <h3>新人缺乏测试指引</h3>
+        <p class="was">不知道测什么、如何操作、使用什么仪器，以及如何判断结果；提问时也难以提供有效信息。</p>
         <div class="fix"><span class="fk">产品方案 · Query 改写</span><b>AI 先追问 1–3 个关键问题，再改写检索条件。</b>把模糊口语转化为有上下文、有边界、可检索的结构化 Query。</div>
       </div>
     </div>
@@ -747,24 +776,24 @@
     <p class="lead">入口编号与 <code>SKILL.md</code> 一致：<b>入口 A 测试方法查询、入口 B Bug 排查、入口 C 经验沉淀</b>。两个方向（使用 / 沉淀）共享同一套知识库、数据结构、别名表与检索模块。</p>
     <div class="entries">
       <div class="entrycard">
+        <span class="type">入口 A · 查询</span>
+        <h3>测试方法查询</h3>
+        <p class="say">「测以太网怎么弄？」</p>
+        <p class="flow">意图识别 → 关键追问 → Query 改写 → 检索 → <b>带来源与状态</b>的方法卡 / 清单</p>
+        <button class="btn btn-g btn-sm" type="button" data-goto-scene="a">体验流程 ↓</button>
+      </div>
+      <div class="entrycard">
+        <span class="type">入口 B · 排查</span>
+        <h3>Bug 排查</h3>
+        <p class="say">「串口报 Error 0x0A，板子灯不亮。」</p>
+        <p class="flow">相似案例检索 → 追问上下文 → 分层排查路径 → 按需生成<b>草稿（待审核）</b></p>
+        <button class="btn btn-g btn-sm" type="button" data-goto-scene="b">体验流程 ↓</button>
+      </div>
+      <div class="entrycard">
         <span class="type">入口 C · 沉淀</span>
         <h3>经验沉淀</h3>
         <p class="say">「今天测这个千兆以太网……差点烧了，必须注意断电插拔。」</p>
         <p class="flow">分类判定 → 字段提取 → 模板草稿 → <b>工程师确认</b> → 写入（待审核）</p>
-        <button class="btn btn-g btn-sm" type="button" data-goto-scene="a">体验流程 ↓</button>
-      </div>
-      <div class="entrycard">
-        <span class="type">入口 A · 查询</span>
-        <h3>新人查询</h3>
-        <p class="say">「测以太网怎么弄？」</p>
-        <p class="flow">意图识别 → 关键追问 → Query 改写 → 检索 → <b>带来源与状态</b>的方法卡 / 清单</p>
-        <button class="btn btn-g btn-sm" type="button" data-goto-scene="b">体验流程 ↓</button>
-      </div>
-      <div class="entrycard">
-        <span class="type">入口 B · 排查</span>
-        <h3>Bug 辅助排查</h3>
-        <p class="say">「串口报 Error 0x0A，板子灯不亮。」</p>
-        <p class="flow">相似案例检索 → 追问上下文 → 分层排查路径 → 按需生成<b>草稿（待审核）</b></p>
         <button class="btn btn-g btn-sm" type="button" data-goto-scene="c">体验流程 ↓</button>
       </div>
     </div>
@@ -775,15 +804,15 @@
 <section id="demo">
   <div class="wrap">
     <div class="sec-head"><span class="sec-num">03</span><h2>核心交互演示</h2></div>
-    <p class="lead">基于真实案例的<b>预置前端演示</b>：内容来自实际测试记录与交付文档，可点击体验；未连接实时模型与生产知识库。场景 A/B/C 沿用案例叙事顺序，与 Skill 入口号（A 查询 / B 排查 / C 沉淀）的对应关系见上方入口卡。</p>
+    <p class="lead">基于真实案例的<b>预置前端演示</b>：流程内容来自实际测试记录与交付文档，点击可体验完整交互；<b>未连接实时模型与生产知识库</b>。选项点击只更新演示中的 Query 展示，<b>不触发真实知识检索</b>。</p>
     <div class="demo">
       <div class="demo-top">
-        <div class="demo-tabs" role="tablist" aria-label="演示场景">
-          <button class="demo-tab on" type="button" data-scene="a" role="tab" aria-selected="true">场景 A · 老工程师经验沉淀</button>
-          <button class="demo-tab" type="button" data-scene="b" role="tab" aria-selected="false">场景 B · 新人日常查询</button>
-          <button class="demo-tab" type="button" data-scene="c" role="tab" aria-selected="false">场景 C · 新人遇到故障</button>
+        <div class="demo-tabs" role="tablist" aria-label="演示入口">
+          <button class="demo-tab on" type="button" data-scene="a" role="tab" aria-selected="true">A · 测试方法查询</button>
+          <button class="demo-tab" type="button" data-scene="b" role="tab" aria-selected="false">B · Bug 排查</button>
+          <button class="demo-tab" type="button" data-scene="c" role="tab" aria-selected="false">C · 经验沉淀</button>
         </div>
-        <span class="demo-flag">预置案例演示 · 非实时连接</span>
+        <span class="demo-flag">预置案例 · 点击不触发实时检索</span>
       </div>
       <div class="demo-grid">
         <nav class="dnav" id="dnav" aria-label="演示步骤"></nav>
@@ -800,22 +829,22 @@
   </div>
 </section>
 
-<!-- ============ 05 真实案例与交付物 ============ -->
+<!-- ============ 05 代表性案例与交付物 ============ -->
 <section id="cases">
   <div class="wrap">
-    <div class="sec-head"><span class="sec-num">04</span><h2>真实案例与交付物</h2></div>
-    <p class="lead">三个案例均来自 Skill MVP 的实际运行记录。点击「查看详情」展开摘要、关键流程与<b>WorkBuddy 实测截图</b>（支持点击放大）。</p>
+    <div class="sec-head"><span class="sec-num">04</span><h2>代表性案例与交付物</h2></div>
+    <p class="lead">三份材料性质不同，分别展示一种产品能力：<b>真实工程经历</b>如何转化为结构化知识、多条知识如何组合为可执行清单、缺少明确根因时如何提供分层排查思路。点击查看详情，可看到 WorkBuddy 实测截图（支持放大）。</p>
     <div class="cases">
       <article class="case">
         <div class="chead">
-          <span class="cid">TM-016 · 测试方法卡</span>
-          <h3>以太网接口断电插拔操作规范</h3>
-          <span class="scene-tag">入口 C · 经验沉淀</span>
+          <span class="cid">TM-016 · 经验卡</span>
+          <h3>以太网接口断电插拔经验</h3>
+          <span class="scene-tag">入口 C · 真实经历 · 待审核</span>
         </div>
         <div class="cbody">
-          <p><b>业务场景：</b>千兆以太网接口测试中，因「先插线再上电」导致 PHY 芯片引脚真损坏。</p>
-          <p><b>解决：</b>把口头讲述的事故整理为可执行、可追溯的操作顺序规范。</p>
-          <p><b>关键交付：</b>强制规则 + 正确操作顺序 + 禁止事项表 + 待确认清单。</p>
+          <p><b>业务场景：</b>千兆以太网测试中 PHY 芯片引脚发生损坏；原始记录提到「先插线再上电」，并提出断电插拔的预防建议。</p>
+          <p><b>证明能力：</b>把口述原始经验转化为结构化知识卡，保留原文并如实标注未确认项。</p>
+          <p><b>关键交付：</b>预防建议 + 操作顺序 + 待确认清单；具体损坏机理与因果关系仍待工程师核实。</p>
         </div>
         <div class="cfoot">
           <button class="btn btn-g btn-sm" type="button" data-case="tm016">查看详情</button>
@@ -825,12 +854,12 @@
         <div class="chead">
           <span class="cid">DVT · 检查清单</span>
           <h3>以太网链路测试检查清单</h3>
-          <span class="scene-tag">入口 A · 新人查询</span>
+          <span class="scene-tag">入口 A · 知识整合生成</span>
         </div>
         <div class="cbody">
           <p><b>业务场景：</b>新人首次做摄像头 PHY 转接板的以太网链路连通性验证（DVT）。</p>
-          <p><b>解决：</b>「测以太网怎么弄」→ 从知识库整合出带安全纪律的分步清单。</p>
-          <p><b>关键交付：</b>S0 安全检查 + 链路建立 + 协商核对 + 连通性与丢包 + 数据记录表。</p>
+          <p><b>证明能力：</b>把 TM-010 与 TM-016 两条知识组合为一份可执行的分步检查清单。</p>
+          <p><b>关键交付：</b>S0 安全检查 + 链路建立 + 协商核对 + 连通性与丢包 + 数据记录表（非现场验收报告）。</p>
         </div>
         <div class="cfoot">
           <button class="btn btn-g btn-sm" type="button" data-case="dvt">查看详情</button>
@@ -839,13 +868,13 @@
       <article class="case">
         <div class="chead">
           <span class="cid">BE-007 · 经验草稿</span>
-          <h3>PMIC 上电异常故障经验草稿</h3>
-          <span class="scene-tag">入口 B · 故障排查</span>
+          <h3>PMIC 上电异常排查草稿</h3>
+          <span class="scene-tag">入口 B · 模拟故障 · 未定位根因</span>
         </div>
         <div class="cbody">
-          <p><b>业务场景：</b>整机样机上电瞬间指示灯闪一下就灭，串口助手报 Error 0x0A。</p>
-          <p><b>解决：</b>新人不知道排查顺序 → 给出「供电 → 时序 → 链路」分层路径并沉淀为草稿。</p>
-          <p><b>关键交付：</b>分层排查步骤 + 所需仪器 + 逐句保留的口述记录 + 待补充字段。</p>
+          <p><b>业务场景：</b>模拟故障场景——整机样机上电瞬间指示灯闪一下就灭，串口助手报 Error 0x0A。</p>
+          <p><b>证明能力：</b>根因不明时给出「供电 → 时序 → 链路」分层思路，并保留不确定性。</p>
+          <p><b>关键交付：</b>分层排查步骤 + 所需仪器 + 待确认字段；不是已解决的真实故障。</p>
         </div>
         <div class="cfoot">
           <button class="btn btn-g btn-sm" type="button" data-case="be007">查看详情</button>
@@ -859,31 +888,39 @@
 <section id="arch">
   <div class="wrap">
     <div class="sec-head"><span class="sec-num">05</span><h2>Skill 的实现架构</h2></div>
-    <p class="lead">MVP 基于 <b>WorkBuddy</b> 搭建，Skill 定义见 <code>SKILL.md</code>（hw-test-kb-assistant），检索与沉淀由独立脚本实际执行（<code>kb_search.py</code> / <code>kb_sediment.py</code>），共享库 <code>kb_lib.py</code> 负责加载、别名、改写与评分检索。</p>
+    <p class="lead">MVP 基于 <b>WorkBuddy</b> 搭建。各组件各司其职：运行环境由平台提供，工作流与行为约束写在 <code>SKILL.md</code>，确定性检索与沉淀交给脚本执行，结构化数据存放在 <code>knowledge-base.json</code>。当前检索为关键词与别名匹配，<b>不是向量检索</b>。</p>
     <div class="arch">
       <div class="arch-block">
         <h3>使用入口<span class="chip">入口 A 测试方法查询 · 入口 B Bug 排查</span></h3>
         <div class="pipe">
-          <div class="pnode">用户输入<small>口语化问题</small></div><span class="parr">→</span>
-          <div class="pnode">意图识别<small>与实体提取</small></div><span class="parr">→</span>
-          <div class="pnode">Query 改写<small>别名扩展 + 追问</small></div><span class="parr">→</span>
-          <div class="pnode">知识检索<small>评分与排序</small></div><span class="parr">→</span>
+          <div class="pnode">用户提问<small>口语化问题</small></div><span class="parr">→</span>
+          <div class="pnode">意图识别<small>判断属于哪个入口</small></div><span class="parr">→</span>
+          <div class="pnode">必要信息追问<small>1–3 个关键问题</small></div><span class="parr">→</span>
+          <div class="pnode">Query 改写<small>别名扩展 + 字段条件</small></div><span class="parr">→</span>
+          <div class="pnode">知识检索<small>关键词匹配 + 排序</small></div><span class="parr">→</span>
           <div class="pnode">结构化答案<small>方法卡 / 排查路径</small></div><span class="parr">→</span>
-          <div class="pnode">来源与状态<small>verification / review</small></div>
+          <div class="pnode">来源与状态<small>逐条标注审核状态</small></div>
         </div>
       </div>
       <div class="arch-block sediment">
         <h3>沉淀入口<span class="chip">入口 C 经验沉淀</span></h3>
         <div class="pipe">
-          <div class="pnode">口述 / 文本输入<small>逐句保留原文</small></div><span class="parr">→</span>
+          <div class="pnode">口述 / 文字<small>逐句保留原文</small></div><span class="parr">→</span>
           <div class="pnode">分类与字段提取<small>Bug / 测试方法</small></div><span class="parr">→</span>
-          <div class="pnode">生成结构化草稿<small>按统一模板</small></div><span class="parr">→</span>
-          <div class="pnode">工程师确认草稿<small>补充缺失字段</small></div><span class="parr">→</span>
-          <div class="pnode">确认后写入<small>review_status=待审核</small></div><span class="parr">→</span>
-          <div class="pnode">评审通过<small>成为正式知识</small></div>
+          <div class="pnode">结构化草稿<small>按统一模板</small></div><span class="parr">→</span>
+          <div class="pnode">缺失信息补充<small>未确认项如实标注</small></div><span class="parr">→</span>
+          <div class="pnode">工程师确认<small>人工操作，非状态</small></div><span class="parr">→</span>
+          <div class="pnode">--commit 写入<small>待审核 · 仅作线索</small></div><span class="parr">→</span>
+          <div class="pnode">重建索引并复核<small>确认新卡可检索</small></div>
+        </div>
+        <div class="comp-grid">
+          <div><b>WorkBuddy</b><span>提供 Skill 运行与交互环境；语音转文字也由平台完成，脚本本身不负责语音识别。</span></div>
+          <div><b>SKILL.md</b><span>定义任务路由、三个核心工作流与行为约束，决定「什么能做什么不能做」。</span></div>
+          <div><b>Skill 脚本</b><span>检索、沉淀、知识加载分别由独立脚本执行，保证结果可解释、可复核。</span></div>
+          <div><b>knowledge-base.json</b><span>保存结构化知识、来源标记与审核状态，是所有流程的单一数据源。</span></div>
         </div>
         <div class="tech-notes">
-          <p class="tech-note"><b>三级状态，严格区分：</b>① 草稿（未确认，不写入）；② 工程师确认后 <code>--commit</code> 写入，记录 <code>review_status=待审核</code>；③ 评审通过后才成为正式知识。待审核内容在检索中只作「待确认线索」，不作正式操作依据。</p>
+          <p class="tech-note"><b>状态与操作要分清：</b>草稿（未入库）→ 工程师确认并 <code>--commit</code>（这是操作，不是状态）→ 待审核（已入库，检索中仅作待确认线索）→ 审核通过（正式知识）。草稿未经工程师确认不得写入；正式标准须经审核。</p>
           <p class="tech-note"><b>检索口径（如实描述）：</b>当前实现为<b>关键词 + 别名扩展 + 字段过滤 + 排序</b>的可解释检索，读取 <code>knowledge-base.json</code>；未引入向量检索。规模扩大后可升级，但任何升级不得改变「结果带来源与状态」的契约。</p>
           <p class="tech-note"><b>语音输入（平台能力衔接）：</b>本 Skill 脚本不含语音识别。若提供音频，先由平台语音转文字能力转写为文本，再走入口 C 同一流程；转写内容同样先生成草稿待确认。</p>
           <p class="tech-note"><b>写入纪律：</b>沉淀只新增文件不覆盖已有知识；<code>--commit</code> 必须发生在工程师看过草稿并确认之后；写入后自动重建索引并复核新记录可被检索。</p>
@@ -912,7 +949,7 @@
       <div class="bound cant">
         <h3>AI 不能直接决定</h3>
         <ul>
-          <li>未经确认的测试标准和电气限值（以器件手册为准）</li>
+          <li>最终测试标准与电气限值（以器件手册和工程师确认为准）</li>
           <li>最终 Pass / Fail 判定（属合规与数值判定）</li>
           <li>没有证据支撑的故障根因（只列「嫌疑待验证」）</li>
           <li>正式规范发布和变更放行（待审核 ≠ 已发布）</li>
@@ -920,15 +957,52 @@
       </div>
     </div>
     <div class="principle">
-      <p><b>核心原则：</b>AI 负责整理、检索和辅助解释；工程师负责专业判断与审核；知识库负责管理经过确认的经验。器件规格、产品需求、公司测试规范和实际测试结果必须明确区分，不能混为一谈。</p>
+      <p><b>核心原则：</b>AI 负责整理、检索和辅助解释；工程师负责专业判断与审核；知识库负责管理经过确认的经验。<b>草稿未确认不写入，待审核内容只作待确认线索，正式知识须经审核。</b>AI 不决定最终测试标准、Pass / Fail 与故障根因；器件规格、产品需求、公司规范和实测结果必须明确区分。</p>
     </div>
   </div>
 </section>
 
-<!-- ============ 08 总结 ============ -->
+<!-- ============ 08 我的产品工作 ============ -->
+<section id="contrib">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">07</span><h2>我的产品工作与 MVP 验证</h2></div>
+    <p class="lead">这个项目由我独立设计与搭建。下面是我实际承担的工作，以及 MVP 目前能证明和不能证明的部分。</p>
+    <div class="contrib">
+      <div class="contrib-card">
+        <h3>我做了什么 · 5 项工作</h3>
+        <ol class="worksteps">
+          <li><b>业务分析</b><small>基于车载摄像头、雷达测试经历，识别新人在知识获取上的实际困难。</small></li>
+          <li><b>产品设计</b><small>设计三个核心工作流及交互流程，明确追问、检索与审核的边界。</small></li>
+          <li><b>知识设计</b><small>设计知识卡模板、字段结构、来源标记与审核机制。</small></li>
+          <li><b>Skill 搭建</b><small>在 WorkBuddy 中配置 Prompt 与工作流，搭建可运行的 MVP。</small></li>
+          <li><b>场景验证</b><small>用经验沉淀、测试方法查询、模拟故障排查三个场景走通全流程。</small></li>
+        </ol>
+      </div>
+      <div class="contrib-card">
+        <h3>MVP 结果</h3>
+        <div class="metrics">
+          <div class="metric"><b>23</b><span>条初始知识</span></div>
+          <div class="metric"><b>3</b><span>个核心工作流</span></div>
+          <div class="metric"><b>3</b><span>份代表性交付物</span></div>
+        </div>
+        <p class="contrib-note">初始知识包含 15 条测试方法、4 条模拟 Bug 案例、4 条规范及资料索引。</p>
+        <h3 style="margin-top:18px">当前局限（如实说明）</h3>
+        <ul class="limit-list">
+          <li>尚无系统性的检索准确率、召回率评测结果</li>
+          <li>尚未接入企业生产知识库</li>
+          <li>尚未完成企业权限系统集成</li>
+          <li>尚未量化实际使用效率提升</li>
+        </ul>
+        <p class="contrib-note">后续可建立检索命中率、回答完整性、来源可追溯性与风险控制评测；以上均为规划，尚无已完成的测试成绩。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 09 总结 ============ -->
 <section id="summary">
   <div class="wrap">
-    <div class="sec-head"><span class="sec-num">07</span><h2>项目总结与后续方向</h2></div>
+    <div class="sec-head"><span class="sec-num">08</span><h2>项目总结与后续方向</h2></div>
     <div class="summary">
       <div class="sumcard">
         <h3>解决的核心问题</h3>
@@ -949,17 +1023,17 @@
       <div class="sumcard">
         <h3>当前成果</h3>
         <ul>
-          <li>基于 <b>WorkBuddy</b> 搭建 Skill MVP（23 条初始知识）</li>
-          <li>以<b>三个场景</b>验证全链路：沉淀 / 查询 / 排查</li>
-          <li>产出 TM-016、DVT 清单、BE-007 草稿三份真实交付物</li>
+          <li>基于 <b>WorkBuddy</b> 搭建个人 Skill MVP（23 条初始知识）</li>
+          <li>以<b>三个场景</b>走通全链路：沉淀 / 查询 / 排查</li>
+          <li>形成 TM-016 经验卡、DVT 检查清单、BE-007 排查草稿三份代表性交付物</li>
         </ul>
       </div>
       <div class="sumcard next">
-        <h3>后续优化方向</h3>
+        <h3>后续优化方向（规划）</h3>
         <ul>
-          <li>完善测试集与<b>检索质量评估</b></li>
-          <li>知识<b>版本管理</b>与权限控制</li>
-          <li>沉淀-复用的<b>效果量化</b>（不预设数字）</li>
+          <li>建立测试集与<b>检索质量评估</b>（命中率 / 完整性）</li>
+          <li>接入企业知识库，补齐<b>权限控制</b>与版本管理</li>
+          <li>沉淀-复用的<b>效果量化</b>（尚无实测数据）</li>
         </ul>
       </div>
     </div>
@@ -989,7 +1063,7 @@
     </div>
     <div class="csec">
       <h4>摘要</h4>
-      <p>一次<b>已实际发生</b>的器件损坏（PHY 芯片引脚真损坏，工程师本人经历），核心价值是一条可执行的<b>操作顺序规范</b>：进行任何网线 / 以太网跳线 / 转接板的插拔前，必须先将相关设备全部断电。它不是芯片功能测试方法，也不是根因分析报告。</p>
+      <p>在千兆以太网测试过程中，<b>PHY 芯片引脚发生损坏</b>（工程师本人经历）。原始记录提到「先插线再上电」，并提出断电插拔的预防建议，本卡据此整理为一条可执行的<b>操作顺序建议</b>。<b>具体损坏机理及因果关系仍待工程师核实</b>，此卡不是芯片功能测试方法，也不是已验证的根因分析报告。</p>
     </div>
     <div class="csec">
       <h4>关键流程</h4>
@@ -1004,19 +1078,21 @@
     </div>
     <div class="csec">
       <h4>状态与限制</h4>
-      <p><span class="status st-review">待审核</span> <span class="status st-info">工程师经验 · 已发生事故</span></p>
-      <p style="margin-top:10px">本条不含任何电压 / 电流 / 阻抗限值，PHY 耐压与引脚绝对最大额定值必须以器件手册为准；依据来源（项目 EHS 规程 / 安全规范）待补充。在依据补齐前，按「工程师经验 + 一次实证事故」支撑，<b>不作为公司正式规范引用</b>。</p>
+      <p><span class="status st-review">待审核</span> <span class="status st-info">真实工程经历 · 经验沉淀</span></p>
+      <p style="margin-top:8px"><b>已确认：</b>PHY 芯片引脚确实损坏；端口不带 PoE；原始记录提出断电插拔的预防建议。</p>
+      <p style="margin-top:8px"><b>待确认：</b>损坏机理、插线时各设备的实际通电状态、损坏发生的准确时刻，以及「先插线再上电」与损坏之间是否存在因果关系。以上均<b>不作为已验证结论</b>。</p>
+      <p style="margin-top:8px">断电插拔为<b>建议性风险控制措施</b>，待工程师审核及正式规范核对后方可引用；本卡不含电压 / 电流 / 阻抗限值，PHY 耐压必须以器件手册为准，<b>不是公司正式 SOP</b>。</p>
     </div>
     <div class="csec">
       <h4>WorkBuddy 实测截图（点击放大）</h4>
       <div class="shotgrid">
-        <div class="shot" data-full="../assets/knowledge-skill/scene-a-input.jpg" data-cap="老工程师口述原始输入，AI 分析风险机理并对比错误与正确操作顺序">
+        <div class="shot" data-full="../assets/knowledge-skill/scene-a-input.jpg" data-cap="原始口述记录：千兆以太网测试，先插线再上电，差点烧了，提出断电插拔的预防建议">
           <img src="../assets/knowledge-skill/scene-a-input.jpg" alt="经验沉淀输入截图" loading="lazy">
-          <div class="cap"><b>① 口述输入</b>千兆以太网带电插拔险些烧毁的原始经验</div>
+          <div class="cap"><b>① 口述输入</b>原始记录逐句保留，因果关系未作推断</div>
         </div>
-        <div class="shot" data-full="../assets/knowledge-skill/scene-a-commit.jpg" data-cap="工程师确认 PHY 引脚真损坏、端口不带 PoE 后，生成 TM-016 安全操作规范卡">
+        <div class="shot" data-full="../assets/knowledge-skill/scene-a-commit.jpg" data-cap="工程师确认 PHY 引脚损坏、端口不带 PoE 后，生成 TM-016 经验卡草稿（待审核）">
           <img src="../assets/knowledge-skill/scene-a-commit.jpg" alt="TM-016 生成截图" loading="lazy">
-          <div class="cap"><b>② 确认后写入</b>澄清三处细节后生成规范卡，标注待审核</div>
+          <div class="cap"><b>② 确认后写入</b>澄清细节后生成经验卡草稿，标注待审核</div>
         </div>
         <div class="shot" data-full="../assets/knowledge-skill/scene-a-missing.jpg" data-cap="AI 解释暂不写入的原因：缺少 5 项关键信息，列出待确认项并追问最少必要问题">
           <img src="../assets/knowledge-skill/scene-a-missing.jpg" alt="缺失字段清单截图" loading="lazy">
@@ -1039,7 +1115,7 @@
     </div>
     <div class="csec">
       <h4>摘要</h4>
-      <p>由知识库 <b>TM-010</b>《通信与高速数据链路测试》S5 以太网步骤 + <b>TM-016</b>《以太网接口断电插拔操作规范》整合而成。适用范围：摄像头产品的以太网 PHY 转接板（半成品板级验证），目标仅验证「链路通不通」（link-up / 协商 / 连通性 / 丢包），不含吞吐 / 延迟性能与协议一致性。阶段：DVT。</p>
+      <p>由知识库 <b>TM-010</b>《通信与高速数据链路测试》S5 以太网步骤 + <b>TM-016</b>《以太网接口断电插拔经验》整合生成的<b>测试检查清单草稿</b>，<b>不是已完成的现场 DVT 验收报告</b>。适用范围：摄像头产品的以太网 PHY 转接板（半成品板级验证），目标仅验证「链路通不通」（link-up / 协商 / 连通性 / 丢包），不含吞吐 / 延迟性能与协议一致性。阶段：DVT。</p>
     </div>
     <div class="csec">
       <h4>检查步骤</h4>
@@ -1060,7 +1136,7 @@
       <h4>WorkBuddy 实测截图（点击放大）</h4>
       <div class="shotgrid">
         <div class="shot" data-full="../assets/knowledge-skill/scene-b-input.jpg" data-cap="新人输入「测以太网怎么弄？」，助手先给出第一条铁律：插拔网线前必须断电，并引用真实事故作为警示">
-          <img src="../assets/knowledge-skill/scene-b-input.jpg" alt="新人查询输入截图" loading="lazy">
+          <img src="../assets/knowledge-skill/scene-b-input.jpg" alt="测试方法查询输入截图" loading="lazy">
           <div class="cap"><b>① 模糊提问</b>自然语言查询，AI 不直接甩通用答案</div>
         </div>
         <div class="shot" data-full="../assets/knowledge-skill/scene-b-checklist.jpg" data-cap="用户补充「摄像头、PHY 转接板、测链路通断、DVT 阶段」后，AI 生成 DVT 检查清单，强调断电插拔安全步骤">
@@ -1088,7 +1164,7 @@
     </div>
     <div class="csec">
       <h4>摘要</h4>
-      <p>车载摄像头整机样机，上电瞬间指示灯<b>闪一下就灭</b>（不是完全不亮），供电经过 PMIC 转接板；上位机串口助手报 <code>Error 0x0A</code>（含义待确认，疑似设备无响应 / 通信失败，<b>属于结果而非根因</b>）。本卡片由工程师口述整理生成，<b>根因尚未定位</b>，证据待补充，草稿待审核。</p>
+      <p><b>模拟故障场景：</b>车载摄像头整机样机，上电瞬间指示灯<b>闪一下就灭</b>（不是完全不亮），供电经过 PMIC 转接板；上位机串口助手报 <code>Error 0x0A</code>（含义待确认，疑似设备无响应 / 通信失败，<b>属于结果而非根因</b>）。本卡片由模拟 Bug 场景生成排查草稿，<b>根因尚未定位</b>，证据待补充，草稿待审核；<b>不是真实已解决的故障</b>。</p>
     </div>
     <div class="csec">
       <h4>分层排查路径（供电 → 时序 → 链路）</h4>
@@ -1129,20 +1205,24 @@
   </div>
 </dialog>
 
-<dialog class="lb" id="lb" aria-label="截图放大查看"><img id="lb-img" alt=""><div class="txt" id="lb-txt"></div></dialog>
+<dialog class="lb" id="lb" aria-label="截图放大查看">
+  <button class="lb-close" id="lbClose" type="button" aria-label="关闭放大图">✕ 关闭</button>
+  <img id="lb-img" alt="">
+  <div class="txt" id="lb-txt"></div>
+</dialog>
 
 <script>
 /* ============================================================
    Knowledge Skill 页面交互（v2 · 三栏工作台）
    1. 演示工作台：左步骤导航 / 中对话流程 / 右知识卡结果
-   2. 场景 B：可点击的预置上下文选项 → 动态 Query 改写
+   2. 入口 A：可点击的预置上下文选项 → 动态 Query 改写
    3. 案例详情弹窗 + 截图灯箱（均为 <dialog>）
    全部为预置案例内容，无网络请求。
    ============================================================ */
 (function () {
   "use strict";
 
-  /* ---------- 场景 B 交互状态（预置选项） ---------- */
+  /* ---------- 入口 A 交互状态（预置选项） ---------- */
   var ctx = { obj: "", goal: "", stage: "" };
   var OPTS = {
     obj:  ["摄像头 · PHY 转接板", "车载雷达整机", "半成品裸板"],
@@ -1154,8 +1234,8 @@
      每步：{ nav: 短标签, tag: 步骤条, title: 标题, mid: 中栏对话 HTML,
              side: 右栏结果卡 HTML（可为函数，接收 ctx） } */
   var SCENES = {
-    a: {
-      label: "场景 A · 老工程师经验沉淀",
+    c: {
+      label: "入口 C · 经验沉淀（TM-016）",
       caseBtn: "查看案例：TM-016 ↗", caseId: "tm016",
       steps: [
         {
@@ -1184,13 +1264,13 @@
         },
         {
           nav: "审核状态", tag: "STEP 5 · 审核状态",
-          title: "三级状态：草稿 → 确认 → 待审核 → 发布",
-          mid: '<div class="chat"><div class="msg ai"><span class="who">Knowledge Skill</span>当前状态：<b>草稿（未写入）</b>。写入后记录 <code>review_status=待审核</code>；评审通过后才成为正式知识。待审核内容在检索中只作「待确认线索」，不作正式操作依据。</div></div>',
+          title: "草稿 → 工程师确认并提交 → 待审核 → 审核通过",
+          mid: '<div class="chat"><div class="msg ai"><span class="who">Knowledge Skill</span>当前状态：<b>草稿（未写入）</b>。工程师确认并 <code>--commit</code> 后写入，状态为「待审核」；审核通过后才成为正式知识。待审核内容在检索中只作「待确认线索」，不作正式操作依据。</div></div>',
           side: '<div class="stack"><div class="sttitle" style="font-size:10.5px;letter-spacing:.14em;font-weight:700;color:var(--purple)">知识状态流转</div><div class="stflow">' +
             '<div class="row"><span class="b">1</span><span class="rail"><i></i></span><p><b>草稿</b><small>AI 生成 · 未写入 · 可随时修改</small></p></div>' +
-            '<div class="row"><span class="b">2</span><span class="rail"><i></i></span><p><b>工程师确认</b><small>看过草稿 · 补充缺失字段 · --commit</small></p></div>' +
+            '<div class="row"><span class="b">2</span><span class="rail"><i></i></span><p><b>工程师确认并提交</b><small>人工操作 · 补充缺失字段 · --commit 写入</small></p></div>' +
             '<div class="row"><span class="b">3</span><span class="rail"><i></i></span><p><b>写入 · 待审核</b><small>进入知识库 · 检索中标注「待确认线索」</small></p></div>' +
-            '<div class="row"><span class="b">✓</span><span class="rail"><i></i></span><p><b>评审通过</b><small>成为正式知识 · 可作为操作依据</small></p></div>' +
+            '<div class="row"><span class="b">✓</span><span class="rail"><i></i></span><p><b>审核通过</b><small>成为正式知识 · 可作为操作依据</small></p></div>' +
             '</div></div>'
         },
         {
@@ -1201,8 +1281,8 @@
         }
       ]
     },
-    b: {
-      label: "场景 B · 新人日常查询",
+    a: {
+      label: "入口 A · 测试方法查询（DVT 清单）",
       caseBtn: "查看案例：DVT 检查清单 ↗", caseId: "dvt",
       steps: [
         {
@@ -1224,7 +1304,7 @@
             '<div class="optg"><div class="optl">测试对象 <em>*</em></div><div class="optrow" data-kg="obj">' + OPTS.obj.map(function(o){return '<button class="opt" type="button" data-v="'+o+'">'+o+'</button>';}).join("") + '</div></div>' +
             '<div class="optg"><div class="optl">测试目标 <em>*</em></div><div class="optrow" data-kg="goal">' + OPTS.goal.map(function(o){return '<button class="opt" type="button" data-v="'+o+'">'+o+'</button>';}).join("") + '</div></div>' +
             '<div class="optg"><div class="optl">研发阶段 <em>*</em></div><div class="optrow" data-kg="stage">' + OPTS.stage.map(function(o){return '<button class="opt" type="button" data-v="'+o+'">'+o+'</button>';}).join("") + '</div></div>' +
-            '<p class="opt-hint">已选 <b id="optCnt">0 / 3</b> —— 点「下一步」查看 Query 如何被改写（未选的维度将标「待补充」）。</p>' +
+            '<p class="opt-hint">已选 <b id="optCnt">0 / 3</b> —— 点「下一步」查看 Query 如何被改写（未选的维度将标「待补充」）。此处为预置演示，点击不触发真实检索。</p>' +
             '</div>',
           side: function () {
             var picked = [ctx.obj, ctx.goal, ctx.stage].filter(Boolean).length;
@@ -1261,8 +1341,8 @@
         }
       ]
     },
-    c: {
-      label: "场景 C · 新人遇到故障",
+    b: {
+      label: "入口 B · Bug 排查（BE-007）",
       caseBtn: "查看案例：BE-007 ↗", caseId: "be007",
       steps: [
         {
@@ -1352,12 +1432,12 @@
     /* 底部按钮 */
     btnPrev.disabled = curStep === 0;
     btnPrev.style.opacity = curStep === 0 ? .45 : 1;
-    btnNext.textContent = curStep === sc.steps.length - 1 ? "完成 ✓" : "下一步 ›";
+    btnNext.textContent = curStep === sc.steps.length - 1 ? "重新体验 ↺" : "下一步 ›";
     btnCase.style.display = curStep === sc.steps.length - 1 ? "inline-flex" : "none";
     btnCase.textContent = sc.caseBtn;
 
-    /* 场景 B：绑定预置选项点击 */
-    if (curScene === "b" && curStep === 2) bindOpts();
+    /* 入口 A：绑定预置选项点击 */
+    if (curScene === "a" && curStep === 2) bindOpts();
   }
 
   function bindOpts() {
@@ -1382,7 +1462,7 @@
 
   function switchScene(key) {
     curScene = key; curStep = 0;
-    if (key !== "b") ctx = { obj: "", goal: "", stage: "" };
+    if (key !== "a") ctx = { obj: "", goal: "", stage: "" };
     tabs.forEach(function (t) {
       var on = t.getAttribute("data-scene") === key;
       t.classList.toggle("on", on);
@@ -1398,6 +1478,7 @@
   btnNext.addEventListener("click", function () {
     var n = SCENES[curScene].steps.length;
     if (curStep < n - 1) { curStep++; render(); }
+    else { curStep = 0; ctx = { obj: "", goal: "", stage: "" }; render(); }
   });
   document.querySelectorAll("[data-goto-scene]").forEach(function (b) {
     b.addEventListener("click", function () {
@@ -1446,6 +1527,7 @@
   function closeLb() { lb.close(); lbImg.src = ""; }
   lb.addEventListener("click", function (e) { if (e.target === lb || e.target === lbImg) closeLb(); });
   lb.addEventListener("cancel", function () { closeLb(); });
+  document.getElementById("lbClose").addEventListener("click", closeLb);
 
   /* ---------- URL 参数直达：?scene=a|b|c&step=N&case=tm016|dvt|be007 ---------- */
   try {
