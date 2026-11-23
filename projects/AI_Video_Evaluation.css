@@ -49,3 +49,43 @@ figure>a{display:block;max-width:100%}
 figure>a>img,figure>img{max-width:100%}
 .wb-shots a,.wb-references a,.formal-price-images a,.design-board a,.turnaround-views a,.wb-agent a,.formal-evidence a{max-width:100%;display:block}
 img{max-width:100%}
+
+/* ===== v2 逻辑重构：05/06 痛点过渡 + 07 前置决策助手 ===== */
+.pain-point{margin-top:30px;padding:22px 26px;border:1px solid #58446d;border-left:3px solid var(--accent);border-radius:14px;background:linear-gradient(135deg,#2a2140cc,#221a30aa)}
+.pain-point h3{margin:0 0 12px;font-size:18px;color:var(--ink)}
+.pain-point p{margin:0;color:var(--dim);font-size:14px;line-height:1.7}
+.pain-point .pain-key{display:block;margin-top:16px;padding-top:16px;border-top:1px solid #58446d;color:var(--ink);font-size:16px;font-weight:700;line-height:1.6}
+
+.input-demo{margin:28px 0 0;padding:24px 26px;border:1px solid var(--accent);border-radius:16px;background:linear-gradient(140deg,#2e2244,#221a30)}
+.input-demo-label{display:block;font-size:12px;letter-spacing:.06em;color:var(--accent);margin-bottom:12px}
+.input-demo-text{margin:0;padding:16px 18px;border:1px dashed #58446d;border-radius:10px;background:#14101a80;color:var(--ink);font-size:15px;line-height:1.7}
+.input-demo-hint{display:block;margin-top:12px;font-size:12px;color:var(--dim);line-height:1.6}
+
+.precheck-case{margin-top:28px}
+.precheck-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}
+.precheck-item{padding:20px;border:1px solid #58446d;border-radius:14px;background:#221a3070;min-width:0}
+.precheck-item.precheck-wide{grid-column:1/-1}
+.precheck-item h4{margin:0 0 12px;font-size:15px;color:var(--ink);display:flex;align-items:center;gap:10px}
+.precheck-item h4 span{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;flex:0 0 26px;border-radius:8px;background:var(--accent);color:#14101a;font:700 14px 'Space Grotesk',sans-serif}
+.precheck-item p,.precheck-item li{font-size:14px;color:var(--dim);line-height:1.7}
+.precheck-item ul{margin:0;padding-left:20px}
+.precheck-item li{margin-bottom:6px}
+.case-caution{margin-top:12px;font-size:12px!important;color:#c9a7e8!important;font-style:italic;line-height:1.6!important}
+.prompt-out{margin:12px 0 0;padding:16px;border:1px solid #3a2f52;border-radius:10px;background:#14101acc;color:var(--paper);font:13px/1.7 'Space Grotesk',sans-serif;white-space:pre-wrap;word-break:break-word}
+
+.role-split{margin-top:28px}
+.tight-list{margin:0;padding-left:20px}
+.tight-list li{font-size:14px;color:var(--dim);line-height:1.8}
+.design-principle{margin:18px 0 0;padding:16px 22px;border-left:3px solid var(--accent);background:#221a3080;color:var(--ink);font-size:14px;line-height:1.7}
+.concept-details{margin-top:28px}
+.detail-block{padding:18px 0;border-bottom:1px solid #3a2f52}
+.detail-block:last-child{border-bottom:0}
+.detail-block h4{margin:0 0 10px;font-size:15px;color:var(--ink)}
+.detail-block p{margin:0 0 8px;font-size:14px;color:var(--dim);line-height:1.75}
+
+@media(max-width:760px){
+  .pain-point{padding:18px 20px}
+  .precheck-grid{grid-template-columns:1fr}
+  .precheck-item.precheck-wide{grid-column:auto}
+  .input-demo{padding:18px 20px}
+}
